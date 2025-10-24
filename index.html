@@ -1,1 +1,162 @@
-<h1>My Nam</h1>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gửi tặng bạn một món quà 💌</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      height: 100vh;
+      background: linear-gradient(180deg, #ffdee9, #b5fffc);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    .envelope {
+      width: 90vw;
+      max-width: 400px;
+      height: 60vh;
+      position: relative;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flap {
+      width: 100%;
+      height: 50%;
+      background: #ff8fab;
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform-origin: bottom;
+      transition: transform 1s ease;
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+      z-index: 2;
+    }
+
+    .base {
+      width: 100%;
+      height: 100%;
+      background: #ffc2d1;
+      border-radius: 10px;
+      position: relative;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .letter {
+      width: 85%;
+      height: 90%;
+      background: white;
+      border-radius: 5px;
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 20px;
+      text-align: center;
+      font-size: 1rem;
+      color: #444;
+      line-height: 1.6;
+      transition: all 1s ease;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      overflow-y: auto;
+    }
+
+    .heart {
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      color: #ff477e;
+      animation: pulse 1.5s infinite;
+      z-index: 3;
+    }
+
+    @keyframes pulse {
+      0% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.2); }
+      100% { transform: translate(-50%, -50%) scale(1); }
+    }
+
+    .open .flap {
+      transform: rotateX(-180deg);
+    }
+
+    .open .letter {
+      top: 5%;
+    }
+
+    /* Hiệu ứng nổi nhẹ cho điện thoại */
+    @media (max-width: 600px) {
+      .letter {
+        font-size: 0.95rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="envelope" id="envelope">
+    <div class="flap"></div>
+    <div class="base"></div>
+    <div class="heart">💌</div>
+    <div class="letter">
+      <h2>Gửi đến bạn 💖</h2>
+      <p>
+        Chúc bạn một ngày thật nhiều niềm vui và nụ cười!  
+        Cuộc sống có thể đôi lúc bận rộn, nhưng đừng quên rằng  
+        bạn luôn đặc biệt và xứng đáng với những điều tốt đẹp nhất 🌷  
+      </p>
+      <p style="margin-top: 20px;">— Một người luôn nhớ đến bạn 💌</p>
+    </div>
+  </div>
+
+  <script>
+    const envelope = document.getElementById('envelope');
+    let opened = false;
+
+    envelope.addEventListener('click', () => {
+      opened = !opened;
+      envelope.classList.toggle('open', opened);
+
+      if (opened) {
+        // Hiệu ứng rơi tim
+        for (let i = 0; i < 20; i++) {
+          const heart = document.createElement('div');
+          heart.textContent = '💖';
+          heart.style.position = 'fixed';
+          heart.style.left = Math.random() * 100 + 'vw';
+          heart.style.top = '-10px';
+          heart.style.fontSize = Math.random() * 20 + 20 + 'px';
+          heart.style.opacity = Math.random();
+          heart.style.animation = 'fall 3s linear forwards';
+          document.body.appendChild(heart);
+          setTimeout(() => heart.remove(), 3000);
+        }
+      }
+    });
+
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes fall {
+        0% { transform: translateY(0); opacity: 1; }
+        100% { transform: translateY(100vh); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+
+</body>
+</html>
+
