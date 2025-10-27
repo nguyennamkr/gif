@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chúc Mừng Sinh Nhật 💖</title>
-
-<!-- Font Google -->
+<title>Thiệp Sinh Nhật 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
   body {
     margin: 0;
     height: 100vh;
     overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     font-family: 'Poppins', sans-serif;
-    background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+    background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
   }
 
   body::before {
@@ -22,192 +22,110 @@
     position: absolute;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(5px);
     z-index: 0;
   }
 
-  .birthdayCard {
-    position: relative;
-    width: 340px;
-    height: 470px;
-    transform-style: preserve-3d;
-    transition: transform 1s;
-    cursor: pointer;
-    z-index: 2;
-    margin: auto;
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .birthdayCard.open {
-    transform: rotateY(180deg);
-  }
-
-  .cardFront, .cardInside {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    border-radius: 20px;
-    backface-visibility: hidden;
-    box-shadow: 0 4px 30px rgba(0,0,0,0.2);
-  }
-
-  .cardFront {
-    background: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border: 3px solid #ff7eb9;
-  }
-
-  .cardInside {
-    background: #ffeaf3;
-    transform: rotateY(180deg);
-    padding: 20px;
-    text-align: center;
-  }
-
-  h3.happy {
-    font-family: 'Pacifico', cursive;
-    font-size: 1.8rem;
-    color: #ff4d88;
-    text-shadow: 1px 1px 2px #fff;
-    animation: glow 1.5s infinite alternate;
-  }
-
-  @keyframes glow {
-    from { text-shadow: 0 0 10px #fff, 0 0 20px #ff8fab; }
-    to { text-shadow: 0 0 20px #fff, 0 0 40px #ff4d88; }
-  }
-
-  .balloons {
-    position: relative;
-    width: 100%;
-    height: 200px;
-  }
-
-  .balloons div {
-    position: absolute;
-    bottom: 0;
-    width: 50px;
-    height: 70px;
-    border-radius: 50%;
-    animation: float 6s ease-in-out infinite;
-  }
-
-  .balloonOne { left: 20px; background: #ff4d88; animation-delay: 0s; }
-  .balloonTwo { left: 100px; background: #ffaf40; animation-delay: 1s; }
-  .balloonThree { left: 180px; background: #66d9ff; animation-delay: 2s; }
-  .balloonFour { left: 260px; background: #a3ff73; animation-delay: 3s; }
-
-  @keyframes float {
-    0% { transform: translateY(0); opacity: 1; }
-    50% { transform: translateY(-80px); opacity: 0.9; }
-    100% { transform: translateY(0); opacity: 1; }
-  }
-
-  .heart {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background-color: #ff4d88;
-    transform: rotate(-45deg);
-    animation: heartbeat 1.2s infinite;
-    top: 20px;
-    right: 20px;
-    cursor: pointer;
-    z-index: 3;
-  }
-
-  .heart::before,
-  .heart::after {
-    content: "";
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background-color: #ff4d88;
-    border-radius: 50%;
-  }
-
-  .heart::before { top: -30px; left: 0; }
-  .heart::after { left: 30px; top: 0; }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1) rotate(-45deg); }
-    50% { transform: scale(1.2) rotate(-45deg); }
-  }
-
-  .cardInside h3 {
-    font-size: 1.8rem;
-    color: #ff4d88;
-    font-family: 'Pacifico', cursive;
-  }
-
-  .cardInside p {
-    color: #333;
-    font-size: 1.1rem;
-    margin: 15px 0;
-    line-height: 1.4;
-  }
-
-  .name {
-    color: #ff4d88;
-    font-weight: bold;
-    font-size: 1.3rem;
-  }
-
-  .popup {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    background: #fff;
-    border-radius: 20px;
-    padding: 30px;
-    box-shadow: 0 0 40px rgba(255, 0, 100, 0.3);
-    text-align: center;
-    transition: transform 0.4s ease;
-    z-index: 10;
-  }
-
-  .popup.show {
-    transform: translate(-50%, -50%) scale(1);
-  }
-
-  .popup h2 {
-    color: #ff4d88;
-    font-family: 'Pacifico', cursive;
-  }
-
-  .popup p {
-    font-size: 1.1rem;
-    color: #555;
-  }
-
-  .popup button {
-    background: #ff4d88;
-    color: #fff;
-    border: none;
-    border-radius: 10px;
-    padding: 8px 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    font-size: 1rem;
-  }
-
-  .popup button:hover {
-    background: #ff6fa3;
-  }
-
-  /* Canvas pháo hoa */
   #fireworks {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
     z-index: 1;
     pointer-events: none;
+  }
+
+  .envelope {
+    position: relative;
+    width: 320px;
+    height: 220px;
+    background: #ffadc6;
+    border-radius: 10px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 5;
+    transition: transform 1s ease;
+  }
+
+  .flap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: #ff8fb1;
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    transform-origin: top;
+    transition: transform 1s ease;
+    z-index: 2;
+  }
+
+  .letter {
+    position: absolute;
+    width: 90%;
+    height: 150px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 40%);
+    background: #fffafc;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    opacity: 0;
+    transition: all 1s ease;
+    z-index: 1;
+  }
+
+  .envelope.open .flap {
+    transform: rotateX(180deg);
+  }
+
+  .envelope.open .letter {
+    transform: translate(-50%, -130%);
+    opacity: 1;
+  }
+
+  .letter h2 {
+    font-family: 'Pacifico', cursive;
+    color: #ff4d88;
+    margin-bottom: 10px;
+  }
+
+  .letter p {
+    font-size: 1.1rem;
+    color: #555;
+    line-height: 1.5;
+  }
+
+  .heart {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ff4d88;
+    transform: rotate(-45deg);
+    animation: heartbeat 1.2s infinite;
+    bottom: 20px;
+    left: calc(50% - 25px);
+    z-index: 3;
+  }
+
+  .heart::before, .heart::after {
+    content: "";
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    background-color: #ff4d88;
+    border-radius: 50%;
+  }
+
+  .heart::before { top: -25px; left: 0; }
+  .heart::after { left: 25px; top: 0; }
+
+  @keyframes heartbeat {
+    0%, 100% { transform: scale(1) rotate(-45deg); }
+    50% { transform: scale(1.2) rotate(-45deg); }
   }
 
   audio { display: none; }
@@ -221,56 +139,19 @@
 
 <canvas id="fireworks"></canvas>
 
-<div class="heart" id="heart"></div>
-
-<div class="birthdayCard" id="card">
-  <div class="cardFront">
-    <h3 class="happy">HAPPY BIRTHDAY!</h3>
-    <div class="balloons">
-      <div class="balloonOne"></div>
-      <div class="balloonTwo"></div>
-      <div class="balloonThree"></div>
-      <div class="balloonFour"></div>
-    </div>
+<div class="envelope" id="envelope">
+  <div class="flap"></div>
+  <div class="letter">
+    <h2>Chúc Mừng Sinh Nhật 💖</h2>
+    <p>Chúc bạn một ngày sinh nhật thật hạnh phúc, nhẹ nhàng như khúc nhạc piano này 🎶<br>
+    Mong rằng nụ cười và niềm vui luôn đồng hành cùng bạn! 🎂</p>
   </div>
-  <div class="cardInside">
-    <h3>HAPPY BIRTHDAY!</h3>
-    <p>Chúc bạn một ngày sinh nhật thật ngọt ngào, nhẹ nhàng như khúc nhạc piano này 🎶💖</p>
-    <p>Mong rằng niềm vui, sức khỏe và tình yêu sẽ luôn bên bạn! 🌸</p>
-    <p class="name">— Từ người gửi yêu thương 💕</p>
-  </div>
-</div>
-
-<div class="popup" id="popup">
-  <h2>🎉 Bất ngờ nè! 🎉</h2>
-  <p>Chúc bạn sinh nhật vui vẻ, tràn đầy yêu thương và hạnh phúc 💐💗</p>
-  <button onclick="closePopup()">Cảm ơn 💗</button>
+  <div class="heart"></div>
 </div>
 
 <script>
-  const card = document.getElementById('card');
-  const heart = document.getElementById('heart');
-  const popup = document.getElementById('popup');
+  const envelope = document.getElementById('envelope');
   const music = document.getElementById('music');
-
-  function startMusic() {
-    music.play().catch(()=>{});
-    document.removeEventListener('touchstart', startMusic);
-    document.removeEventListener('click', startMusic);
-  }
-  document.addEventListener('touchstart', startMusic);
-  document.addEventListener('click', startMusic);
-
-  card.addEventListener('click', () => {
-    card.classList.toggle('open');
-    music.play();
-    triggerFireworks();
-  });
-
-  heart.addEventListener('click', () => popup.classList.add('show'));
-  function closePopup() { popup.classList.remove('show'); }
-
-  /* Hiệu ứng pháo hoa */
   const canvas = document.getElementById("fireworks");
   const ctx = canvas.getContext("2d");
   let fireworks = [];
@@ -319,7 +200,7 @@
 
   function triggerFireworks() {
     const colors = ["255,99,132", "255,205,86", "54,162,235", "153,102,255", "255,159,64"];
-    for (let i = 0; i < 3; i++) {
+    for (let i = 0; i < 4; i++) {
       const x = Math.random() * canvas.width;
       const y = Math.random() * canvas.height / 2;
       fireworks.push(new Firework(x, y, colors[Math.floor(Math.random() * colors.length)]));
@@ -333,6 +214,20 @@
     requestAnimationFrame(animate);
   }
   animate();
+
+  function startMusic() {
+    music.play().catch(()=>{});
+    document.removeEventListener('touchstart', startMusic);
+    document.removeEventListener('click', startMusic);
+  }
+  document.addEventListener('touchstart', startMusic);
+  document.addEventListener('click', startMusic);
+
+  envelope.addEventListener('click', () => {
+    envelope.classList.toggle('open');
+    music.play();
+    triggerFireworks();
+  });
 </script>
 
 </body>
