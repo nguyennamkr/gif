@@ -3,232 +3,215 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thiệp Sinh Nhật 💖</title>
+<title>Thiệp Chúc Mừng Sinh Nhật 💖</title>
 <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 <style>
   body {
     margin: 0;
-    height: 100vh;
+    padding: 0;
     overflow: hidden;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: 'Poppins', sans-serif;
-    background: url('https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1400&q=80') no-repeat center center/cover;
+    background: url('https://cdn.pixabay.com/photo/2017/08/30/01/05/flowers-2690919_1280.jpg') no-repeat center/cover;
   }
 
-  body::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 0;
-  }
-
-  #fireworks {
+  /* Nền mờ */
+  .overlay {
     position: fixed;
     top: 0; left: 0;
     width: 100%; height: 100%;
-    z-index: 1;
-    pointer-events: none;
+    background: rgba(255,255,255,0.4);
+    backdrop-filter: blur(3px);
+    z-index: 0;
   }
 
+  /* Bì thư */
   .envelope {
-    position: relative;
-    width: 320px;
-    height: 220px;
-    background: #ffadc6;
-    border-radius: 10px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
-    overflow: hidden;
-    cursor: pointer;
-    z-index: 5;
-    transition: transform 1s ease;
-  }
-
-  .flap {
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 60%;
-    background: #ff8fb1;
-    clip-path: polygon(0 0, 100% 0, 50% 100%);
-    transform-origin: top;
-    transition: transform 1s ease;
-    z-index: 2;
-  }
-
-  .letter {
-    position: absolute;
-    width: 90%;
-    height: 150px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, 40%);
-    background: #fffafc;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 220px; height: 150px;
+    background: #ff9ec4;
     border-radius: 10px;
-    padding: 20px;
-    text-align: center;
     box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-    opacity: 0;
-    transition: all 1s ease;
+    cursor: pointer;
     z-index: 1;
+    transition: transform 0.4s ease;
   }
 
-  .envelope.open .flap {
-    transform: rotateX(180deg);
+  .envelope:before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 0; height: 0;
+    border-left: 110px solid transparent;
+    border-right: 110px solid transparent;
+    border-bottom: 75px solid #ffb6c1;
+    border-top: none;
+    border-radius: 10px 10px 0 0;
   }
 
-  .envelope.open .letter {
-    transform: translate(-50%, -130%);
-    opacity: 1;
-  }
-
-  .letter h2 {
+  .envelope-text {
+    position: absolute;
+    top: 55%; left: 50%;
+    transform: translate(-50%, -50%);
     font-family: 'Pacifico', cursive;
-    color: #ff4d88;
+    font-size: 20px;
+    color: #fff;
+  }
+
+  /* Thiệp */
+  .card {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 90%;
+    max-width: 380px;
+    background: white;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    text-align: center;
+    transition: all 0.6s ease;
+    z-index: 10;
+  }
+
+  .card.show {
+    transform: translate(-50%, -50%) scale(1);
+  }
+
+  .card h1 {
+    font-family: 'Pacifico', cursive;
+    color: #ff69b4;
     margin-bottom: 10px;
   }
 
-  .letter p {
-    font-size: 1.1rem;
-    color: #555;
+  .card p {
+    color: #444;
+    font-size: 16px;
     line-height: 1.5;
   }
 
-  .heart {
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: #ff4d88;
-    transform: rotate(-45deg);
-    animation: heartbeat 1.2s infinite;
-    bottom: 20px;
-    left: calc(50% - 25px);
-    z-index: 3;
+  .close-btn {
+    margin-top: 15px;
+    background: #ffb6c1;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    transition: background 0.3s;
   }
 
-  .heart::before, .heart::after {
-    content: "";
-    position: absolute;
-    width: 50px;
-    height: 50px;
-    background-color: #ff4d88;
-    border-radius: 50%;
+  .close-btn:hover {
+    background: #ff80ab;
   }
 
-  .heart::before { top: -25px; left: 0; }
-  .heart::after { left: 25px; top: 0; }
-
-  @keyframes heartbeat {
-    0%, 100% { transform: scale(1) rotate(-45deg); }
-    50% { transform: scale(1.2) rotate(-45deg); }
+  /* Pháo hoa */
+  canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 5;
   }
-
-  audio { display: none; }
 </style>
 </head>
 <body>
 
-<audio id="music" preload="auto">
-  <source src="https://cdn.pixabay.com/download/audio/2021/10/18/audio_33150d2a26.mp3?filename=happy-birthday-piano-ambient-9824.mp3" type="audio/mp3">
-</audio>
+<div class="overlay"></div>
+
+<div class="envelope" id="envelope">
+  <div class="envelope-text">Bấm để mở thư 💌</div>
+</div>
+
+<div class="card" id="card">
+  <h1>🎂 Chúc Mừng Sinh Nhật! 🎉</h1>
+  <p>Chúc bạn có một ngày thật đặc biệt, tràn ngập niềm vui, nụ cười và những điều tuyệt vời nhất! 💖<br>
+  Mong mọi ước mơ của bạn đều trở thành hiện thực, và hạnh phúc luôn mỉm cười với bạn 🌸</p>
+  <button class="close-btn" id="closeBtn">Đóng thiệp 💝</button>
+</div>
 
 <canvas id="fireworks"></canvas>
 
-<div class="envelope" id="envelope">
-  <div class="flap"></div>
-  <div class="letter">
-    <h2>Chúc Mừng Sinh Nhật 💖</h2>
-    <p>Chúc bạn một ngày sinh nhật thật hạnh phúc, nhẹ nhàng như khúc nhạc piano này 🎶<br>
-    Mong rằng nụ cười và niềm vui luôn đồng hành cùng bạn! 🎂</p>
-  </div>
-  <div class="heart"></div>
-</div>
+<audio id="music" src="https://cdn.pixabay.com/download/audio/2023/05/23/audio_6675cfb3a3.mp3?filename=happy-birthday-piano-14536.mp3"></audio>
 
 <script>
-  const envelope = document.getElementById('envelope');
-  const music = document.getElementById('music');
-  const canvas = document.getElementById("fireworks");
-  const ctx = canvas.getContext("2d");
-  let fireworks = [];
+const envelope = document.getElementById('envelope');
+const card = document.getElementById('card');
+const music = document.getElementById('music');
+const closeBtn = document.getElementById('closeBtn');
 
-  function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-  }
-  window.addEventListener("resize", resizeCanvas);
-  resizeCanvas();
-
-  class Firework {
-    constructor(x, y, color) {
-      this.x = x;
-      this.y = y;
-      this.particles = [];
-      this.color = color;
-      for (let i = 0; i < 60; i++) {
-        this.particles.push({
-          x: x,
-          y: y,
-          angle: Math.random() * 2 * Math.PI,
-          speed: Math.random() * 4 + 1,
-          alpha: 1,
-          radius: Math.random() * 2 + 1
-        });
-      }
-    }
-    update() {
-      this.particles.forEach(p => {
-        p.x += Math.cos(p.angle) * p.speed;
-        p.y += Math.sin(p.angle) * p.speed;
-        p.alpha -= 0.015;
-      });
-      this.particles = this.particles.filter(p => p.alpha > 0);
-    }
-    draw(ctx) {
-      this.particles.forEach(p => {
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, 2 * Math.PI);
-        ctx.fillStyle = `rgba(${this.color},${p.alpha})`;
-        ctx.fill();
-      });
-    }
-  }
-
-  function triggerFireworks() {
-    const colors = ["255,99,132", "255,205,86", "54,162,235", "153,102,255", "255,159,64"];
-    for (let i = 0; i < 4; i++) {
-      const x = Math.random() * canvas.width;
-      const y = Math.random() * canvas.height / 2;
-      fireworks.push(new Firework(x, y, colors[Math.floor(Math.random() * colors.length)]));
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    fireworks.forEach(f => { f.update(); f.draw(ctx); });
-    fireworks = fireworks.filter(f => f.particles.length > 0);
-    requestAnimationFrame(animate);
-  }
-  animate();
-
-  function startMusic() {
-    music.play().catch(()=>{});
-    document.removeEventListener('touchstart', startMusic);
-    document.removeEventListener('click', startMusic);
-  }
-  document.addEventListener('touchstart', startMusic);
-  document.addEventListener('click', startMusic);
-
-  envelope.addEventListener('click', () => {
-    envelope.classList.toggle('open');
+envelope.addEventListener('click', () => {
+  envelope.style.transform = 'scale(0)';
+  setTimeout(() => {
+    card.classList.add('show');
     music.play();
-    triggerFireworks();
-  });
-</script>
+    startFireworks();
+  }, 500);
+});
 
+closeBtn.addEventListener('click', () => {
+  card.classList.remove('show');
+  stopFireworks();
+  music.pause();
+  music.currentTime = 0;
+  setTimeout(() => envelope.style.transform = 'scale(1)', 500);
+});
+
+/* 🎆 Pháo hoa hiệu ứng canvas */
+const canvas = document.getElementById("fireworks");
+const ctx = canvas.getContext("2d");
+let particles = [];
+let animation;
+
+function random(min, max) { return Math.random() * (max - min) + min; }
+
+function createParticle(x, y) {
+  const colors = ["#ff4081", "#ff80ab", "#ffd54f", "#81d4fa", "#b39ddb"];
+  particles.push({
+    x, y,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    radius: random(2, 4),
+    angle: random(0, Math.PI * 2),
+    speed: random(1, 5),
+    alpha: 1
+  });
+}
+
+function updateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  for (let i = 0; i < particles.length; i++) {
+    const p = particles[i];
+    p.x += Math.cos(p.angle) * p.speed;
+    p.y += Math.sin(p.angle) * p.speed + 1;
+    p.alpha -= 0.015;
+    if (p.alpha <= 0) particles.splice(i, 1);
+    else {
+      ctx.beginPath();
+      ctx.globalAlpha = p.alpha;
+      ctx.fillStyle = p.color;
+      ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+  animation = requestAnimationFrame(updateParticles);
+}
+
+function startFireworks() {
+  canvas.width = innerWidth;
+  canvas.height = innerHeight;
+  setInterval(() => {
+    for (let i = 0; i < 40; i++) createParticle(random(0, innerWidth), random(0, innerHeight / 2));
+  }, 700);
+  updateParticles();
+}
+
+function stopFireworks() {
+  cancelAnimationFrame(animation);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles = [];
+}
+</script>
 </body>
 </html>
