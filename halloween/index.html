@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     <style>
-        /* --- CSS Chung --- */
+        /* --- CSS Đã Sửa Lỗi Căn Giữa cho file index.html --- */
         body {
             background-color: #0d0d0d;
             font-family: 'Arial', sans-serif;
@@ -15,7 +15,7 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden;
-            perspective: 1000px; /* Cần thiết cho hiệu ứng 3D */
+            perspective: 1000px; 
         }
 
         /* --- Hiệu ứng Nền (Canvas) --- */
@@ -35,17 +35,16 @@
             height: 200px;
             cursor: pointer;
             z-index: 100;
-            /* Thêm transition cho độ trong suốt và dịch chuyển */
             transition: opacity 0.5s 0.8s, transform 0.8s; 
             box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
         }
 
-        /* Thân Thư (Duy trì vị trí ban đầu) */
+        /* Thân Thư */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #ff9900;
+            background-color: #ff9900; 
             border-radius: 10px;
             z-index: 50;
         }
@@ -64,13 +63,13 @@
             z-index: 150; 
         }
 
-        /* Hiệu ứng Nắp Thư Mở */
+        /* Hiệu ứng Nắp Thư Lật */
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
             transition: transform 0.8s ease-in-out, z-index 0s 0s;
         }
-        
+
         /* --- Nội Dung Thiệp (Letter Content) --- */
         .letter {
             position: absolute;
@@ -82,38 +81,37 @@
             padding: 20px;
             box-sizing: border-box;
             border-radius: 10px;
-            /* Thiết lập trạng thái ban đầu để thiệp nằm gọn trong vỏ */
             transform: translate(0, 0); 
-            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             z-index: 45; 
         }
 
-        /* TRẠNG THÁI MỞ: Vỏ biến mất, Thiệp phóng to */
+        /* --- TRẠNG THÁI MỞ: Vỏ biến mất và Thiệp phóng to --- */
         .envelope-wrapper.opened-state {
-            opacity: 0; /* Vỏ thư mờ dần */
-            transform: translateY(-50px); /* Dịch chuyển nhẹ */
-            pointer-events: none; /* Ngăn chặn tương tác với vỏ thư cũ */
+            opacity: 0; 
+            transform: translateY(-50px); 
+            pointer-events: none; 
         }
-        
+
         .envelope-wrapper.opened-state .letter {
-            /* Phóng to và căn giữa */
             width: 70vw; 
             height: 80vh; 
             max-width: 800px;
             max-height: 700px;
             
-            /* Dịch chuyển chính xác vào giữa màn hình */
-            transform: translate(calc(50vw - 50%), calc(50vh - 50%));
+            /* SỬA LỖI: Căn giữa tuyệt đối trên viewport */
+            position: fixed; 
             top: 50%;
             left: 50%;
+            transform: translate(-50%, -50%); 
             
-            z-index: 200; /* Đưa thiệp lên trên cùng */
+            z-index: 200; 
             border: 5px solid #ff4500; 
             box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
         }
 
-        /* Nội dung văn bản bên trong thiệp */
+        /* --- Nội dung văn bản bên trong thiệp --- */
         .letter-content {
             text-align: center;
             color: #333;
@@ -121,7 +119,7 @@
             line-height: 1.6;
             width: 100%;
             height: 100%;
-            overflow-y: auto; /* Cho phép cuộn */
+            overflow-y: auto; 
             box-sizing: border-box;
             padding: 5px;
         }
@@ -131,8 +129,8 @@
             margin-top: 0;
             font-size: 1.8em;
         }
-        
-        /* --- Thông báo trạng thái --- */
+
+        /* --- Thông báo trạng thái và Ảnh bất ngờ giữ nguyên --- */
         .status-message {
             position: absolute;
             bottom: -50px;
@@ -149,8 +147,7 @@
             50% { opacity: 1; }
             100% { opacity: 0.8; }
         }
-        
-        /* Ảnh bất ngờ */
+
         .surprise-image {
             max-width: 100%;
             height: auto;
@@ -270,17 +267,14 @@
             const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
 
             if (isOpened) {
-                // Nếu đã mở, thiết lập nội dung bất ngờ cho lần này
                 letterContent.innerHTML = subsequentContent;
                 statusMessage.textContent = "Chào mừng trở lại! (Nhấn để mở tiếp)";
             } else {
-                // Lần đầu tiên, thiết lập lời chúc
                 letterContent.innerHTML = firstTimeContent;
             }
         }
 
         function openEnvelope() {
-            // Kiểm tra trạng thái mở để tránh chạy lại hiệu ứng lật nắp
             if (envelopeWrapper.classList.contains('opened-state')) {
                 return;
             }
@@ -309,7 +303,6 @@
         
         // Điều chỉnh thiệp đã mở nếu người dùng quay lại
         if (localStorage.getItem(ENVELOPE_KEY) === 'true') {
-            // Nếu đã mở, cần thêm cả hai lớp để thiệp xuất hiện ở trạng thái đã phóng to
             envelopeWrapper.classList.add('open', 'opened-state');
         }
     </script>
