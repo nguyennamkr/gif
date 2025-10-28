@@ -349,7 +349,7 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Âm Thanh (Mới) ---
+        // --- 2. Logic Âm Thanh (Giữ nguyên) ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
         let isMuted = true;
@@ -358,80 +358,73 @@
 
         function toggleSound() {
             if (isMuted) {
-                // Tắt trạng thái muted và play
+                // Bật tiếng và play
                 bgm.muted = false;
                 bgm.play().catch(error => {
-                    console.error("Autoplay failed:", error);
-                    alert("Trình duyệt yêu cầu bạn tương tác trước khi phát nhạc. Hãy click lại!");
+                    console.error("Lỗi phát nhạc:", error);
                 });
                 soundToggle.textContent = '🔊';
                 isMuted = false;
             } else {
-                // Mute và pause
+                // Tắt tiếng
                 bgm.pause();
-                bgm.currentTime = 0; // Reset nhạc về đầu
+                bgm.currentTime = 0; 
                 soundToggle.textContent = '🔇';
                 isMuted = true;
             }
         }
         
-        // Cố gắng phát nhạc khi tương tác lần đầu (dù là click trái tim)
-        document.addEventListener('click', function tryPlay() {
-            if (isMuted) {
-                 // Nếu người dùng đã click lần đầu, cố gắng play nhạc (nhưng vẫn muted)
-                bgm.muted = true;
-                bgm.play().catch(error => console.log("Background play attempt failed, waiting for toggle."));
-            }
-            // Xóa lắng nghe để chỉ cần try play một lần
-            document.removeEventListener('click', tryPlay);
-        }, { once: true });
+        // Kích hoạt nhạc nền ở chế độ MUTE khi có tương tác
+        function activateMusic() {
+            bgm.load(); 
+            bgm.muted = true;
+            bgm.play().catch(error => {
+                console.log("Không thể tự động phát, chờ người dùng bật tiếng...");
+            });
+            // Xóa lắng nghe (để tránh kích hoạt nhiều lần)
+            document.getElementById('initialHeart').removeEventListener('click', activateMusic);
+        }
 
-
-        // --- 3. Hiệu ứng Chữ Động (Typewriter Effect - Mới) ---
+        // --- 3. Hiệu ứng Chữ Động (Typewriter Effect) ---
         function applyTypewriterEffect(contentElement, delay = 500) {
-            // Đảm bảo chỉ áp dụng khi thiệp đã được phóng to hoàn toàn
             setTimeout(() => {
                 const elements = contentElement.querySelectorAll('h2, p');
                 contentElement.classList.add('typing-active'); 
 
                 let totalDelay = 0;
-                elements.forEach((el, index) => {
+                elements.forEach((el) => {
                     const text = el.innerHTML;
-                    el.innerHTML = ''; // Xóa nội dung ban đầu
-                    el.style.opacity = '1'; // Cho phép hiển thị
+                    el.innerHTML = ''; 
+                    el.style.opacity = '1'; 
 
-                    // Đặt thời gian để chữ xuất hiện lần lượt
                     setTimeout(() => {
                         let i = 0;
-                        const speed = 25; // Tốc độ gõ chữ (ms)
+                        const speed = 25; 
                         function type() {
                             if (i < text.length) {
                                 el.innerHTML += text.charAt(i);
                                 i++;
                                 setTimeout(type, speed);
-                            }
+                            } 
                         }
                         type();
                     }, totalDelay);
-
-                    // Tăng độ trễ cho phần tử tiếp theo
-                    // Ước tính thời gian cần để gõ hết đoạn này (length * speed) + delay
                     totalDelay += (text.length * 25) + 300; 
                 });
             }, delay);
         }
 
 
-        // --- 4. Logic Mở Thư và Điều kiện Lần đầu/Lần sau ---
+        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI LƯU TRẠNG THÁI) ---
 
-        const ENVELOPE_KEY = 'halloween_envelope_opened';
+        // Đã loại bỏ hằng số ENVELOPE_KEY vì không sử dụng localStorage nữa.
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung cho LẦN ĐẦU (Lời Chúc)
+        // Nội dung cho LẦN ĐẦU (Vì không còn lưu trạng thái nên luôn dùng nội dung này)
         const firstTimeContent = `
             <h2>🎃 Lời Chúc Halloween Từ Xa 💌</h2>
             <p><strong>Người đang ở rất xa ơi!</strong></p>
@@ -441,28 +434,22 @@
             <p style="color: #8a2be2; font-weight: bold;">— Người luôn mong chờ tin nhắn của em/anh 😉</p>
         `;
 
-        // Nội dung cho LẦN SAU (Bất Ngờ)
-        const subsequentContent = `
-            <h2>👻 Điều Bất Ngờ! 🔮</h2>
-            <p>Chào mừng em/anh quay lại! Trang web đã nhớ em/anh đấy.</p>
-            <p>Lần này, không chỉ là lời chúc, mà là một món quà nhỏ (tưởng tượng thôi!):</p>
-            <img class="surprise-image" src="https://i.ibb.co/6P01v3T/Cute-Ghost.png" alt="Ảnh ma dễ thương">
-            <p style="margin-top: 15px; color: #ff4500;">Ảnh này thay cho một nụ cười ấm áp. Ngày mới tốt lành nhé!</p>
-            <p style="font-style: italic; font-size: 0.8em; margin-top: 10px;">(P.S: Nếu ảnh không hiện, đó là một chú ma dễ thương đang cười toe toét!)</p>
-            <p style="margin-top: 20px;">Lần tới sẽ là một lời nhắn mới toanh nhé!</p>
-        `;
+        // Đã loại bỏ subsequentContent vì không còn cơ chế mở thư lần 2.
 
+        // 🚨 SỬA ĐỔI 1: Luôn thiết lập nội dung lần đầu tiên và kích hoạt typewriter
         function checkAndSetContent() {
-            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
-            letterContent.innerHTML = isOpened ? subsequentContent : firstTimeContent;
-            // Áp dụng hiệu ứng gõ chữ ngay sau khi nội dung được chèn (áp dụng cho lần đầu mở)
-            if (!isOpened) {
-                applyTypewriterEffect(letterContent, 1000); // 1s delay sau khi phóng to thiệp
-            }
-            statusMessage.textContent = isOpened ? "Chào mừng trở lại! (Nhấn để mở tiếp)" : "Ấn vào đây để mở thư...";
+            // Luôn sử dụng nội dung lần đầu tiên
+            letterContent.innerHTML = firstTimeContent;
+            
+            // Luôn áp dụng hiệu ứng gõ chữ
+            applyTypewriterEffect(letterContent, 1000); 
+            
+            statusMessage.textContent = "Ấn vào đây để mở thư...";
         }
 
         function showEnvelope() {
+            activateMusic(); 
+
             // 1. Ẩn trái tim với hiệu ứng
             heartWrapper.classList.add('hidden'); 
             
@@ -490,33 +477,25 @@
                 // 3. Đợi 1.5s (thời gian thiệp phóng to) sau đó ẩn vỏ thư hoàn toàn
                 setTimeout(() => {
                     envelopeWrapper.classList.add('hidden');
-                    checkAndSetContent(); // Thiết lập nội dung (và kích hoạt Typewriter) sau khi thiệp mở
+                    checkAndSetContent(); // Thiết lập nội dung (và kích hoạt Typewriter)
+                    
+                    // 🚨 ĐÃ XÓA DÒNG LƯU TRẠNG THÁI TẠI ĐÂY:
+                    // localStorage.setItem(ENVELOPE_KEY, 'true');
+                    
                 }, 1500);
 
-                // 4. Lưu trạng thái đã mở
-                if (localStorage.getItem(ENVELOPE_KEY) !== 'true') {
-                    localStorage.setItem(ENVELOPE_KEY, 'true');
-                }
-                
                 statusMessage.textContent = "Thiệp đã mở! Chúc bạn Halloween vui vẻ!";
                 statusMessage.style.animation = 'none';
 
             }, 50); 
         }
 
-        // --- KHỞI TẠO CUỐI CÙNG (Đã Sửa Lỗi Trạng Thái) ---
+        // --- KHỞI TẠO CUỐI CÙNG ---
+        // 🚨 SỬA ĐỔI 2: Luôn bắt đầu bằng trái tim
         function initializeApp() {
-            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
-
-            if (isOpened) {
-                // ĐÃ MỞ: Ẩn trái tim, hiển thị thư ở trạng thái đã mở
-                heartWrapper.style.display = 'none'; 
-                envelopeWrapper.classList.add('visible', 'open', 'opened-state', 'hidden');
-                checkAndSetContent(); 
-            } else {
-                // CHƯA MỞ: Hiện trái tim, ẩn thư, chờ click
-                initialHeart.addEventListener('click', showEnvelope);
-            }
+            // Đã loại bỏ kiểm tra Local Storage. Trang web sẽ luôn bắt đầu với trái tim.
+            initialHeart.addEventListener('click', showEnvelope);
+            initialHeart.addEventListener('click', activateMusic); 
         }
 
         initializeApp();
