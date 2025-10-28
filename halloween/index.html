@@ -5,7 +5,292 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     
-    </head>
+    <style>
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
+
+        /* --- CSS Chung --- */
+        body {
+            background-color: #0d0d0d;
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            perspective: 1000px; 
+        }
+
+        /* --- Hiệu ứng Nền (Canvas) --- */
+        #magicCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* --- Nút Bật/Tắt Âm Thanh --- */
+        #soundToggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ff9900;
+            z-index: 300; 
+            transition: color 0.3s;
+        }
+        #soundToggle:hover {
+            color: #8a2be2;
+        }
+
+        /* --- Trái Tim Mở Đầu --- */
+        .heart-wrapper {
+            position: absolute;
+            z-index: 200; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .heart {
+            font-size: 80px; 
+            color: #ff4d4d; 
+            cursor: pointer;
+            animation: pulse-heart 1.5s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+            line-height: 1; 
+            display: inline-block;
+        }
+
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Khi trái tim biến mất */
+        .heart-wrapper.hidden {
+            opacity: 0;
+            transform: scale(0.5); 
+            pointer-events: none; 
+        }
+        
+        /* Vỏ thư */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 0.8s, opacity 0.8s; 
+            box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
+            
+            /* TRẠNG THÁI BAN ĐẦU: Ẩn */
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.8);
+            
+            overflow: hidden; 
+            border-radius: 5px; 
+        }
+
+        /* Khi vỏ thư hiện ra (Sau khi click trái tim) */
+        .envelope-wrapper.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
+        }
+        
+        /* --- THÂN BÌ THƯ (ĐEN/TÍM THAN VINTAGE) --- */
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #36454F; /* Màu xám than đậm */
+            border-radius: 5px;
+            z-index: 50;
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        /* --- NẮP BÌ THƯ (DÙNG CSS SHAPE) --- */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: transparent; 
+            
+            /* TẠO HÌNH TAM GIÁC (NẮP BÌ THƯ CỔ ĐIỂN) */
+            background-color: #8A2BE2; /* Màu tím ma mị */
+            clip-path: polygon(0 0, 100% 0, 50% 100%); /* Hình tam giác */
+            
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
+            z-index: 150; 
+        }
+        /* Hiệu ứng Nắp Thư Lật */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 40;
+            transition: transform 0.8s ease-in-out, z-index 0s 0s;
+        }
+
+
+        /* --- Nội Dung Thiệp (Letter Content) --- */
+        .letter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            transform: translate(0, 0); 
+            transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 45; 
+            clip-path: none; 
+        }
+
+        /* --- TRẠNG THÁI MỞ (PC/Tablet) --- */
+        .envelope-wrapper.opened-state {
+            pointer-events: none; 
+        }
+
+        .envelope-wrapper.opened-state .letter {
+            /* Kích thước PC/Tablet lớn */
+            width: 60vw; 
+            height: 70vh; 
+            max-width: 650px; 
+            max-height: 600px;
+            
+            /* CĂN CHỈNH GIỮA MÀN HÌNH */
+            position: fixed; 
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+            
+            z-index: 200; 
+            border: 5px solid #ff4500; 
+            box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
+            
+            clip-path: none; 
+            border-radius: 10px;
+        }
+
+        /* Lớp ẩn vỏ thư (kích hoạt bằng JS sau khi thiệp phóng to) */
+        .envelope-wrapper.hidden .envelope,
+        .envelope-wrapper.hidden .flap {
+            opacity: 0;
+        }
+
+        /* --- MEDIA QUERY: Tối ưu cho Màn hình Điện thoại (Width <= 600px) --- */
+        @media (max-width: 600px) {
+            
+            .envelope-wrapper {
+                width: 250px;
+                height: 160px;
+            }
+
+            .envelope-wrapper.opened-state .letter {
+                /* Đảm bảo thiệp chiếm gần hết màn hình */
+                width: 95vw; 
+                height: 95vh; /* Tăng chiều cao để chứa nội dung tốt nhất */
+                
+                position: fixed; 
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%); 
+                
+                padding: 10px; /* Giảm padding để tối đa hóa không gian chữ */
+                overflow-y: hidden; /* 🛑 YÊU CẦU: LOẠI BỎ THANH CUỘN */
+            }
+            
+            /* ⬇️ ĐIỀU CHỈNH CỠ CHỮ CHÍNH TRÊN MOBILE ĐỂ VỪA VẶN */
+            .letter-content {
+                font-size: 0.85em; 
+            }
+            .letter-content h2 {
+                font-size: 1.3em;
+            }
+        }
+
+        /* --- CĂN CHỮ VÀO GIỮA THIỆP --- */
+        .letter-content {
+            display: flex;
+            flex-direction: column; 
+            justify-content: center; 
+            align-items: center; 
+            
+            /* 🛑 Đảm bảo không cuộn trong nội dung */
+            overflow-y: hidden; 
+            
+            text-align: center;
+            color: #333;
+            font-size: 1.1em; /* Kích thước chữ mặc định cho PC/Tablet */
+            line-height: 1.6;
+            width: 100%;
+            height: 100%;
+            box-sizing: border-box;
+            
+            /* Thêm padding nhẹ để tránh chữ chạm mép */
+            padding: 5px; 
+        }
+        
+        .letter-content > * {
+            max-width: 100%; 
+            margin: 5px 0; /* Giảm khoảng cách giữa các đoạn để tiết kiệm không gian */
+        }
+        
+        /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
+
+        .letter-content.typing-active p {
+            opacity: 0; 
+        }
+        .letter-content.typing-active h2 {
+            opacity: 0; 
+        }
+        
+        .surprise-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 3px solid #8a2be2;
+        }
+
+        .letter-content h2 {
+            color: #ff4500;
+            margin-top: 0;
+            font-size: 1.8em;
+        }
+        .status-message {
+            position: absolute;
+            bottom: -50px;
+            color: #ffd700;
+            font-style: italic;
+            font-size: 0.9em;
+            width: 100%;
+            text-align: center;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+    </style>
+</head>
 <body>
     <canvas id="magicCanvas"></canvas>
 
@@ -167,7 +452,7 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung cho LẦN ĐẦU (Vì không còn lưu trạng thái nên luôn dùng nội dung này)
+        // Nội dung thiệp (Cũng đã được tối ưu về độ dài để dễ vừa vặn hơn)
         const firstTimeContent = `
             <h2>🎃 Lời Chúc Halloween Từ Xa 💌</h2>
             <p><strong>Người đang ở rất xa ơi!</strong></p>
