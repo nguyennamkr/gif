@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     <style>
-        /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE (CÓ TRÁI TIM) --- */
 
         /* --- CSS Chung --- */
         body {
@@ -30,6 +30,39 @@
             z-index: 1;
         }
 
+        /* --- Trái Tim Mở Đầu --- */
+        .heart-wrapper {
+            position: absolute;
+            z-index: 200; /* Cao hơn cả thư */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .heart {
+            font-size: 80px; /* Kích thước trái tim */
+            color: #ff4d4d; /* Màu đỏ tươi */
+            cursor: pointer;
+            animation: pulse-heart 1.5s infinite ease-in-out;
+            text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+        }
+
+        @keyframes pulse-heart {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        /* Khi trái tim biến mất */
+        .heart-wrapper.hidden {
+            opacity: 0;
+            transform: scale(0.5); /* Thu nhỏ dần rồi biến mất */
+            pointer-events: none; /* Ngừng tương tác */
+        }
+
         /* --- Vỏ Thư (Envelope) --- */
         .envelope-wrapper {
             position: relative;
@@ -39,6 +72,17 @@
             z-index: 100;
             transition: transform 0.8s; 
             box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
+            /* Ban đầu ẩn đi khi có trái tim */
+            opacity: 0; 
+            transform: scale(0.8);
+            pointer-events: none;
+        }
+
+        /* Khi vỏ thư hiện ra */
+        .envelope-wrapper.visible {
+            opacity: 1;
+            transform: scale(1);
+            pointer-events: all;
         }
 
         /* Thân Thư và Nắp Thư */
@@ -98,13 +142,11 @@
         }
 
         .envelope-wrapper.opened-state .letter {
-            /* Kích thước PC */
             width: 70vw; 
             height: 80vh; 
             max-width: 800px;
             max-height: 700px;
             
-            /* Căn giữa tuyệt đối trên viewport */
             position: fixed; 
             top: 50%;
             left: 50%;
@@ -124,27 +166,23 @@
         /* --- MEDIA QUERY: Tối ưu cho Màn hình Điện thoại (Width <= 600px) --- */
         @media (max-width: 600px) {
             
-            /* Giảm kích thước vỏ thư ban đầu cho màn hình nhỏ */
             .envelope-wrapper {
                 width: 250px;
                 height: 160px;
             }
 
-            /* Thiệp phóng to chiếm gần hết màn hình điện thoại */
             .envelope-wrapper.opened-state .letter {
-                width: 95vw; /* Chiếm gần hết chiều rộng */
-                height: 90vh; /* Chiếm gần hết chiều cao */
+                width: 95vw; 
+                height: 90vh; 
                 
-                /* Giữ nguyên căn giữa tuyệt đối */
                 position: fixed; 
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%); 
                 
-                padding: 15px; /* Giảm padding */
+                padding: 15px; 
             }
             
-            /* Điều chỉnh cỡ chữ nội dung thiệp trên điện thoại */
             .letter-content {
                 font-size: 1em;
             }
@@ -197,6 +235,10 @@
 </head>
 <body>
     <canvas id="magicCanvas"></canvas>
+
+    <div class="heart-wrapper" id="heartWrapper">
+        <span class="heart" id="initialHeart">❤️</span>
+    </div>
 
     <div class="envelope-wrapper" id="envelopeWrapper">
         <div class="flap"></div>
@@ -273,9 +315,11 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau (Giữ nguyên) ---
+        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau (Đã sửa để tích hợp trái tim) ---
 
         const ENVELOPE_KEY = 'halloween_envelope_opened';
+        const heartWrapper = document.getElementById('heartWrapper');
+        const initialHeart = document.getElementById('initialHeart');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
@@ -300,6 +344,15 @@
             <p style="font-style: italic; font-size: 0.8em; margin-top: 10px;">(P.S: Nếu ảnh không hiện, đó là một chú ma dễ thương đang cười toe toét!)</p>
             <p style="margin-top: 20px;">Lần tới sẽ là một lời nhắn mới toanh nhé!</p>
         `;
+
+        function showEnvelope() {
+            heartWrapper.classList.add('hidden'); // Ẩn trái tim
+            setTimeout(() => { // Sau khi trái tim ẩn, hiển thị vỏ thư
+                envelopeWrapper.classList.add('visible');
+                envelopeWrapper.addEventListener('click', openEnvelope, { once: true }); // Chỉ lắng nghe click một lần
+                checkAndSetContent(); // Thiết lập nội dung ban đầu cho thư
+            }, 800); // Chờ 0.8s cho hiệu ứng ẩn trái tim
+        }
 
         function checkAndSetContent() {
             const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
@@ -335,13 +388,15 @@
             }, 50); 
         }
 
-        // Gắn sự kiện và Khởi tạo
-        checkAndSetContent();
-        envelopeWrapper.addEventListener('click', openEnvelope);
-        
-        // Điều chỉnh thiệp đã mở nếu người dùng quay lại
+        // --- Khởi tạo ban đầu ---
+        // Nếu đã từng mở, bỏ qua trái tim và hiện thư ngay lập tức ở trạng thái đã mở
         if (localStorage.getItem(ENVELOPE_KEY) === 'true') {
-            envelopeWrapper.classList.add('open', 'opened-state', 'hidden');
+            heartWrapper.style.display = 'none'; // Ẩn hoàn toàn trái tim
+            envelopeWrapper.classList.add('visible', 'open', 'opened-state', 'hidden');
+            checkAndSetContent(); // Đảm bảo nội dung là "điều bất ngờ"
+        } else {
+            // Lần đầu mở, hiển thị trái tim, chờ click để hiện thư
+            initialHeart.addEventListener('click', showEnvelope);
         }
     </script>
 </body>
