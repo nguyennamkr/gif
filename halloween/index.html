@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halloween Night</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+    background: black;
+    color: white;
+    font-family: "Creepster", cursive;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 1s ease, color 1s ease;
+  }
+  h1 {
+    font-size: 3em;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 2s ease;
+  }
+  .visible { opacity: 1; }
+
+  .fog {
+    position: absolute;
+    top: 0; left: 0;
+    width: 200%; height: 200%;
+    background: url('https://i.imgur.com/7v5A2lL.png') repeat;
+    background-size: cover;
+    opacity: 0.3;
+    animation: fogMove 60s linear infinite;
+  }
+  @keyframes fogMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  .flash {
+    animation: flash 0.2s ease-in-out 5;
+  }
+  @keyframes flash {
+    0%, 100% { background: black; }
+    50% { background: white; }
+  }
+
+  .ghost {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: url('https://i.imgur.com/evqL6sH.png') no-repeat center;
+    background-size: contain;
+    top: 40%;
+    left: -150px;
+    opacity: 0;
+    animation: float 6s linear infinite;
+  }
+  @keyframes float {
+    0% { transform: translateX(-150px); opacity: 0; }
+    30% { opacity: 1; }
+    70% { opacity: 1; }
+    100% { transform: translateX(120vw); opacity: 0; }
+  }
+
+  audio { display: none; }
+</style>
+</head>
+<body>
+  <div class="fog"></div>
+  <div class="ghost"></div>
+  <h1 id="text">👻 Chạm để bắt đầu đêm Halloween...</h1>
+
+  <!-- Âm thanh -->
+  <audio id="sound1" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_935b6463c5.mp3?filename=horror-ambience-2-107498.mp3"></audio>
+  <audio id="sound2" src="https://cdn.pixabay.com/download/audio/2022/02/17/audio_4b8d196c4a.mp3?filename=spooky-footsteps-104397.mp3"></audio>
+  <audio id="sound3" src="https://cdn.pixabay.com/download/audio/2021/09/29/audio_1578b7a06f.mp3?filename=horror-scream-110564.mp3"></audio>
+  <audio id="sound4" src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_015c5fbc4d.mp3?filename=sad-halloween-piano-123665.mp3"></audio>
+  <audio id="sound5" src="https://cdn.pixabay.com/download/audio/2021/09/13/audio_152214f661.mp3?filename=angelic-choir-92184.mp3"></audio>
+
+<script>
+let stage = 0;
+const text = document.getElementById('text');
+const body = document.body;
+const ghost = document.querySelector('.ghost');
+
+const sounds = [
+  document.getElementById('sound1'),
+  document.getElementById('sound2'),
+  document.getElementById('sound3'),
+  document.getElementById('sound4'),
+  document.getElementById('sound5'),
+];
+
+document.body.addEventListener('click', () => {
+  stage++;
+  if (stage > 5) stage = 1;
+  sounds.forEach(s => s.pause());
+  sounds[stage-1].currentTime = 0;
+  sounds[stage-1].play();
+
+  switch(stage) {
+    case 1:
+      text.textContent = "🌫️ Màn sương lạnh lẽo bao trùm...";
+      body.style.background = "radial-gradient(black, #222)";
+      break;
+    case 2:
+      text.textContent = "👣 Ai đó... đang tiến lại gần...";
+      body.classList.add('flash');
+      setTimeout(() => body.classList.remove('flash'), 1000);
+      break;
+    case 3:
+      text.textContent = "😱 Hồn ma xuất hiện!";
+      ghost.style.opacity = 1;
+      setTimeout(() => ghost.style.opacity = 0, 4000);
+      break;
+    case 4:
+      text.textContent = "🕯️ Một nỗi buồn lan tỏa trong bóng đêm...";
+      body.style.background = "linear-gradient(to bottom, #330000, black)";
+      break;
+    case 5:
+      text.textContent = "🌅 Ánh sáng cứu rỗi dần lan tỏa...";
+      body.style.background = "radial-gradient(white, #ff9966, #000)";
+      break;
+  }
+
+  text.classList.remove('visible');
+  setTimeout(() => text.classList.add('visible'), 200);
+});
+</script>
+</body>
+</html>
