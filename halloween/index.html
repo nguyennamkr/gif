@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
+    
     <style>
-        /* --- CSS HOÀN CHỈNH & RESPONSIVE (KHÔNG CÓ THAY ĐỔI LỚN) --- */
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
 
         /* --- CSS Chung --- */
         body {
@@ -28,6 +29,21 @@
             width: 100%;
             height: 100%;
             z-index: 1;
+        }
+
+        /* --- Nút Bật/Tắt Âm Thanh --- */
+        #soundToggle {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            font-size: 24px;
+            cursor: pointer;
+            color: #ff9900;
+            z-index: 300; 
+            transition: color 0.3s;
+        }
+        #soundToggle:hover {
+            color: #8a2be2;
         }
 
         /* --- Trái Tim Mở Đầu --- */
@@ -75,7 +91,7 @@
             transition: transform 0.8s, opacity 0.8s; 
             box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
             
-            /* TRẠNG THÁI BAN ĐẦU (CHỜ JS THIẾT LẬP): Ẩn */
+            /* TRẠNG THÁI BAN ĐẦU: Ẩn */
             opacity: 0;
             pointer-events: none;
             transform: scale(0.8);
@@ -194,7 +210,24 @@
             }
         }
 
-        /* --- Nội dung văn bản và các phần khác --- */
+        /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
+
+        /* Container chứa lời chúc (chỉ hiển thị khi thiệp mở) */
+        .letter-content.typing-active p {
+            opacity: 0; /* Ẩn tất cả các đoạn văn bản ban đầu */
+        }
+        .letter-content.typing-active h2 {
+            opacity: 0; /* Ẩn tiêu đề ban đầu */
+        }
+        
+        .surprise-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 3px solid #8a2be2;
+        }
+
         .letter-content {
             text-align: center;
             color: #333;
@@ -227,17 +260,15 @@
             50% { opacity: 1; }
             100% { opacity: 0.8; }
         }
-        .surprise-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-top: 10px;
-            border: 3px solid #8a2be2;
-        }
     </style>
 </head>
 <body>
     <canvas id="magicCanvas"></canvas>
+
+    <div id="soundToggle">🔇</div> 
+    <audio id="bgm" loop>
+        <source src="style/halloween_music.mp3" type="audio/mpeg" /> 
+    </audio>
 
     <div class="heart-wrapper" id="heartWrapper">
         <span class="heart" id="initialHeart">❤️</span>
@@ -318,7 +349,80 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau ---
+        // --- 2. Logic Âm Thanh (Mới) ---
+        const bgm = document.getElementById('bgm');
+        const soundToggle = document.getElementById('soundToggle');
+        let isMuted = true;
+
+        soundToggle.addEventListener('click', toggleSound);
+
+        function toggleSound() {
+            if (isMuted) {
+                // Tắt trạng thái muted và play
+                bgm.muted = false;
+                bgm.play().catch(error => {
+                    console.error("Autoplay failed:", error);
+                    alert("Trình duyệt yêu cầu bạn tương tác trước khi phát nhạc. Hãy click lại!");
+                });
+                soundToggle.textContent = '🔊';
+                isMuted = false;
+            } else {
+                // Mute và pause
+                bgm.pause();
+                bgm.currentTime = 0; // Reset nhạc về đầu
+                soundToggle.textContent = '🔇';
+                isMuted = true;
+            }
+        }
+        
+        // Cố gắng phát nhạc khi tương tác lần đầu (dù là click trái tim)
+        document.addEventListener('click', function tryPlay() {
+            if (isMuted) {
+                 // Nếu người dùng đã click lần đầu, cố gắng play nhạc (nhưng vẫn muted)
+                bgm.muted = true;
+                bgm.play().catch(error => console.log("Background play attempt failed, waiting for toggle."));
+            }
+            // Xóa lắng nghe để chỉ cần try play một lần
+            document.removeEventListener('click', tryPlay);
+        }, { once: true });
+
+
+        // --- 3. Hiệu ứng Chữ Động (Typewriter Effect - Mới) ---
+        function applyTypewriterEffect(contentElement, delay = 500) {
+            // Đảm bảo chỉ áp dụng khi thiệp đã được phóng to hoàn toàn
+            setTimeout(() => {
+                const elements = contentElement.querySelectorAll('h2, p');
+                contentElement.classList.add('typing-active'); 
+
+                let totalDelay = 0;
+                elements.forEach((el, index) => {
+                    const text = el.innerHTML;
+                    el.innerHTML = ''; // Xóa nội dung ban đầu
+                    el.style.opacity = '1'; // Cho phép hiển thị
+
+                    // Đặt thời gian để chữ xuất hiện lần lượt
+                    setTimeout(() => {
+                        let i = 0;
+                        const speed = 25; // Tốc độ gõ chữ (ms)
+                        function type() {
+                            if (i < text.length) {
+                                el.innerHTML += text.charAt(i);
+                                i++;
+                                setTimeout(type, speed);
+                            }
+                        }
+                        type();
+                    }, totalDelay);
+
+                    // Tăng độ trễ cho phần tử tiếp theo
+                    // Ước tính thời gian cần để gõ hết đoạn này (length * speed) + delay
+                    totalDelay += (text.length * 25) + 300; 
+                });
+            }, delay);
+        }
+
+
+        // --- 4. Logic Mở Thư và Điều kiện Lần đầu/Lần sau ---
 
         const ENVELOPE_KEY = 'halloween_envelope_opened';
         const heartWrapper = document.getElementById('heartWrapper');
@@ -351,6 +455,10 @@
         function checkAndSetContent() {
             const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
             letterContent.innerHTML = isOpened ? subsequentContent : firstTimeContent;
+            // Áp dụng hiệu ứng gõ chữ ngay sau khi nội dung được chèn (áp dụng cho lần đầu mở)
+            if (!isOpened) {
+                applyTypewriterEffect(letterContent, 1000); // 1s delay sau khi phóng to thiệp
+            }
             statusMessage.textContent = isOpened ? "Chào mừng trở lại! (Nhấn để mở tiếp)" : "Ấn vào đây để mở thư...";
         }
 
@@ -364,7 +472,6 @@
                 envelopeWrapper.classList.add('visible');
                 // 4. Lắng nghe sự kiện mở thư
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
-                checkAndSetContent(); 
             }, 800); 
         }
 
@@ -383,6 +490,7 @@
                 // 3. Đợi 1.5s (thời gian thiệp phóng to) sau đó ẩn vỏ thư hoàn toàn
                 setTimeout(() => {
                     envelopeWrapper.classList.add('hidden');
+                    checkAndSetContent(); // Thiết lập nội dung (và kích hoạt Typewriter) sau khi thiệp mở
                 }, 1500);
 
                 // 4. Lưu trạng thái đã mở
@@ -408,9 +516,6 @@
             } else {
                 // CHƯA MỞ: Hiện trái tim, ẩn thư, chờ click
                 initialHeart.addEventListener('click', showEnvelope);
-                // Đảm bảo vỏ thư hoàn toàn ẩn (vì nó đã bị CSS đặt opacity: 0 ban đầu)
-                envelopeWrapper.style.opacity = '0';
-                envelopeWrapper.style.pointerEvents = 'none';
             }
         }
 
