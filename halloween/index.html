@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     <style>
-        /* --- CSS HOÀN CHỈNH & RESPONSIVE (ĐÃ SỬA LỖI HIỂN THỊ VỎ THƯ) --- */
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE (KHÔNG CÓ THAY ĐỔI LỚN) --- */
 
         /* --- CSS Chung --- */
         body {
@@ -65,7 +65,7 @@
             pointer-events: none; 
         }
         
-        /* FIX LỖI: Sử dụng opacity và transition để ẩn/hiện, thay vì display: none */
+        /* Vỏ thư ban đầu ẩn bằng opacity và pointer-events, không dùng display: none */
         .envelope-wrapper {
             position: relative;
             width: 300px;
@@ -75,7 +75,7 @@
             transition: transform 0.8s, opacity 0.8s; 
             box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
             
-            /* TRẠNG THÁI BAN ĐẦU: ẨN */
+            /* TRẠNG THÁI BAN ĐẦU (CHỜ JS THIẾT LẬP): Ẩn */
             opacity: 0;
             pointer-events: none;
             transform: scale(0.8);
@@ -348,6 +348,12 @@
             <p style="margin-top: 20px;">Lần tới sẽ là một lời nhắn mới toanh nhé!</p>
         `;
 
+        function checkAndSetContent() {
+            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
+            letterContent.innerHTML = isOpened ? subsequentContent : firstTimeContent;
+            statusMessage.textContent = isOpened ? "Chào mừng trở lại! (Nhấn để mở tiếp)" : "Ấn vào đây để mở thư...";
+        }
+
         function showEnvelope() {
             // 1. Ẩn trái tim với hiệu ứng
             heartWrapper.classList.add('hidden'); 
@@ -360,12 +366,6 @@
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
                 checkAndSetContent(); 
             }, 800); 
-        }
-
-        function checkAndSetContent() {
-            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
-            letterContent.innerHTML = isOpened ? subsequentContent : firstTimeContent;
-            statusMessage.textContent = isOpened ? "Chào mừng trở lại! (Nhấn để mở tiếp)" : "Ấn vào đây để mở thư...";
         }
 
         function openEnvelope() {
@@ -396,17 +396,25 @@
             }, 50); 
         }
 
-        // --- Khởi tạo ban đầu ---
-        // Nếu đã từng mở, bỏ qua trái tim và hiện thư đã mở
-        if (localStorage.getItem(ENVELOPE_KEY) === 'true') {
-            heartWrapper.style.display = 'none'; 
-            // Đã mở: Hiện thư ngay ở trạng thái đã mở
-            envelopeWrapper.classList.add('visible', 'open', 'opened-state', 'hidden');
-            checkAndSetContent(); 
-        } else {
-            // Lần đầu mở: Chỉ hiện trái tim, chờ click để hiện thư
-            initialHeart.addEventListener('click', showEnvelope);
+        // --- KHỞI TẠO CUỐI CÙNG (Đã Sửa Lỗi Trạng Thái) ---
+        function initializeApp() {
+            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
+
+            if (isOpened) {
+                // ĐÃ MỞ: Ẩn trái tim, hiển thị thư ở trạng thái đã mở
+                heartWrapper.style.display = 'none'; 
+                envelopeWrapper.classList.add('visible', 'open', 'opened-state', 'hidden');
+                checkAndSetContent(); 
+            } else {
+                // CHƯA MỞ: Hiện trái tim, ẩn thư, chờ click
+                initialHeart.addEventListener('click', showEnvelope);
+                // Đảm bảo vỏ thư hoàn toàn ẩn (vì nó đã bị CSS đặt opacity: 0 ban đầu)
+                envelopeWrapper.style.opacity = '0';
+                envelopeWrapper.style.pointerEvents = 'none';
+            }
         }
+
+        initializeApp();
     </script>
 </body>
 </html>
