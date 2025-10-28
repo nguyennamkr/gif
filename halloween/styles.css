@@ -1,4 +1,4 @@
-/* --- CSS Đã Sửa Lỗi Căn Giữa cho file index.html --- */
+/* --- CSS HOÀN CHỈNH: ĐÃ SỬA LỖI CĂN GIỮA VÀ LỖI BIẾN MẤT --- */
 
 /* --- CSS Chung --- */
 body {
@@ -30,11 +30,15 @@ body {
     height: 200px;
     cursor: pointer;
     z-index: 100;
-    transition: opacity 0.5s 0.8s, transform 0.8s; 
+    transition: transform 0.8s; 
     box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
 }
 
-/* Thân Thư */
+/* Thân Thư và Nắp Thư (Sẽ bị ẩn) */
+.envelope, .flap {
+    transition: opacity 0.5s; 
+}
+
 .envelope {
     position: absolute;
     width: 100%;
@@ -44,7 +48,6 @@ body {
     z-index: 50;
 }
 
-/* Nắp Thư (Top Flap) */
 .flap {
     position: absolute;
     top: 0;
@@ -76,45 +79,43 @@ body {
     padding: 20px;
     box-sizing: border-box;
     border-radius: 10px;
-    /* Đặt trạng thái ban đầu */
     transform: translate(0, 0); 
-    transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
+    /* Tăng thời gian chuyển tiếp cho hiệu ứng phóng to */
+    transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     z-index: 45; 
 }
 
-/* --- TRẠNG THÁI MỞ: Vỏ biến mất và Thiệp phóng to --- */
+/* --- TRẠNG THÁI MỞ: Thiệp phóng to và căn giữa --- */
 
-/* 1. Vỏ thư mờ và bay lên nhẹ */
 .envelope-wrapper.opened-state {
-    opacity: 0; 
-    transform: translateY(-50px); 
     pointer-events: none; 
 }
 
-/* 2. Thiệp phóng to, căn giữa màn hình */
 .envelope-wrapper.opened-state .letter {
-    /* Kích thước lớn hơn */
     width: 70vw; 
     height: 80vh; 
     max-width: 800px;
     max-height: 700px;
     
-    /* ***** PHẦN SỬA LỖI CĂN GIỮA ***** */
-    /* Đưa thiệp vào giữa màn hình */
-    position: fixed; /* Thay đổi position để căn giữa theo viewport */
+    /* Căn giữa tuyệt đối trên viewport (Đã sửa lỗi) */
+    position: fixed; 
     top: 50%;
     left: 50%;
-    /* Sử dụng translate(-50%, -50%) để dịch chuyển ngược lại 50% kích thước của CHÍNH NÓ */
     transform: translate(-50%, -50%); 
-    /* ********************************* */
     
     z-index: 200; 
     border: 5px solid #ff4500; 
     box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
 }
 
-/* --- Nội dung văn bản bên trong thiệp --- */
+/* Ẩn vỏ thư và nắp thư sau khi thiệp đã được "lấy ra" (kích hoạt bằng JS) */
+.envelope-wrapper.hidden .envelope,
+.envelope-wrapper.hidden .flap {
+    opacity: 0;
+}
+
+/* --- Nội dung văn bản và các phần khác --- */
 .letter-content {
     text-align: center;
     color: #333;
@@ -122,18 +123,15 @@ body {
     line-height: 1.6;
     width: 100%;
     height: 100%;
-    overflow-y: auto; /* Cho phép cuộn khi nội dung dài */
+    overflow-y: auto; 
     box-sizing: border-box;
     padding: 5px;
 }
-
 .letter-content h2 {
     color: #ff4500;
     margin-top: 0;
     font-size: 1.8em;
 }
-
-/* --- Thông báo trạng thái và Ảnh bất ngờ giữ nguyên --- */
 .status-message {
     position: absolute;
     bottom: -50px;
@@ -145,4 +143,15 @@ body {
     animation: pulse 2s infinite;
     z-index: 10;
 }
-@keyframes
+@keyframes pulse {
+    0% { opacity: 0.8; }
+    50% { opacity: 1; }
+    100% { opacity: 0.8; }
+}
+.surprise-image {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 3px solid #8a2be2;
+}
