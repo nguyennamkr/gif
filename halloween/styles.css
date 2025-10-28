@@ -1,3 +1,6 @@
+/* --- CSS Đã Sửa Lỗi Căn Giữa cho file index.html --- */
+
+/* --- CSS Chung --- */
 body {
     background-color: #0d0d0d;
     font-family: 'Arial', sans-serif;
@@ -7,7 +10,7 @@ body {
     min-height: 100vh;
     margin: 0;
     overflow: hidden;
-    perspective: 1000px; /* Cần thiết cho hiệu ứng 3D */
+    perspective: 1000px; 
 }
 
 /* --- Hiệu ứng Nền (Canvas) --- */
@@ -27,7 +30,6 @@ body {
     height: 200px;
     cursor: pointer;
     z-index: 100;
-    /* Thêm transition cho độ trong suốt và dịch chuyển */
     transition: opacity 0.5s 0.8s, transform 0.8s; 
     box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
 }
@@ -37,7 +39,7 @@ body {
     position: absolute;
     width: 100%;
     height: 100%;
-    background-color: #ff9900; /* Màu cam bí ngô */
+    background-color: #ff9900; 
     border-radius: 10px;
     z-index: 50;
 }
@@ -49,7 +51,7 @@ body {
     left: 0;
     width: 100%;
     height: 50%;
-    background-color: #8a2be2; /* Màu tím ma quái */
+    background-color: #8a2be2;
     border-radius: 10px 10px 0 0;
     transform-origin: top;
     transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
@@ -74,9 +76,8 @@ body {
     padding: 20px;
     box-sizing: border-box;
     border-radius: 10px;
-    /* Thiết lập trạng thái ban đầu: nằm trong vỏ thư */
+    /* Đặt trạng thái ban đầu */
     transform: translate(0, 0); 
-    /* Dùng transition tổng thể cho mọi thuộc tính thay đổi */
     transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     z-index: 45; 
@@ -88,7 +89,7 @@ body {
 .envelope-wrapper.opened-state {
     opacity: 0; 
     transform: translateY(-50px); 
-    pointer-events: none; /* Ngăn chặn click vào vỏ thư đã biến mất */
+    pointer-events: none; 
 }
 
 /* 2. Thiệp phóng to, căn giữa màn hình */
@@ -99,12 +100,16 @@ body {
     max-width: 800px;
     max-height: 700px;
     
-    /* Dịch chuyển chính xác vào giữa màn hình (Giải quyết lỗi đọc nội dung) */
+    /* ***** PHẦN SỬA LỖI CĂN GIỮA ***** */
+    /* Đưa thiệp vào giữa màn hình */
+    position: fixed; /* Thay đổi position để căn giữa theo viewport */
     top: 50%;
     left: 50%;
-    transform: translate(calc(-50% + 50vw), calc(-50% + 50vh)); 
+    /* Sử dụng translate(-50%, -50%) để dịch chuyển ngược lại 50% kích thước của CHÍNH NÓ */
+    transform: translate(-50%, -50%); 
+    /* ********************************* */
     
-    z-index: 200; /* Đưa thiệp lên trên cùng */
+    z-index: 200; 
     border: 5px solid #ff4500; 
     box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
 }
@@ -128,7 +133,7 @@ body {
     font-size: 1.8em;
 }
 
-/* --- Thông báo trạng thái --- */
+/* --- Thông báo trạng thái và Ảnh bất ngờ giữ nguyên --- */
 .status-message {
     position: absolute;
     bottom: -50px;
@@ -140,17 +145,4 @@ body {
     animation: pulse 2s infinite;
     z-index: 10;
 }
-@keyframes pulse {
-    0% { opacity: 0.8; }
-    50% { opacity: 1; }
-    100% { opacity: 0.8; }
-}
-
-/* Ảnh bất ngờ */
-.surprise-image {
-    max-width: 100%;
-    height: auto;
-    border-radius: 5px;
-    margin-top: 10px;
-    border: 3px solid #8a2be2;
-}
+@keyframes
