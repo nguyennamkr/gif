@@ -81,7 +81,7 @@
         pointer-events: none; 
     }
     
-    /* Vỏ thư ban đầu ẩn bằng opacity và pointer-events, không dùng display: none */
+    /* Vỏ thư */
     .envelope-wrapper {
         position: relative;
         width: 300px;
@@ -104,9 +104,12 @@
         pointer-events: all;
     }
 
-    /* Thân Thư và Nắp Thư */
-    .envelope, .flap {
+    /* --- THIẾT KẾ BÌ THƯ HALLOWEEN (QUAN TRỌNG) --- */
+    
+    .envelope, .flap, .letter {
         transition: opacity 0.5s; 
+        /* TẠO GÓC NHỌN (DÙNG CLIP-PATH HÌNH BÁT GIÁC) */
+        clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
     }
     
     .envelope {
@@ -114,7 +117,7 @@
         width: 100%;
         height: 100%;
         background-color: #ff9900; 
-        border-radius: 10px;
+        border-radius: 0; /* Đã loại bỏ border-radius */
         z-index: 50;
     }
 
@@ -125,7 +128,8 @@
         width: 100%;
         height: 50%;
         background-color: #8a2be2;
-        border-radius: 10px 10px 0 0;
+        /* Điều chỉnh clip-path cho nắp */
+        clip-path: polygon(10% 0%, 90% 0%, 100% 40%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 40%);
         transform-origin: top;
         transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
         z-index: 150; 
@@ -148,24 +152,25 @@
         background-color: #fff;
         padding: 20px;
         box-sizing: border-box;
-        border-radius: 10px;
+        border-radius: 0; /* Đã loại bỏ border-radius */
         transform: translate(0, 0); 
         transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         z-index: 45; 
+        /* Cần loại bỏ clip-path khi phóng to thiệp */
+        clip-path: none; 
     }
 
-    /* --- TRẠNG THÁI MỞ (Mặc định cho PC/Tablet) --- */
+    /* --- TRẠNG THÁI MỞ (PC/Tablet) --- */
     .envelope-wrapper.opened-state {
         pointer-events: none; 
     }
 
     .envelope-wrapper.opened-state .letter {
-        /* ĐIỀU CHỈNH KÍCH THƯỚC: Giảm kích thước tối đa cho màn hình lớn */
         width: 60vw; 
         height: 70vh; 
-        max-width: 650px; /* Giảm từ 800px xuống 650px */
-        max-height: 600px; /* Giảm từ 700px xuống 600px */
+        max-width: 650px; 
+        max-height: 600px;
         
         position: fixed; 
         top: 50%;
@@ -175,6 +180,10 @@
         z-index: 200; 
         border: 5px solid #ff4500; 
         box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
+        
+        /* Đảm bảo thiệp mở có hình chữ nhật thông thường để dễ đọc */
+        clip-path: none; 
+        border-radius: 10px;
     }
 
     /* Lớp ẩn vỏ thư (kích hoạt bằng JS sau khi thiệp phóng to) */
@@ -192,9 +201,9 @@
         }
 
         .envelope-wrapper.opened-state .letter {
-            /* ĐIỀU CHỈNH KÍCH THƯỚC: Hơi giảm chiều cao trên mobile */
-            width: 90vw; /* Giảm từ 95vw xuống 90vw */
-            height: 85vh; /* Giảm từ 90vh xuống 85vh */
+            /* 🚨 SỬA LỖI QUAN TRỌNG: Giảm kích thước thiệp để vừa màn hình */
+            width: 90vw; 
+            height: 75vh; /* Giảm mạnh hơn để tránh tràn màn hình */
             
             position: fixed; 
             top: 50%;
@@ -202,6 +211,7 @@
             transform: translate(-50%, -50%); 
             
             padding: 15px; 
+            overflow-y: scroll; /* Đảm bảo có thể cuộn nếu nội dung dài */
         }
         
         .letter-content {
@@ -212,16 +222,16 @@
         }
     }
 
-    /* --- CĂN CHỮ VÀO GIỮA THIỆP (QUAN TRỌNG) --- */
+    /* --- CĂN CHỮ VÀO GIỮA THIỆP --- */
     .letter-content {
-        /* Thêm Flexbox để căn giữa */
         display: flex;
-        flex-direction: column; /* Sắp xếp nội dung theo chiều dọc */
+        flex-direction: column; 
         justify-content: center; /* Căn giữa theo chiều dọc */
-        align-items: center; /* Căn giữa theo chiều ngang (nếu có nội dung hẹp) */
+        align-items: center; 
         
-        /* Đảm bảo vẫn có thể cuộn nếu nội dung quá dài */
-        overflow-y: auto; 
+        /* Bỏ overflow-y: auto ở đây và chuyển lên @media để kiểm soát tốt hơn */
+        overflow-y: hidden; 
+        
         text-align: center;
         color: #333;
         font-size: 1.1em;
@@ -230,23 +240,19 @@
         height: 100%;
         box-sizing: border-box;
         padding: 5px;
-        
-        /* Tùy chỉnh căn lề cho nội dung con nếu cần */
-        text-align: center; 
     }
     
     .letter-content > * {
-        max-width: 90%; /* Đảm bảo các phần tử không tràn ra ngoài */
+        max-width: 90%; 
     }
     
     /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
 
-    /* Container chứa lời chúc (chỉ hiển thị khi thiệp mở) */
     .letter-content.typing-active p {
-        opacity: 0; /* Ẩn tất cả các đoạn văn bản ban đầu */
+        opacity: 0; 
     }
     .letter-content.typing-active h2 {
-        opacity: 0; /* Ẩn tiêu đề ban đầu */
+        opacity: 0; 
     }
     
     .surprise-image {
