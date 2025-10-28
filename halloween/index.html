@@ -107,18 +107,18 @@
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ (ĐEN/TÍM THAN VINTAGE) --- */
+        /* --- THÂN BÌ THƯ: ĐỎ RƯỢU VANG (Deep Maroon) --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #36454F; /* Màu xám than đậm */
+            background-color: #6B0000; 
             border-radius: 5px;
             z-index: 50;
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
         }
 
-        /* --- NẮP BÌ THƯ (DÙNG CSS SHAPE) --- */
+        /* --- NẮP BÌ THƯ: VÀNG CỔ ĐIỂN (Dark Goldenrod) --- */
         .flap {
             position: absolute;
             top: 0;
@@ -128,8 +128,8 @@
             background-color: transparent; 
             
             /* TẠO HÌNH TAM GIÁC (NẮP BÌ THƯ CỔ ĐIỂN) */
-            background-color: #8A2BE2; /* Màu tím ma mị */
-            clip-path: polygon(0 0, 100% 0, 50% 100%); /* Hình tam giác */
+            background-color: #B8860B; 
+            clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
@@ -202,20 +202,20 @@
             }
 
             .envelope-wrapper.opened-state .letter {
-                /* Đảm bảo thiệp chiếm gần hết màn hình */
+                /* Thiệp Bung To chiếm gần hết màn hình */
                 width: 95vw; 
-                height: 95vh; /* Tăng chiều cao để chứa nội dung tốt nhất */
+                height: 95vh; 
                 
                 position: fixed; 
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%); 
                 
-                padding: 10px; /* Giảm padding để tối đa hóa không gian chữ */
-                overflow-y: hidden; /* 🛑 YÊU CẦU: LOẠI BỎ THANH CUỘN */
+                padding: 10px; 
+                overflow-y: hidden; /* LOẠI BỎ THANH CUỘN */
             }
             
-            /* ⬇️ ĐIỀU CHỈNH CỠ CHỮ CHÍNH TRÊN MOBILE ĐỂ VỪA VẶN */
+            /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
             .letter-content {
                 font-size: 0.85em; 
             }
@@ -231,24 +231,22 @@
             justify-content: center; 
             align-items: center; 
             
-            /* 🛑 Đảm bảo không cuộn trong nội dung */
             overflow-y: hidden; 
             
             text-align: center;
             color: #333;
-            font-size: 1.1em; /* Kích thước chữ mặc định cho PC/Tablet */
+            font-size: 1.1em; 
             line-height: 1.6;
             width: 100%;
             height: 100%;
             box-sizing: border-box;
             
-            /* Thêm padding nhẹ để tránh chữ chạm mép */
             padding: 5px; 
         }
         
         .letter-content > * {
             max-width: 100%; 
-            margin: 5px 0; /* Giảm khoảng cách giữa các đoạn để tiết kiệm không gian */
+            margin: 5px 0; 
         }
         
         /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
@@ -410,7 +408,6 @@
             bgm.play().catch(error => {
                 console.log("Không thể tự động phát, chờ người dùng bật tiếng...");
             });
-            // Xóa lắng nghe (để tránh kích hoạt nhiều lần)
             document.getElementById('initialHeart').removeEventListener('click', activateMusic);
         }
 
@@ -444,7 +441,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI LƯU TRẠNG THÁI) ---
+        // --- 4. Logic Mở Thư ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -452,7 +449,7 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp (Cũng đã được tối ưu về độ dài để dễ vừa vặn hơn)
+        // Nội dung thiệp
         const firstTimeContent = `
             <h2>🎃 Lời Chúc Halloween Từ Xa 💌</h2>
             <p><strong>Người đang ở rất xa ơi!</strong></p>
@@ -471,14 +468,13 @@
         function showEnvelope() {
             activateMusic(); 
 
-            // 1. Ẩn trái tim với hiệu ứng
+            // 1. Ẩn trái tim
             heartWrapper.classList.add('hidden'); 
             
-            // 2. Chờ hiệu ứng ẩn trái tim (0.8s)
+            // 2. Hiện thị vỏ thư
             setTimeout(() => { 
-                // 3. Hiện thị vỏ thư
                 envelopeWrapper.classList.add('visible');
-                // 4. Lắng nghe sự kiện mở thư
+                // 3. Lắng nghe sự kiện mở thư
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
             }, 800); 
         }
@@ -491,11 +487,11 @@
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             
-            // 2. Chờ 50ms, kích hoạt trạng thái phóng to thiệp 
+            // 2. Kích hoạt trạng thái phóng to thiệp
             setTimeout(() => {
                 envelopeWrapper.classList.add('opened-state');
                 
-                // 3. Đợi 1.5s (thời gian thiệp phóng to) sau đó ẩn vỏ thư hoàn toàn
+                // 3. Ẩn vỏ thư hoàn toàn sau khi thiệp phóng to xong
                 setTimeout(() => {
                     envelopeWrapper.classList.add('hidden');
                     checkAndSetContent(); 
