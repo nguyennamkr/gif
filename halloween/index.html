@@ -1,134 +1,327 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Halloween Night</title>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Halloween Pro — Single HTML Experience</title>
+
+<!-- Font (Google) -->
+<link href="https://fonts.googleapis.com/css2?family=Rubik:wght@300;500;700&display=swap" rel="stylesheet">
+
 <style>
-  body {
-    margin: 0;
-    height: 100vh;
-    overflow: hidden;
-    background: black;
-    color: white;
-    font-family: "Creepster", cursive;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background 1s ease, color 1s ease;
+  :root{
+    --bg:#050406;
+    --text:#f6f6f6;
+    --accent:#ff7a18;
+    --glass: rgba(255,255,255,0.06);
   }
-  h1 {
-    font-size: 3em;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 2s ease;
-  }
-  .visible { opacity: 1; }
-
-  .fog {
-    position: absolute;
-    top: 0; left: 0;
-    width: 200%; height: 200%;
-    background: url('https://i.imgur.com/7v5A2lL.png') repeat;
-    background-size: cover;
-    opacity: 0.3;
-    animation: fogMove 60s linear infinite;
-  }
-  @keyframes fogMove {
-    from { transform: translateX(0); }
-    to { transform: translateX(-50%); }
-  }
-
-  .flash {
-    animation: flash 0.2s ease-in-out 5;
-  }
-  @keyframes flash {
-    0%, 100% { background: black; }
-    50% { background: white; }
-  }
-
-  .ghost {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: url('https://i.imgur.com/evqL6sH.png') no-repeat center;
-    background-size: contain;
-    top: 40%;
-    left: -150px;
-    opacity: 0;
-    animation: float 6s linear infinite;
-  }
-  @keyframes float {
-    0% { transform: translateX(-150px); opacity: 0; }
-    30% { opacity: 1; }
-    70% { opacity: 1; }
-    100% { transform: translateX(120vw); opacity: 0; }
-  }
-
-  audio { display: none; }
+  html,body{height:100%;margin:0;font-family:'Rubik',system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);-webkit-font-smoothing:antialiased;}
+  .app{height:100vh;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+  /* background layers */
+  .bg-layer{position:absolute;inset:0;pointer-events:none;will-change:transform,opacity;z-index:0}
+  .moon{position:absolute;right:5%;top:6%;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 30% 30%,#fff3b0,#ffcf66 45%, #ff9b1c 75%);filter:blur(2px);box-shadow:0 10px 60px rgba(255,150,50,0.06);opacity:0.95}
+  .distant-clouds{position:absolute;inset:0;background-image:url('https://i.imgur.com/7v5A2lL.png');background-repeat:repeat;background-size:contain;opacity:0.28;mix-blend-mode:screen;filter:blur(6px)}
+  /* center panel / envelope */
+  .panel{position:relative;z-index:30;max-width:920px;width:92%;padding:28px;border-radius:18px;background:linear-gradient(180deg, rgba(12,8,12,0.76), rgba(6,4,6,0.86));box-shadow:0 10px 40px rgba(0,0,0,0.6);backdrop-filter:blur(6px)}
+  .title{font-size:28px;font-weight:700;margin:0 0 8px}
+  .desc{opacity:0.78;margin:0 0 16px}
+  .controls{display:flex;gap:8px;flex-wrap:wrap}
+  button{background:var(--glass);border:1px solid rgba(255,255,255,0.04);color:var(--text);padding:10px 14px;border-radius:10px;cursor:pointer}
+  .primary{background:linear-gradient(90deg,var(--accent),#ff4a4a);border:none;color:#111;font-weight:600}
+  /* scene text */
+  .scene-layer{position:absolute;inset:0;z-index:20;display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .scene-text{text-align:center;max-width:720px;padding:20px}
+  .scene-text h1{margin:0;font-size:44px;letter-spacing:0.6px;text-shadow:0 8px 30px rgba(0,0,0,0.7)}
+  .scene-text p{margin-top:8px;opacity:0.86}
+  /* bottom nav */
+  .bottom-nav{position:absolute;left:50%;transform:translateX(-50%);bottom:24px;z-index:40;display:flex;gap:10px}
+  .btn-ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:8px 12px;border-radius:10px}
+  /* small components */
+  .status{padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:999px}
+  /* canvas overlay */
+  canvas{position:absolute;inset:0;width:100%;height:100%;z-index:15;pointer-events:none}
+  /* responsive tweaks */
+  @media (max-width:720px){ .scene-text h1{font-size:26px} .title{font-size:18px} .panel{padding:14px} .moon{width:110px;height:110px} }
 </style>
 </head>
 <body>
-  <div class="fog"></div>
-  <div class="ghost"></div>
-  <h1 id="text">👻 Chạm để bắt đầu đêm Halloween...</h1>
+  <div class="app" id="app">
+    <!-- Background -->
+    <div class="bg-layer" id="bgLayer">
+      <div class="moon" id="moon"></div>
+      <div class="distant-clouds" id="clouds"></div>
+    </div>
 
-  <!-- Âm thanh -->
-  <audio id="sound1" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_935b6463c5.mp3?filename=horror-ambience-2-107498.mp3"></audio>
-  <audio id="sound2" src="https://cdn.pixabay.com/download/audio/2022/02/17/audio_4b8d196c4a.mp3?filename=spooky-footsteps-104397.mp3"></audio>
-  <audio id="sound3" src="https://cdn.pixabay.com/download/audio/2021/09/29/audio_1578b7a06f.mp3?filename=horror-scream-110564.mp3"></audio>
-  <audio id="sound4" src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_015c5fbc4d.mp3?filename=sad-halloween-piano-123665.mp3"></audio>
-  <audio id="sound5" src="https://cdn.pixabay.com/download/audio/2021/09/13/audio_152214f661.mp3?filename=angelic-choir-92184.mp3"></audio>
+    <!-- Canvas for leaves/bats -->
+    <canvas id="fxCanvas"></canvas>
+
+    <!-- Fog overlay -->
+    <div id="fog" style="position:absolute;inset:0;background-image:url('https://i.imgur.com/7v5A2lL.png');opacity:0.18;mix-blend-mode:screen;filter:blur(4px);z-index:12;pointer-events:none"></div>
+
+    <!-- Center panel -->
+    <div class="panel" role="region" aria-label="Halloween interactive">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+        <div>
+          <h2 class="title">Halloween Night — Hành Trình Cảm Xúc</h2>
+          <div class="desc">Click để mở thư — mỗi lần click (hoặc bật Auto) sẽ chuyển qua một \"cảnh\": sương mù, bước chân, ma hiện, nến buồn, và giải thoát.</div>
+          <div class="controls">
+            <button id="openBtn" class="primary">Mở Thư</button>
+            <button id="nextBtn">Tiếp</button>
+            <button id="prevBtn">Trước</button>
+            <button id="autoBtn">Auto: Tắt</button>
+            <button id="muteBtn">Mute</button>
+            <div style="display:flex;align-items:center;gap:8px">
+              <div class="status" id="status">Cảnh: Intro</div>
+            </div>
+          </div>
+        </div>
+        <div style="min-width:220px;display:flex;align-items:center;gap:10px;justify-content:flex-end">
+          <div style="text-align:right;font-size:12px;opacity:0.85">Tips: Bật âm thanh để trải nghiệm đầy đủ</div>
+          <button id="playBtn" class="btn-ghost">Play Audio</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scene text overlay -->
+    <div class="scene-layer" id="sceneLayer" aria-live="polite">
+      <div class="scene-text" id="sceneText">
+        <h1>👻 Chạm để bắt đầu đêm Halloween...</h1>
+        <p>Nhấn \"Mở Thư\" hoặc click bất kỳ đâu trên nền để chuyển cảnh.</p>
+      </div>
+    </div>
+
+    <!-- Bottom nav -->
+    <div class="bottom-nav" id="bottomNav">
+      <button id="prevBtn2" class="btn-ghost">◀</button>
+      <div class="status" id="stageLabel">Intro</div>
+      <button id="nextBtn2" class="btn-ghost">▶</button>
+    </div>
+  </div>
+
+  <!-- Audio sources (external, free sources) -->
+  <audio id="audio-ambience" src="https://cdn.pixabay.com/download/audio/2022/02/23/audio_935b6463c5.mp3?filename=horror-ambience-2-107498.mp3" loop preload="auto"></audio>
+  <audio id="audio-footsteps" src="https://cdn.pixabay.com/download/audio/2022/02/17/audio_4b8d196c4a.mp3?filename=spooky-footsteps-104397.mp3" preload="auto"></audio>
+  <audio id="audio-scream" src="https://cdn.pixabay.com/download/audio/2021/09/29/audio_1578b7a06f.mp3?filename=horror-scream-110564.mp3" preload="auto"></audio>
+  <audio id="audio-piano" src="https://cdn.pixabay.com/download/audio/2022/10/18/audio_015c5fbc4d.mp3?filename=sad-halloween-piano-123665.mp3" preload="auto"></audio>
+  <audio id="audio-choir" src="https://cdn.pixabay.com/download/audio/2021/09/13/audio_152214f661.mp3?filename=angelic-choir-92184.mp3" preload="auto"></audio>
 
 <script>
-let stage = 0;
-const text = document.getElementById('text');
-const body = document.body;
-const ghost = document.querySelector('.ghost');
+/* =========================
+   App state & controls
+   ========================= */
+const app = document.getElementById('app');
+const openBtn = document.getElementById('openBtn');
+const nextBtn = document.getElementById('nextBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn2 = document.getElementById('nextBtn2');
+const prevBtn2 = document.getElementById('prevBtn2');
+const autoBtn = document.getElementById('autoBtn');
+const muteBtn = document.getElementById('muteBtn');
+const stageLabel = document.getElementById('stageLabel');
+const status = document.getElementById('status');
+const sceneText = document.getElementById('sceneText');
+const playBtn = document.getElementById('playBtn');
 
-const sounds = [
-  document.getElementById('sound1'),
-  document.getElementById('sound2'),
-  document.getElementById('sound3'),
-  document.getElementById('sound4'),
-  document.getElementById('sound5'),
-];
+const aud = {
+  ambience: document.getElementById('audio-ambience'),
+  footsteps: document.getElementById('audio-footsteps'),
+  scream: document.getElementById('audio-scream'),
+  piano: document.getElementById('audio-piano'),
+  choir: document.getElementById('audio-choir'),
+};
+let muted = false;
+let auto = false;
+let stage = 0; // 0 intro, 1..5 scenes
+let autoTimer = null;
 
-document.body.addEventListener('click', () => {
-  stage++;
-  if (stage > 5) stage = 1;
-  sounds.forEach(s => s.pause());
-  sounds[stage-1].currentTime = 0;
-  sounds[stage-1].play();
+/* helper to stop all audio */
+function stopAllAudio(){
+  Object.values(aud).forEach(a=>{ try{ a.pause(); a.currentTime = 0 }catch(e){} });
+}
+function setStage(s){
+  stage = s;
+  renderStage();
+  updateAudio();
+}
+function nextStage(){ setStage(stage >= 5 ? 1 : stage + 1); }
+function prevStage(){ setStage(stage <= 1 ? 5 : stage - 1); }
 
-  switch(stage) {
-    case 1:
-      text.textContent = "🌫️ Màn sương lạnh lẽo bao trùm...";
-      body.style.background = "radial-gradient(black, #222)";
-      break;
-    case 2:
-      text.textContent = "👣 Ai đó... đang tiến lại gần...";
-      body.classList.add('flash');
-      setTimeout(() => body.classList.remove('flash'), 1000);
-      break;
-    case 3:
-      text.textContent = "😱 Hồn ma xuất hiện!";
-      ghost.style.opacity = 1;
-      setTimeout(() => ghost.style.opacity = 0, 4000);
-      break;
-    case 4:
-      text.textContent = "🕯️ Một nỗi buồn lan tỏa trong bóng đêm...";
-      body.style.background = "linear-gradient(to bottom, #330000, black)";
-      break;
-    case 5:
-      text.textContent = "🌅 Ánh sáng cứu rỗi dần lan tỏa...";
-      body.style.background = "radial-gradient(white, #ff9966, #000)";
-      break;
+function renderStage(){
+  // update labels & text
+  const map = {
+    0: {title:'👻 Chạm để bắt đầu đêm Halloween...', sub:'Nhấn "Mở Thư" hoặc click nền để bắt đầu.'},
+    1: {title:'🌫️ Sương mù lạnh lẽo', sub:'Gió thì thào những câu chuyện cũ — một cảm giác rợn gáy nhẹ.'},
+    2: {title:'👣 Bước chân gần lại', sub:'Tim đập nhanh hơn. Có ai đó đang tiến lại gần...'},
+    3: {title:'😱 Hồn ma xuất hiện', sub:'Đừng nhìn lâu vào những góc tối — ma có thể nhìn lại.'},
+    4: {title:'🕯️ Nỗi buồn ma mị', sub:'Bản piano cũ kéo theo ký ức và nỗi nhớ.'},
+    5: {title:'🌅 Giải thoát', sub:'Ánh sáng lan tỏa, mọi sợ hãi dần lùi lại.'}
+  };
+  const t = map[stage] || map[0];
+  // animate text simple fade
+  sceneText.style.opacity = 0;
+  setTimeout(()=>{ sceneText.innerHTML = `<h1>${t.title}</h1><p>${t.sub}</p>`; sceneText.style.opacity = 1; }, 200);
+
+  status.textContent = `Cảnh: ${stage === 0 ? 'Intro' : stage}`;
+  stageLabel.textContent = stage === 0 ? 'Intro' : `#${stage}`;
+}
+
+/* Audio handling */
+function updateAudio(){
+  stopAllAudio();
+  if(muted) return;
+  if(stage === 0) { aud.ambience.volume = 0.5; aud.ambience.play(); }
+  if(stage === 1) { aud.ambience.volume = 0.5; aud.ambience.play(); }
+  if(stage === 2) { aud.footsteps.play(); aud.ambience.volume = 0.32; aud.ambience.play(); }
+  if(stage === 3) { aud.scream.play(); }
+  if(stage === 4) { aud.piano.play(); aud.ambience.volume = 0.18; aud.ambience.play(); }
+  if(stage === 5) { aud.choir.play(); }
+}
+
+/* Controls */
+openBtn.addEventListener('click', ()=>{ setStage(1); auto = false; autoBtn.textContent = 'Auto: Tắt'; clearAuto(); });
+nextBtn.addEventListener('click', ()=>{ nextStage(); auto = false; clearAuto(); autoBtn.textContent = 'Auto: Tắt'; });
+prevBtn.addEventListener('click', ()=>{ prevStage(); auto = false; clearAuto(); autoBtn.textContent = 'Auto: Tắt'; });
+nextBtn2.addEventListener('click', ()=>{ nextStage(); auto=false; clearAuto(); autoBtn.textContent='Auto: Tắt'; });
+prevBtn2.addEventListener('click', ()=>{ prevStage(); auto=false; clearAuto(); autoBtn.textContent='Auto: Tắt'; });
+
+autoBtn.addEventListener('click', ()=>{
+  auto = !auto;
+  autoBtn.textContent = auto ? 'Auto: Bật' : 'Auto: Tắt';
+  if(auto) startAuto(); else clearAuto();
+});
+
+muteBtn.addEventListener('click', ()=>{
+  muted = !muted;
+  muteBtn.textContent = muted ? 'Unmute' : 'Mute';
+  if(muted) stopAllAudio(); else updateAudio();
+});
+
+playBtn.addEventListener('click', ()=>{
+  // some browsers require user gesture to start audio; play ambience
+  aud.ambience.volume = 0.5;
+  aud.ambience.play().catch(()=>{ /* ignore */});
+});
+
+/* Click background to advance (but not when clicking controls) */
+document.body.addEventListener('click', (e)=>{
+  // avoid clicks on controls
+  const avoid = ['BUTTON','A','INPUT'];
+  if(avoid.includes(e.target.tagName)) return;
+  // advance scene
+  if(stage === 0) { setStage(1); } else { nextStage(); }
+});
+
+/* Auto timer */
+function startAuto(){
+  clearAuto();
+  autoTimer = setInterval(()=>{ nextStage(); }, 7000);
+}
+function clearAuto(){ if(autoTimer){ clearInterval(autoTimer); autoTimer = null; } }
+
+/* init */
+renderStage();
+
+/* =========================
+   Canvas effects: leaves & bats
+   ========================= */
+const canvas = document.getElementById('fxCanvas');
+const ctx = canvas.getContext('2d');
+let W, H, raf;
+function resizeCanvas(){
+  W = canvas.width = Math.floor(canvas.clientWidth * devicePixelRatio);
+  H = canvas.height = Math.floor(canvas.clientHeight * devicePixelRatio);
+  canvas.style.width = '100%';
+  canvas.style.height = '100%';
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+resizeCanvas();
+window.addEventListener('resize', ()=>{ resizeCanvas(); });
+
+const leaves = [];
+const bats = [];
+function spawnLeaf(){
+  leaves.push({
+    x: Math.random() * W, y: -20,
+    vx: Math.random()*0.6-0.3, vy: 0.7 + Math.random()*1.2,
+    w: 10 + Math.random()*18, rot: Math.random()*Math.PI*2, vr: (Math.random()-0.5)*0.05
+  });
+}
+function spawnBat(){
+  bats.push({
+    x: W + 60, y: Math.random() * H*0.5 + 20,
+    vx: -1 - Math.random()*3, wing: Math.random()*4
+  });
+}
+// preload some
+for(let i=0;i<40;i++) spawnLeaf();
+for(let i=0;i<6;i++) spawnBat();
+
+function loop(){
+  ctx.clearRect(0,0,W,H);
+  // subtle radial light that follows a relaxed point (mouse not required)
+  const px = W * 0.2, py = H * 0.2;
+  const grd = ctx.createRadialGradient(px, py, 10, px, py, Math.max(W,H));
+  grd.addColorStop(0, 'rgba(255,220,150,0.02)');
+  grd.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grd;
+  ctx.fillRect(0,0,W,H);
+
+  // draw leaves
+  for(let i=0;i<leaves.length;i++){
+    const L = leaves[i];
+    L.x += L.vx; L.y += L.vy; L.rot += L.vr;
+    ctx.save();
+    ctx.translate(L.x, L.y);
+    ctx.rotate(L.rot);
+    ctx.fillStyle = 'rgba(200,120,50,0.95)';
+    ctx.fillRect(-L.w/2, -L.w/6, L.w, L.w/3);
+    ctx.restore();
+    if(L.y > H + 40){ leaves.splice(i,1); i--; if(Math.random()<0.9) spawnLeaf(); }
   }
 
-  text.classList.remove('visible');
-  setTimeout(() => text.classList.add('visible'), 200);
+  // draw bats
+  for(let i=0;i<bats.length;i++){
+    const B = bats[i];
+    B.x += B.vx; B.wing += 0.36;
+    if(B.x < -80){ bats.splice(i,1); i--; if(Math.random()<0.6) spawnBat(); continue; }
+    const wing = Math.abs(Math.sin(B.wing)) * 14;
+    ctx.save(); ctx.translate(B.x,B.y);
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.lineTo(-20-wing, -8);
+    ctx.lineTo(-35, 0);
+    ctx.lineTo(-20-wing, 8);
+    ctx.closePath();
+    ctx.fillStyle = 'rgba(20,20,20,0.95)'; ctx.fill();
+    ctx.restore();
+  }
+
+  // stage-specific overlay: small heartbeat on stage 2
+  if(stage === 2){
+    ctx.fillStyle = 'rgba(255,255,255,0.02)';
+    ctx.fillRect(0,0,W,H);
+  }
+
+  raf = requestAnimationFrame(loop);
+}
+loop();
+
+/* optional: subtle parallax by mouse move */
+document.addEventListener('mousemove', (e)=>{
+  const x = (e.clientX / window.innerWidth - 0.5) * 30;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+  const bg = document.getElementById('bgLayer');
+  bg.style.transform = `translate3d(${x}px, ${y}px, 0)`;
 });
+
+/* accessibility tweaks: keyboard control */
+document.addEventListener('keydown', (e)=>{
+  if(e.key === 'ArrowRight') nextStage();
+  if(e.key === 'ArrowLeft') prevStage();
+  if(e.key === ' ') { e.preventDefault(); nextStage(); }
+});
+
+/* End of script */
 </script>
 </body>
 </html>
