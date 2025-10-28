@@ -3,24 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔮 Lời Chúc Halloween Ma Thuật</title>
-
+    <title>💌 Thư Ma Thuật Halloween 💌</title>
     <style>
-        /* CSS Nâng Cao */
+        /* --- CSS Chung --- */
         body {
-            background-color: #05050f; /* Nền đêm tối sâu */
-            color: #f7931e; /* Màu cam ma thuật */
-            font-family: 'Georgia', serif;
-            margin: 0;
+            background-color: #0d0d0d;
+            font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            margin: 0;
             overflow: hidden;
-            position: relative;
+            perspective: 1000px; /* Cần thiết cho hiệu ứng 3D */
         }
 
-        /* Vùng Canvas cho hiệu ứng hạt rơi */
+        /* --- Vỏ Thư (Envelope) --- */
+        .envelope-wrapper {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            cursor: pointer;
+            z-index: 100;
+            transition: transform 1s ease-in-out;
+            box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7); /* Ánh sáng tím */
+        }
+
+        /* Thân Thư */
+        .envelope {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-color: #ff9900; /* Màu cam bí ngô */
+            border-radius: 10px;
+            z-index: 50;
+        }
+
+        /* Nắp Thư (Top Flap) */
+        .flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: #8a2be2; /* Màu tím ma quái */
+            border-radius: 10px 10px 0 0;
+            transform-origin: top;
+            transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
+            z-index: 150; /* Ban đầu nằm trên */
+        }
+
+        /* Hiệu ứng Nắp Thư Mở */
+        .envelope-wrapper.open .flap {
+            transform: rotateX(180deg);
+            z-index: 40; /* Sau khi mở, nằm dưới thân thư */
+            transition: transform 0.8s ease-in-out, z-index 0s 0s;
+        }
+
+        /* --- Nội Dung Thư (Letter Content) --- */
+        .letter {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            padding: 20px;
+            box-sizing: border-box;
+            border-radius: 10px;
+            transform: translateY(0);
+            transition: transform 1.2s ease-in-out;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            z-index: 45; /* Dưới thân thư, trên nắp mở */
+        }
+
+        /* Nội dung Thư kéo lên khi mở */
+        .envelope-wrapper.open .letter {
+            transform: translateY(-80%); /* Kéo lên 80% chiều cao */
+        }
+
+        /* --- Nội Dung Văn Bản --- */
+        .letter-content {
+            text-align: center;
+            color: #333;
+            font-size: 0.9em;
+            line-height: 1.4;
+            max-height: 100%;
+            overflow: auto; /* Nếu nội dung dài */
+        }
+        
+        .letter-content h2 {
+            color: #ff4500;
+            margin-top: 0;
+        }
+        
+        .letter-content p {
+            margin-bottom: 10px;
+        }
+
+        .surprise-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 3px solid #8a2be2;
+        }
+
+        /* --- Hiệu ứng Lần đầu/Lần sau (Đã mở/Chưa mở) --- */
+        .status-message {
+            position: absolute;
+            bottom: -50px;
+            color: #ffd700;
+            font-style: italic;
+            font-size: 0.9em;
+            width: 100%;
+            text-align: center;
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; }
+            100% { opacity: 0.8; }
+        }
+
+        /* --- Hiệu ứng Canvas (Đã có ở phiên bản trước, giữ lại) --- */
         #magicCanvas {
             position: absolute;
             top: 0;
@@ -29,185 +137,157 @@
             height: 100%;
             z-index: 1;
         }
-
-        /* Khung nội dung chính */
-        .message-card {
-            background-color: rgba(10, 0, 30, 0.85); /* Nền tím than mờ */
-            padding: 40px;
-            border-radius: 20px;
-            border: 3px solid #8a2be2; /* Viền màu tím thẫm */
-            box-shadow: 0 0 50px rgba(138, 43, 226, 0.7), /* Tỏa sáng tím mạnh */
-                        0 0 20px rgba(255, 140, 0, 0.5); /* Ánh cam phụ */
-            max-width: 650px;
-            text-align: center;
-            z-index: 10;
-            animation: fadeIn 3s ease-in-out; /* Hoạt ảnh hiện dần */
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        h1 {
-            color: #ff4500; /* Màu cam bí ngô */
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 3px 3px 6px #000;
-        }
-
-        .subtitle {
-            color: #ffdda0;
-            font-style: italic;
-            margin-bottom: 30px;
-            font-size: 1.2em;
-        }
-
-        .main-text {
-            color: #ffffff;
-            line-height: 1.8;
-            font-size: 1.15em;
-            text-shadow: 1px 1px 2px #000;
-        }
-
-        .signature {
-            color: #ffd700;
-            font-size: 1.2em;
-            margin-top: 30px;
-            padding-top: 15px;
-            border-top: 2px dashed #8a2be2;
-        }
-
-        /* Hiệu ứng nhấp nháy cho biểu tượng */
-        .flashing {
-            animation: flash 1.5s infinite alternate;
-        }
-
-        @keyframes flash {
-            from { opacity: 1; }
-            to { opacity: 0.5; }
-        }
     </style>
 </head>
 <body>
     <canvas id="magicCanvas"></canvas>
 
-    <div class="message-card">
-        <h1><span class="flashing">👻</span> Lời Chúc Halloween Ma Thuật <span class="flashing">🔮</span></h1>
+    <div class="envelope-wrapper" id="envelopeWrapper">
+        <div class="flap"></div>
+        <div class="envelope"></div>
+        <div class="letter" id="letterContent">
+            </div>
         
-        <p class="subtitle">— Món quà Code dành cho người ở nơi xa —</p>
-        
-        <p class="main-text">
-            Khoảng cách địa lý có thể là một thử thách, nhưng tình cảm và sự quan tâm thì không có giới hạn nào. 
-            Món quà này được xây dựng bằng những dòng code phức tạp, cũng giống như cách anh/em muốn xây dựng một mối quan hệ sâu sắc và ý nghĩa với em/anh.
-            <br><br>
-            Hãy tưởng tượng những hạt ma thuật đang rơi trên màn hình là những điều ước tốt lành anh/em gửi gắm. 
-            Hy vọng một ngày không xa, chúng ta sẽ cùng nhau tận hưởng mùa Halloween trực tiếp.
-            <br><br>
-            Chúc em/anh một đêm huyền bí và an toàn! Luôn nhớ về em/anh nhé.
-        </p>
-        
-        <p class="signature">
-            💌 Từ người đang ấp ủ tương lai cùng em/anh 💖
+        <p class="status-message" id="statusMessage">
+            Ấn vào đây để mở thư...
         </p>
     </div>
 
     <script>
-        // JavaScript Nâng Cao: Hiệu ứng Mưa Sao Băng (Canvas)
-
+        // --- 1. Canvas Effect (Tái sử dụng từ phiên bản trước) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
         let height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
-
-        // Mảng chứa các hạt sao băng
         let particles = [];
-        const particleCount = 100;
+        const particleCount = 70; // Giảm bớt để nổi bật thư
 
-        // Đối tượng Hạt
         class Particle {
             constructor() {
                 this.reset();
             }
-
             reset() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 2 + 1; // Kích thước 1px - 3px
-                this.speedX = Math.random() * 0.2 + 0.1; // Tốc độ ngang chậm
-                this.speedY = Math.random() * 2 + 1; // Tốc độ rơi nhanh
-                this.opacity = Math.random() * 0.5 + 0.5; // Độ trong suốt
-                // Màu cam/tím ngẫu nhiên
+                this.size = Math.random() * 1.5 + 0.5;
+                this.speedX = Math.random() * 0.1;
+                this.speedY = Math.random() * 1 + 0.5;
+                this.opacity = Math.random() * 0.5 + 0.3;
                 this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, ';
             }
-
-            // Vẽ hạt
             draw() {
                 ctx.fillStyle = this.color + this.opacity + ')';
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fill();
             }
-
-            // Cập nhật vị trí
             update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
-                
-                // Nếu hạt rơi ra ngoài màn hình, đặt lại vị trí
                 if (this.y > height) {
                     this.reset();
-                    this.y = 0; // Bắt đầu lại từ đỉnh
+                    this.y = 0;
                 }
             }
         }
 
-        // Khởi tạo các hạt
-        function init() {
+        function initCanvas() {
             for (let i = 0; i < particleCount; i++) {
                 particles.push(new Particle());
             }
         }
-
-        // Vòng lặp chính của hiệu ứng
-        function animate() {
-            // Xóa canvas với một lớp nền hơi mờ để tạo hiệu ứng đuôi sao băng
-            ctx.fillStyle = 'rgba(5, 5, 15, 0.1)'; 
+        function animateCanvas() {
+            ctx.fillStyle = 'rgba(13, 13, 13, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
-
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-            }
-            
-            requestAnimationFrame(animate);
+            particles.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateCanvas);
         }
 
-        // Xử lý khi thay đổi kích thước cửa sổ
         window.addEventListener('resize', () => {
             width = window.innerWidth;
             height = window.innerHeight;
             canvas.width = width;
             canvas.height = height;
-            particles = []; // Đặt lại hạt khi thay đổi kích thước
-            init();
+            particles = [];
+            initCanvas();
         });
 
-        init();
-        animate();
+        initCanvas();
+        animateCanvas();
 
-        // Tùy chọn: Tự động phát âm thanh
-        // document.addEventListener('DOMContentLoaded', () => {
-        //     const sound = document.getElementById('halloweenSound');
-        //     if (sound) {
-        //         sound.play().catch(error => {
-        //             console.log("Auto-play blocked, user interaction required.");
-        //             // Có thể hiển thị nút "Bật âm thanh" ở đây
-        //         });
-        //     }
-        // });
+        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau ---
+
+        const ENVELOPE_KEY = 'halloween_envelope_opened';
+        const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const letterContent = document.getElementById('letterContent');
+        const statusMessage = document.getElementById('statusMessage');
+
+        // Nội dung cho LẦN ĐẦU (Lời Chúc)
+        const firstTimeContent = `
+            <h2>🎃 Lời Chúc Halloween Từ Xa 💌</h2>
+            <p><strong>Người đang ở rất xa ơi!</strong></p>
+            <p>Đây là món quà được gói ghém bằng code và gửi qua đường truyền internet, bởi vì chúng ta chưa thể gặp nhau đêm nay.</p>
+            <p>Anh/Em muốn em/anh biết rằng, dù xa cách, anh/em vẫn luôn nhớ đến và muốn tiến xa hơn với em/anh. Code này là một lời hứa cho tương lai!</p>
+            <p>Chúc em/anh một mùa Halloween thật vui vẻ và ấm áp. Đừng quên nhắn tin cho anh/em nhé!</p>
+            <p style="color: #8a2be2; font-weight: bold;">— Người luôn mong chờ tin nhắn của em/anh 😉</p>
+        `;
+
+        // Nội dung cho LẦN SAU (Bất Ngờ)
+        const subsequentContent = `
+            <h2>👻 Điều Bất Ngờ! 🔮</h2>
+            <p>Chào mừng em/anh quay lại! Trang web đã nhớ em/anh đấy.</p>
+            <p>Lần này, không chỉ là lời chúc, mà là một món quà nhỏ (tưởng tượng thôi!):</p>
+            <img class="surprise-image" src="https://i.ibb.co/6P01v3T/Cute-Ghost.png" alt="Ảnh ma dễ thương">
+            <p style="margin-top: 15px; color: #ff4500;">Ảnh này thay cho một nụ cười ấm áp. Ngày mới tốt lành nhé!</p>
+            <p style="font-style: italic; font-size: 0.8em; margin-top: 10px;">(P.S: Nếu ảnh không hiện, đó là một chú ma dễ thương đang cười toe toét!)</p>
+        `;
+
+        // Hàm kiểm tra và đặt nội dung
+        function checkAndSetContent() {
+            const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
+
+            if (isOpened) {
+                // Lần sau: Hiển thị bất ngờ
+                letterContent.innerHTML = subsequentContent;
+                statusMessage.textContent = "Chào mừng trở lại! (Nhấn để mở tiếp)";
+            } else {
+                // Lần đầu: Hiển thị lời chúc
+                letterContent.innerHTML = firstTimeContent;
+            }
+        }
+
+        // Hàm xử lý sự kiện mở thư
+        function openEnvelope() {
+            // Chỉ mở một lần
+            if (envelopeWrapper.classList.contains('open')) {
+                return;
+            }
+
+            // Kích hoạt hiệu ứng CSS
+            envelopeWrapper.classList.add('open');
+            
+            // Đặt trạng thái đã mở vào localStorage (lưu lại trên trình duyệt)
+            localStorage.setItem(ENVELOPE_KEY, 'true');
+
+            // Cập nhật thông báo sau khi mở
+            statusMessage.textContent = "Thư đã mở. Quay lại lần sau sẽ có bất ngờ khác!";
+            statusMessage.style.animation = 'none'; // Ngừng hiệu ứng pulse
+
+            // Tùy chọn: Tải lại nội dung lần sau sau một khoảng thời gian
+            setTimeout(() => {
+                // Thay nội dung ngay lập tức để người ấy thấy sự khác biệt khi quay lại
+                if (localStorage.getItem(ENVELOPE_KEY) === 'true') {
+                    // Nếu đã mở, chuẩn bị nội dung bất ngờ cho lần tới
+                    letterContent.innerHTML = subsequentContent;
+                }
+            }, 2000); // 2 giây sau khi mở
+        }
+
+        // Gắn sự kiện và Khởi tạo
+        checkAndSetContent();
+        envelopeWrapper.addEventListener('click', openEnvelope);
     </script>
 </body>
 </html>
