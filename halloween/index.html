@@ -3,48 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>👻 Lời Chúc Halloween Từ Xa</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>🔮 Lời Chúc Halloween Ma Thuật</title>
+
+    <style>
+        /* CSS Nâng Cao */
+        body {
+            background-color: #05050f; /* Nền đêm tối sâu */
+            color: #f7931e; /* Màu cam ma thuật */
+            font-family: 'Georgia', serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Vùng Canvas cho hiệu ứng hạt rơi */
+        #magicCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Khung nội dung chính */
+        .message-card {
+            background-color: rgba(10, 0, 30, 0.85); /* Nền tím than mờ */
+            padding: 40px;
+            border-radius: 20px;
+            border: 3px solid #8a2be2; /* Viền màu tím thẫm */
+            box-shadow: 0 0 50px rgba(138, 43, 226, 0.7), /* Tỏa sáng tím mạnh */
+                        0 0 20px rgba(255, 140, 0, 0.5); /* Ánh cam phụ */
+            max-width: 650px;
+            text-align: center;
+            z-index: 10;
+            animation: fadeIn 3s ease-in-out; /* Hoạt ảnh hiện dần */
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #ff4500; /* Màu cam bí ngô */
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 3px 3px 6px #000;
+        }
+
+        .subtitle {
+            color: #ffdda0;
+            font-style: italic;
+            margin-bottom: 30px;
+            font-size: 1.2em;
+        }
+
+        .main-text {
+            color: #ffffff;
+            line-height: 1.8;
+            font-size: 1.15em;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        .signature {
+            color: #ffd700;
+            font-size: 1.2em;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px dashed #8a2be2;
+        }
+
+        /* Hiệu ứng nhấp nháy cho biểu tượng */
+        .flashing {
+            animation: flash 1.5s infinite alternate;
+        }
+
+        @keyframes flash {
+            from { opacity: 1; }
+            to { opacity: 0.5; }
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>🎃 Chúc Mừng Halloween 🎃</h1>
-        <p class="message">
-            Dù chúng ta ở xa và không thể gặp nhau để cùng nhau "Trick or Treat", 
-            anh/em vẫn muốn gửi món quà nhỏ này đến em/anh. 
-            Món quà này là code, nhưng nó tượng trưng cho sự quan tâm chân thành và mong muốn 
-            được tiến tới xa hơn, bất chấp khoảng cách. 
-            <br><br>
-            Chúc em/anh một mùa Halloween vui vẻ, đừng thức khuya quá nha! 😉
-        </p>
-        <p class="signature">— Người luôn nhớ đến em/anh 👻</p>
+    <canvas id="magicCanvas"></canvas>
 
-        <div id="ghost-container"></div>
+    <div class="message-card">
+        <h1><span class="flashing">👻</span> Lời Chúc Halloween Ma Thuật <span class="flashing">🔮</span></h1>
+        
+        <p class="subtitle">— Món quà Code dành cho người ở nơi xa —</p>
+        
+        <p class="main-text">
+            Khoảng cách địa lý có thể là một thử thách, nhưng tình cảm và sự quan tâm thì không có giới hạn nào. 
+            Món quà này được xây dựng bằng những dòng code phức tạp, cũng giống như cách anh/em muốn xây dựng một mối quan hệ sâu sắc và ý nghĩa với em/anh.
+            <br><br>
+            Hãy tưởng tượng những hạt ma thuật đang rơi trên màn hình là những điều ước tốt lành anh/em gửi gắm. 
+            Hy vọng một ngày không xa, chúng ta sẽ cùng nhau tận hưởng mùa Halloween trực tiếp.
+            <br><br>
+            Chúc em/anh một đêm huyền bí và an toàn! Luôn nhớ về em/anh nhé.
+        </p>
+        
+        <p class="signature">
+            💌 Từ người đang ấp ủ tương lai cùng em/anh 💖
+        </p>
     </div>
 
     <script>
-        // JavaScript để tạo hiệu ứng ma trơi lập lòe (Fireflies/Ghosts)
-        const ghostContainer = document.getElementById('ghost-container');
-        const numberOfGhosts = 20;
+        // JavaScript Nâng Cao: Hiệu ứng Mưa Sao Băng (Canvas)
 
-        for (let i = 0; i < numberOfGhosts; i++) {
-            const ghost = document.createElement('div');
-            ghost.classList.add('ghost');
-            
-            // Đặt vị trí ngẫu nhiên
-            ghost.style.left = `${Math.random() * 100}vw`;
-            ghost.style.top = `${Math.random() * 100}vh`;
+        const canvas = document.getElementById('magicCanvas');
+        const ctx = canvas.getContext('2d');
+        let width = window.innerWidth;
+        let height = window.innerHeight;
+        canvas.width = width;
+        canvas.height = height;
 
-            // Kích thước ngẫu nhiên (để tạo độ sâu)
-            const size = Math.random() * 15 + 5; // Từ 5px đến 20px
-            ghost.style.width = `${size}px`;
-            ghost.style.height = `${size}px`;
+        // Mảng chứa các hạt sao băng
+        let particles = [];
+        const particleCount = 100;
 
-            // Thời gian hoạt ảnh ngẫu nhiên
-            ghost.style.animationDuration = `${Math.random() * 5 + 5}s`; // Từ 5s đến 10s
-            
-            ghostContainer.appendChild(ghost);
+        // Đối tượng Hạt
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.size = Math.random() * 2 + 1; // Kích thước 1px - 3px
+                this.speedX = Math.random() * 0.2 + 0.1; // Tốc độ ngang chậm
+                this.speedY = Math.random() * 2 + 1; // Tốc độ rơi nhanh
+                this.opacity = Math.random() * 0.5 + 0.5; // Độ trong suốt
+                // Màu cam/tím ngẫu nhiên
+                this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, ';
+            }
+
+            // Vẽ hạt
+            draw() {
+                ctx.fillStyle = this.color + this.opacity + ')';
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            // Cập nhật vị trí
+            update() {
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Nếu hạt rơi ra ngoài màn hình, đặt lại vị trí
+                if (this.y > height) {
+                    this.reset();
+                    this.y = 0; // Bắt đầu lại từ đỉnh
+                }
+            }
         }
+
+        // Khởi tạo các hạt
+        function init() {
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+        }
+
+        // Vòng lặp chính của hiệu ứng
+        function animate() {
+            // Xóa canvas với một lớp nền hơi mờ để tạo hiệu ứng đuôi sao băng
+            ctx.fillStyle = 'rgba(5, 5, 15, 0.1)'; 
+            ctx.fillRect(0, 0, width, height);
+
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+            }
+            
+            requestAnimationFrame(animate);
+        }
+
+        // Xử lý khi thay đổi kích thước cửa sổ
+        window.addEventListener('resize', () => {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            canvas.width = width;
+            canvas.height = height;
+            particles = []; // Đặt lại hạt khi thay đổi kích thước
+            init();
+        });
+
+        init();
+        animate();
+
+        // Tùy chọn: Tự động phát âm thanh
+        // document.addEventListener('DOMContentLoaded', () => {
+        //     const sound = document.getElementById('halloweenSound');
+        //     if (sound) {
+        //         sound.play().catch(error => {
+        //             console.log("Auto-play blocked, user interaction required.");
+        //             // Có thể hiển thị nút "Bật âm thanh" ở đây
+        //         });
+        //     }
+        // });
     </script>
 </body>
 </html>
