@@ -5,7 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     <style>
-        /* --- CSS HOÀN CHỈNH: ĐÃ SỬA LỖI CĂN GIỮA VÀ LỖI BIẾN MẤT --- */
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
+
+        /* --- CSS Chung --- */
         body {
             background-color: #0d0d0d;
             font-family: 'Arial', sans-serif;
@@ -90,20 +92,19 @@
             z-index: 45; 
         }
 
-        /* --- TRẠNG THÁI MỞ: Thiệp phóng to và căn giữa --- */
-
+        /* --- TRẠNG THÁI MỞ (Mặc định cho PC/Tablet) --- */
         .envelope-wrapper.opened-state {
             pointer-events: none; 
         }
 
         .envelope-wrapper.opened-state .letter {
-            /* Kích thước */
+            /* Kích thước PC */
             width: 70vw; 
             height: 80vh; 
             max-width: 800px;
             max-height: 700px;
             
-            /* Căn giữa tuyệt đối trên viewport (Đã sửa lỗi) */
+            /* Căn giữa tuyệt đối trên viewport */
             position: fixed; 
             top: 50%;
             left: 50%;
@@ -114,12 +115,44 @@
             box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
         }
 
-        /* Ẩn vỏ thư và nắp thư sau khi thiệp đã được "lấy ra" (sẽ được kích hoạt bằng JS) */
+        /* Lớp ẩn vỏ thư (kích hoạt bằng JS sau khi thiệp phóng to) */
         .envelope-wrapper.hidden .envelope,
         .envelope-wrapper.hidden .flap {
             opacity: 0;
         }
-        
+
+        /* --- MEDIA QUERY: Tối ưu cho Màn hình Điện thoại (Width <= 600px) --- */
+        @media (max-width: 600px) {
+            
+            /* Giảm kích thước vỏ thư ban đầu cho màn hình nhỏ */
+            .envelope-wrapper {
+                width: 250px;
+                height: 160px;
+            }
+
+            /* Thiệp phóng to chiếm gần hết màn hình điện thoại */
+            .envelope-wrapper.opened-state .letter {
+                width: 95vw; /* Chiếm gần hết chiều rộng */
+                height: 90vh; /* Chiếm gần hết chiều cao */
+                
+                /* Giữ nguyên căn giữa tuyệt đối */
+                position: fixed; 
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%); 
+                
+                padding: 15px; /* Giảm padding */
+            }
+            
+            /* Điều chỉnh cỡ chữ nội dung thiệp trên điện thoại */
+            .letter-content {
+                font-size: 1em;
+            }
+            .letter-content h2 {
+                font-size: 1.5em;
+            }
+        }
+
         /* --- Nội dung văn bản và các phần khác --- */
         .letter-content {
             text-align: center;
@@ -179,7 +212,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Hiệu ứng Nền) ---
+        // --- 1. Canvas Effect (Giữ nguyên) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -240,7 +273,7 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau ---
+        // --- 2. Logic Mở Thư và Điều kiện Lần đầu/Lần sau (Giữ nguyên) ---
 
         const ENVELOPE_KEY = 'halloween_envelope_opened';
         const envelopeWrapper = document.getElementById('envelopeWrapper');
@@ -282,11 +315,11 @@
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             
-            // 2. Chờ 50ms, kích hoạt trạng thái phóng to thiệp (trạng thái này giữ lại vỏ thư)
+            // 2. Chờ 50ms, kích hoạt trạng thái phóng to thiệp 
             setTimeout(() => {
                 envelopeWrapper.classList.add('opened-state');
                 
-                // 3. Đợi thêm 1.5s (thời gian thiệp phóng to) sau đó ẩn vỏ thư hoàn toàn bằng cách thêm class 'hidden'
+                // 3. Đợi 1.5s (thời gian thiệp phóng to) sau đó ẩn vỏ thư hoàn toàn
                 setTimeout(() => {
                     envelopeWrapper.classList.add('hidden');
                 }, 1500);
