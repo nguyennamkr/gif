@@ -15,7 +15,17 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden;
-            perspective: 1000px;
+            perspective: 1000px; /* Cần thiết cho hiệu ứng 3D */
+        }
+
+        /* --- Hiệu ứng Nền (Canvas) --- */
+        #magicCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
         }
 
         /* --- Vỏ Thư (Envelope) --- */
@@ -25,19 +35,12 @@
             height: 200px;
             cursor: pointer;
             z-index: 100;
-            transition: opacity 1s 0.8s, transform 0.8s; /* Thêm transition cho opacity */
+            /* Thêm transition cho độ trong suốt và dịch chuyển */
+            transition: opacity 0.5s 0.8s, transform 0.8s; 
             box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7);
         }
-        
-        /* Khi mở, vỏ thư gần như biến mất */
-        .envelope-wrapper.open {
-            opacity: 0;
-            /* Dịch chuyển nhẹ để tạo cảm giác bức thư được "lấy ra" */
-            transform: translateY(-50px); 
-            transition: opacity 0.5s 0.8s, transform 0.8s;
-        }
 
-        /* Thân Thư */
+        /* Thân Thư (Duy trì vị trí ban đầu) */
         .envelope {
             position: absolute;
             width: 100%;
@@ -58,7 +61,7 @@
             border-radius: 10px 10px 0 0;
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
-            z-index: 150;
+            z-index: 150; 
         }
 
         /* Hiệu ứng Nắp Thư Mở */
@@ -67,8 +70,8 @@
             z-index: 40;
             transition: transform 0.8s ease-in-out, z-index 0s 0s;
         }
-
-        /* --- Nội Dung Thư (Letter Content) --- */
+        
+        /* --- Nội Dung Thiệp (Letter Content) --- */
         .letter {
             position: absolute;
             top: 0;
@@ -79,31 +82,38 @@
             padding: 20px;
             box-sizing: border-box;
             border-radius: 10px;
-            /* Hiệu ứng biến đổi cho bức thư khi nó trở thành thiệp */
-            transform-origin: center center;
+            /* Thiết lập trạng thái ban đầu để thiệp nằm gọn trong vỏ */
+            transform: translate(0, 0); 
             transition: all 1.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             z-index: 45; 
         }
 
-        /* Nội dung Thư kéo lên, phóng to và vào trung tâm màn hình */
-        .envelope-wrapper.open .letter {
-            width: 70vw; /* Chiếm 70% chiều rộng màn hình */
-            height: 80vh; /* Chiếm 80% chiều cao màn hình */
+        /* TRẠNG THÁI MỞ: Vỏ biến mất, Thiệp phóng to */
+        .envelope-wrapper.opened-state {
+            opacity: 0; /* Vỏ thư mờ dần */
+            transform: translateY(-50px); /* Dịch chuyển nhẹ */
+            pointer-events: none; /* Ngăn chặn tương tác với vỏ thư cũ */
+        }
+        
+        .envelope-wrapper.opened-state .letter {
+            /* Phóng to và căn giữa */
+            width: 70vw; 
+            height: 80vh; 
             max-width: 800px;
             max-height: 700px;
             
-            /* Dịch chuyển vào giữa màn hình */
-            transform: translate(-50%, -50%);
+            /* Dịch chuyển chính xác vào giữa màn hình */
+            transform: translate(calc(50vw - 50%), calc(50vh - 50%));
             top: 50%;
             left: 50%;
             
-            z-index: 200; /* Đưa lên trên cùng để đọc */
-            border: 5px solid #ff4500; /* Thêm viền thiệp Halloween */
-            box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); /* Ánh sáng cam rực rỡ */
+            z-index: 200; /* Đưa thiệp lên trên cùng */
+            border: 5px solid #ff4500; 
+            box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
         }
-        
-        /* Đảm bảo nội dung văn bản bên trong thiệp cuộn được */
+
+        /* Nội dung văn bản bên trong thiệp */
         .letter-content {
             text-align: center;
             color: #333;
@@ -111,7 +121,7 @@
             line-height: 1.6;
             width: 100%;
             height: 100%;
-            overflow-y: auto; /* Cho phép cuộn khi nội dung dài */
+            overflow-y: auto; /* Cho phép cuộn */
             box-sizing: border-box;
             padding: 5px;
         }
@@ -122,14 +132,7 @@
             font-size: 1.8em;
         }
         
-        /* --- Các phần còn lại giữ nguyên --- */
-        .surprise-image {
-            max-width: 100%;
-            height: auto;
-            border-radius: 5px;
-            margin-top: 10px;
-            border: 3px solid #8a2be2;
-        }
+        /* --- Thông báo trạng thái --- */
         .status-message {
             position: absolute;
             bottom: -50px;
@@ -146,13 +149,14 @@
             50% { opacity: 1; }
             100% { opacity: 0.8; }
         }
-        #magicCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
+        
+        /* Ảnh bất ngờ */
+        .surprise-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-top: 10px;
+            border: 3px solid #8a2be2;
         }
     </style>
 </head>
@@ -173,7 +177,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Giữ nguyên) ---
+        // --- 1. Canvas Effect (Hiệu ứng Nền) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -240,7 +244,6 @@
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
-        const letter = document.getElementById('letter'); // Thêm biến cho lớp letter
 
         // Nội dung cho LẦN ĐẦU (Lời Chúc)
         const firstTimeContent = `
@@ -267,46 +270,47 @@
             const isOpened = localStorage.getItem(ENVELOPE_KEY) === 'true';
 
             if (isOpened) {
+                // Nếu đã mở, thiết lập nội dung bất ngờ cho lần này
                 letterContent.innerHTML = subsequentContent;
                 statusMessage.textContent = "Chào mừng trở lại! (Nhấn để mở tiếp)";
             } else {
+                // Lần đầu tiên, thiết lập lời chúc
                 letterContent.innerHTML = firstTimeContent;
             }
         }
 
         function openEnvelope() {
-            // Cho phép mở nhiều lần để xem các bất ngờ khác nhau
-            // Chỉ cần đảm bảo hiệu ứng chạy lại mượt mà
-
-            // 1. Kích hoạt hiệu ứng CSS
-            // Thêm class 'open' để kích hoạt hiệu ứng lật nắp, ẩn vỏ và phóng to thiệp
-            envelopeWrapper.classList.add('open');
-            
-            // 2. Lưu trạng thái đã mở (Nếu là lần đầu)
-            if (localStorage.getItem(ENVELOPE_KEY) !== 'true') {
-                 localStorage.setItem(ENVELOPE_KEY, 'true');
+            // Kiểm tra trạng thái mở để tránh chạy lại hiệu ứng lật nắp
+            if (envelopeWrapper.classList.contains('opened-state')) {
+                return;
             }
 
-            // 3. Cập nhật thông báo sau khi mở
-            statusMessage.textContent = "Thiệp đã mở! Đang hiển thị toàn bộ nội dung...";
-            statusMessage.style.animation = 'none';
-
-            // 4. Reset trạng thái sau một thời gian để chuẩn bị cho lần mở tiếp theo
-            // Điều này cho phép người dùng đóng thiệp (bằng cách tải lại trang)
+            // 1. Kích hoạt hiệu ứng lật nắp
+            envelopeWrapper.classList.add('open'); 
+            
+            // 2. Chờ 0.8s (thời gian lật nắp) rồi kích hoạt trạng thái phóng to thiệp và ẩn vỏ
             setTimeout(() => {
-                // Tùy chọn: Xử lý nội dung bất ngờ cho lần tới
-                // Ở đây chúng ta giữ nguyên nội dung hiện tại cho đến khi tải lại trang
-            }, 1500); // Đợi 1.5s để hiệu ứng hoàn thành
+                envelopeWrapper.classList.add('opened-state');
+                
+                // 3. Lưu trạng thái đã mở (Nếu là lần đầu)
+                if (localStorage.getItem(ENVELOPE_KEY) !== 'true') {
+                    localStorage.setItem(ENVELOPE_KEY, 'true');
+                }
+                
+                statusMessage.textContent = "Thiệp đã mở! Chúc bạn Halloween vui vẻ!";
+                statusMessage.style.animation = 'none';
+
+            }, 800); 
         }
 
         // Gắn sự kiện và Khởi tạo
         checkAndSetContent();
         envelopeWrapper.addEventListener('click', openEnvelope);
         
-        // Cần thiết để thiệp nằm ngoài vỏ khi trang load lần đầu
-        // Nếu không có, thiệp sẽ bị hiển thị ngoài vỏ nếu người dùng đã mở
+        // Điều chỉnh thiệp đã mở nếu người dùng quay lại
         if (localStorage.getItem(ENVELOPE_KEY) === 'true') {
-            envelopeWrapper.classList.add('open');
+            // Nếu đã mở, cần thêm cả hai lớp để thiệp xuất hiện ở trạng thái đã phóng to
+            envelopeWrapper.classList.add('open', 'opened-state');
         }
     </script>
 </body>
