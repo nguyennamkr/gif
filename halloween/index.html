@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>💌 Thư Ma Thuật Halloween 💌</title>
     
-    <style>
+   <style>
     /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
 
     /* --- CSS Chung --- */
@@ -95,6 +95,10 @@
         opacity: 0;
         pointer-events: none;
         transform: scale(0.8);
+        
+        /* Đảm bảo hình ảnh bì thư không bị bóp méo */
+        overflow: hidden; 
+        border-radius: 10px; /* Thêm lại bo tròn để đẹp hơn */
     }
 
     /* Khi vỏ thư hiện ra (Sau khi click trái tim) */
@@ -103,24 +107,34 @@
         transform: scale(1);
         pointer-events: all;
     }
-
-    /* --- THIẾT KẾ BÌ THƯ HALLOWEEN (QUAN TRỌNG) --- */
     
-    .envelope, .flap, .letter {
-        transition: opacity 0.5s; 
-        /* TẠO GÓC NHỌN (DÙNG CLIP-PATH HÌNH BÁT GIÁC) */
-        clip-path: polygon(10% 0%, 90% 0%, 100% 20%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 20%);
+    /* Thêm lớp mới để chứa ảnh bì thư */
+    .envelope-image {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        background-size: cover;
+        background-position: center;
+        /* THAY ĐỔI: Đây là nơi ảnh bì thư sẽ được hiển thị */
+        background-image: url('halloween_envelope.png'); 
+        z-index: 60;
+        pointer-events: none; /* Không cản trở click */
+        transition: opacity 0.5s;
     }
-    
+
+    /* Thân Thư và Nắp Thư */
     .envelope {
         position: absolute;
         width: 100%;
         height: 100%;
         background-color: #ff9900; 
-        border-radius: 0; /* Đã loại bỏ border-radius */
+        border-radius: 10px;
         z-index: 50;
     }
 
+    /* Nắp thư sẽ được ẩn đi khi dùng ảnh nền (envelope-image) */
     .flap {
         position: absolute;
         top: 0;
@@ -128,19 +142,25 @@
         width: 100%;
         height: 50%;
         background-color: #8a2be2;
-        /* Điều chỉnh clip-path cho nắp */
-        clip-path: polygon(10% 0%, 90% 0%, 100% 40%, 100% 80%, 90% 100%, 10% 100%, 0% 80%, 0% 40%);
+        border-radius: 10px 10px 0 0;
         transform-origin: top;
         transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
         z-index: 150; 
+        opacity: 0; /* Ẩn nắp CSS cứng nhắc đi */
     }
 
-    /* Hiệu ứng Nắp Thư Lật */
+    /* Hiệu ứng Nắp Thư Lật (chỉ còn tác dụng chuyển tiếp) */
     .envelope-wrapper.open .flap {
         transform: rotateX(180deg);
         z-index: 40;
         transition: transform 0.8s ease-in-out, z-index 0s 0s;
     }
+    
+    /* Ẩn ảnh bì thư khi mở nắp (thay cho hiệu ứng nắp lật) */
+    .envelope-wrapper.open .envelope-image {
+        opacity: 0;
+    }
+
 
     /* --- Nội Dung Thiệp (Letter Content) --- */
     .letter {
@@ -152,12 +172,11 @@
         background-color: #fff;
         padding: 20px;
         box-sizing: border-box;
-        border-radius: 0; /* Đã loại bỏ border-radius */
+        border-radius: 10px;
         transform: translate(0, 0); 
         transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
         box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         z-index: 45; 
-        /* Cần loại bỏ clip-path khi phóng to thiệp */
         clip-path: none; 
     }
 
@@ -167,6 +186,7 @@
     }
 
     .envelope-wrapper.opened-state .letter {
+        /* Kích thước PC đã tối ưu */
         width: 60vw; 
         height: 70vh; 
         max-width: 650px; 
@@ -181,14 +201,14 @@
         border: 5px solid #ff4500; 
         box-shadow: 0 0 50px rgba(255, 140, 0, 0.9); 
         
-        /* Đảm bảo thiệp mở có hình chữ nhật thông thường để dễ đọc */
         clip-path: none; 
         border-radius: 10px;
     }
 
     /* Lớp ẩn vỏ thư (kích hoạt bằng JS sau khi thiệp phóng to) */
     .envelope-wrapper.hidden .envelope,
-    .envelope-wrapper.hidden .flap {
+    .envelope-wrapper.hidden .flap,
+    .envelope-wrapper.hidden .envelope-image { /* Ẩn cả ảnh bì thư */
         opacity: 0;
     }
 
@@ -201,21 +221,22 @@
         }
 
         .envelope-wrapper.opened-state .letter {
-            /* 🚨 SỬA LỖI QUAN TRỌNG: Giảm kích thước thiệp để vừa màn hình */
-            width: 90vw; 
-            height: 75vh; /* Giảm mạnh hơn để tránh tràn màn hình */
+            /* 🚨 SỬA LỖI QUAN TRỌNG: Đặt kích thước nhỏ hơn và dùng padding lớn hơn */
+            width: 85vw; /* Giảm nhẹ chiều rộng */
+            height: 80vh; 
             
             position: fixed; 
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%); 
             
-            padding: 15px; 
-            overflow-y: scroll; /* Đảm bảo có thể cuộn nếu nội dung dài */
+            padding: 20px 10px; /* Đảm bảo padding không quá lớn, nhưng vẫn có lề */
+            overflow-y: scroll; /* Bắt buộc cho phép cuộn */
         }
         
         .letter-content {
             font-size: 1em;
+            padding: 0 10px; /* Thêm padding ngang cho nội dung */
         }
         .letter-content h2 {
             font-size: 1.5em;
@@ -226,10 +247,9 @@
     .letter-content {
         display: flex;
         flex-direction: column; 
-        justify-content: center; /* Căn giữa theo chiều dọc */
+        justify-content: center; 
         align-items: center; 
         
-        /* Bỏ overflow-y: auto ở đây và chuyển lên @media để kiểm soát tốt hơn */
         overflow-y: hidden; 
         
         text-align: center;
@@ -239,11 +259,10 @@
         width: 100%;
         height: 100%;
         box-sizing: border-box;
-        padding: 5px;
     }
     
     .letter-content > * {
-        max-width: 90%; 
+        max-width: 100%; 
     }
     
     /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
