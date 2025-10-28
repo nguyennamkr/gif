@@ -107,28 +107,26 @@
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ: ĐỎ RƯỢU VANG (Deep Maroon) --- */
+        /* --- THÂN BÌ THƯ: HỒNG NHẸ --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #6B0000; 
+            background-color: #FFC0CB; /* Màu hồng nhạt */
             border-radius: 5px;
             z-index: 50;
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2); /* Giảm độ đậm của shadow */
         }
 
-        /* --- NẮP BÌ THƯ: VÀNG CỔ ĐIỂN (Dark Goldenrod) --- */
+        /* --- NẮP BÌ THƯ: HỒNG NHẸ (Màu giống thân bì thư) --- */
         .flap {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 50%;
-            background-color: transparent; 
             
-            /* TẠO HÌNH TAM GIÁC (NẮP BÌ THƯ CỔ ĐIỂN) */
-            background-color: #B8860B; 
+            background-color: #FFC0CB; /* Màu hồng nhạt */
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
@@ -154,11 +152,14 @@
             padding: 20px;
             box-sizing: border-box;
             border-radius: 10px;
+            /* 🛑 THAY ĐỔI LỚN: Điều này sẽ điều khiển thiệp lúc ban đầu và khi phóng to */
             transform: translate(0, 0); 
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             z-index: 45; 
             clip-path: none; 
+            opacity: 0; /* Ban đầu ẩn đi để chỉ hiện ra khi phóng to */
+            pointer-events: none; /* Không tương tác khi ẩn */
         }
 
         /* --- TRẠNG THÁI MỞ (PC/Tablet) --- */
@@ -167,6 +168,10 @@
         }
 
         .envelope-wrapper.opened-state .letter {
+            /* 🛑 THAY ĐỔI LỚN: Khi thiệp mở, nó sẽ phóng to và hiện ra */
+            opacity: 1; /* Hiện thiệp */
+            pointer-events: all; /* Cho phép tương tác */
+
             /* Kích thước PC/Tablet lớn */
             width: 60vw; 
             height: 70vh; 
@@ -441,11 +446,12 @@
         }
 
 
-        // --- 4. Logic Mở Thư ---
+        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI LỚN) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
+        const letter = document.getElementById('letter'); // 🛑 Lấy thẳng phần tử .letter
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
@@ -468,13 +474,10 @@
         function showEnvelope() {
             activateMusic(); 
 
-            // 1. Ẩn trái tim
             heartWrapper.classList.add('hidden'); 
             
-            // 2. Hiện thị vỏ thư
             setTimeout(() => { 
                 envelopeWrapper.classList.add('visible');
-                // 3. Lắng nghe sự kiện mở thư
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
             }, 800); 
         }
@@ -487,15 +490,17 @@
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             
-            // 2. Kích hoạt trạng thái phóng to thiệp
+            // 2. 🛑 THAY ĐỔI LỚN: Kích hoạt trạng thái mở (phóng to) và hiển thị thiệp
             setTimeout(() => {
-                envelopeWrapper.classList.add('opened-state');
-                
+                envelopeWrapper.classList.add('opened-state'); // Kích hoạt CSS phóng to cho .letter
+                letter.style.opacity = '1'; // 🛑 Đảm bảo thiệp hiện ra
+                letter.style.pointerEvents = 'all'; // 🛑 Cho phép tương tác với thiệp
+
                 // 3. Ẩn vỏ thư hoàn toàn sau khi thiệp phóng to xong
                 setTimeout(() => {
                     envelopeWrapper.classList.add('hidden');
                     checkAndSetContent(); 
-                }, 1500);
+                }, 1500); // Thời gian chờ để thiệp bung ra
 
                 statusMessage.textContent = "Thiệp đã mở! Chúc bạn Halloween vui vẻ!";
                 statusMessage.style.animation = 'none';
