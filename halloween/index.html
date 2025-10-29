@@ -62,16 +62,16 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        /* 🛑 ĐÃ THAY THẾ: Trái tim CSS mới, không có viền đen */
+        /* 🛑 ĐÃ SỬA: Trái tim CSS mới, cân đối (100px x 100px) */
         .css-heart {
             position: relative;
-            width: 100px; /* Kích thước cơ bản của trái tim */
-            height: 90px;
-            background-color: #ff4d4d; /* Màu đỏ hồng */
-            transform: rotate(-45deg); /* Xoay để tạo hình trái tim */
-            animation: pulse-heart 1.5s infinite ease-in-out, subtle-wiggle 3s infinite ease-in-out 0.5s; /* Thêm hiệu ứng rung nhẹ */
-            box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), /* Đổ bóng phía dưới */
-                        -5px 5px 20px rgba(255, 105, 180, 0.5); /* Đổ bóng theo góc */
+            width: 100px; 
+            height: 100px; /* Đã sửa: Phải bằng width để cân đối */
+            background-color: #ff4d4d; 
+            transform: rotate(-45deg); 
+            animation: pulse-heart 1.5s infinite ease-in-out, subtle-wiggle 3s infinite ease-in-out 0.5s; 
+            box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), 
+                        -5px 5px 20px rgba(255, 105, 180, 0.5); 
             cursor: pointer;
         }
 
@@ -81,17 +81,17 @@
             position: absolute;
             width: 100px;
             height: 100px;
-            border-radius: 50%; /* Tạo hai hình tròn để ghép thành trái tim */
-            background-color: #ff4d4d; /* Cùng màu với thân trái tim */
+            border-radius: 50%; 
+            background-color: #ff4d4d; 
         }
 
         .css-heart::before {
-            top: -50px;
+            top: -50px; 
             left: 0;
         }
 
         .css-heart::after {
-            left: 50px;
+            left: 50px; 
             top: 0;
         }
 
@@ -278,10 +278,10 @@
                 font-size: 1.4em; 
             }
 
-            /* 🛑 Điều chỉnh kích thước trái tim CSS trên di động nếu cần */
+            /* 🛑 ĐÃ SỬA: Điều chỉnh kích thước trái tim CSS trên di động để cân đối (80px x 80px) */
             .css-heart {
                 width: 80px; 
-                height: 70px; 
+                height: 80px; /* Đã sửa: Phải bằng width để cân đối */
             }
             .css-heart::before,
             .css-heart::after {
@@ -289,11 +289,11 @@
                 height: 80px;
             }
             .css-heart::before {
-                top: -40px; /* 1/2 height của .css-heart */
+                top: -40px; 
                 left: 0;
             }
             .css-heart::after {
-                left: 40px; /* 1/2 width của .css-heart */
+                left: 40px; 
                 top: 0;
             }
         }
@@ -511,10 +511,10 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp (Ngắn gọn để không cuộn)
+        // Nội dung thiệp (Đã sửa tiêu đề để gọn gàng hơn)
         const firstTimeContent = `
-            <h2 style="color: #FF69B4; margin-bottom: 10px;">💖 Gửi Người Em/Anh Yêu 💌</h2>
-            <p><strong>Chào em/anh,</strong></p>
+            <h2 style="color: #FF69B4;">💖 Gửi Người Em/Anh Yêu 💌</h2>
+            <p style="margin-top: 10px;"><strong>Chào em/anh,</strong></p>
             <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn em/anh đã đến và làm cuộc đời anh/em trở nên tươi đẹp hơn mỗi ngày.</p>
             <p>Dù ở bất cứ đâu, anh/em cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với em/anh.</p>
             <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ [Tên Của Bạn] 💕</p>
