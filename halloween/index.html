@@ -143,18 +143,16 @@
         /* --- Trái Tim Mở Đầu (Container) --- */
         .heart-wrapper {
             position: absolute;
-            z-index: 200; 
+            z-index: 200; /* Cao hơn bì thư khi cả hai cùng hiện diện */
             display: flex;
             justify-content: center;
             align-items: center;
             width: 100%;
             height: 100%;
-            /* Giảm transition để trái tim biến mất nhanh hơn */
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             
-            /* Đảm bảo trạng thái ban đầu là ẩn */
             opacity: 0; 
-            pointer-events: none; 
+            pointer-events: none; /* Khởi tạo: không tương tác */
         }
 
         /* Trái tim CSS */
@@ -172,7 +170,7 @@
                         -5px 5px 20px rgba(255, 105, 180, 0.5); 
             cursor: pointer;
         }
-
+        /* Các phần còn lại của trái tim CSS (::before, ::after) giữ nguyên */
         .css-heart::before,
         .css-heart::after {
             content: "";
@@ -193,14 +191,13 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
+        /* Keyframes giữ nguyên */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.25) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
             100% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
         }
 
-        /* Keyframes cho hiệu ứng rung nhẹ (TRÁI TIM) */
         @keyframes subtle-wiggle {
             0%, 100% { transform: scale(1) rotate(-45deg); }
             25% { transform: scale(1.02) rotate(-46deg); }
@@ -226,7 +223,7 @@
             width: 350px; 
             height: 220px;
             cursor: pointer;
-            z-index: 300; /* Đảm bảo cao hơn trái tim (200) */
+            z-index: 210; /* Cao hơn trái tim một chút */
             transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
             box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
             
@@ -237,7 +234,7 @@
             
             /* Đặt trạng thái ban đầu là ẩn */
             opacity: 0;
-            pointer-events: none;
+            pointer-events: none; /* Khởi tạo: không tương tác */
             
             perspective: 1000px;
         }
@@ -246,17 +243,17 @@
         .envelope-wrapper.visible {
             opacity: 1;
             animation: pulse-envelope 2s infinite ease-in-out;
-            pointer-events: all;
+            /* pointer-events được điều khiển bằng JS */
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (BÌ THƯ) */
+        /* Keyframes cho hiệu ứng nhịp đập (BÌ THƯ) giữ nguyên */
         @keyframes pulse-envelope {
             0% { transform: scale(0.95); }
             50% { transform: scale(1.02); }
             100% { transform: scale(0.95); }
         }
         
-        /* --- THÂN BÌ THƯ --- */
+        /* --- THÂN BÌ THƯ và NẮP BÌ THƯ (Giữ nguyên) --- */
         .envelope {
             position: absolute;
             width: 100%;
@@ -276,7 +273,6 @@
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
         }
 
-        /* --- NẮP BÌ THƯ --- */
         .flap {
             position: absolute;
             top: 0;
@@ -310,7 +306,7 @@
         }
 
 
-        /* --- Nội Dung Thiệp (TRẠNG THÁI BAN ĐẦU) --- */
+        /* --- Nội Dung Thiệp (Giữ nguyên) --- */
         .letter {
             position: absolute; 
             top: 0;
@@ -326,25 +322,22 @@
             pointer-events: none; 
             z-index: 45; 
 
-            /* HIỆU ỨNG CHUYỂN ĐỔI CHUNG */
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 
-            /* TRANG TRÍ THIỆP */
             background-image: 
                 radial-gradient(circle at 10% 20%, rgba(255,229,165,0.8) 0%, rgba(250,190,123,0.8) 90%), 
                 url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23fce4ec" fill-opacity="0.5"%3E%3Cpath d="M25 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm25 8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm30-90a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 98a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3C/g%3E%3C/svg%3E'); 
             background-size: cover, 50px 50px; 
         }
 
-        /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO & CĂN GIỮA) --- */
+        /* --- TRẠNG THÁI MỞ (Giữ nguyên) --- */
         .letter.opened { 
             position: fixed; 
             opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
-            /* Kích thước & Căn giữa tuyệt đối (PC/Tablet Default) */
             width: auto;
             height: auto; 
             min-width: 300px;
@@ -364,7 +357,7 @@
             padding: 25px; 
         }
 
-        /* Lớp ẩn vỏ thư hoàn toàn */
+        /* Lớp ẩn vỏ thư hoàn toàn (Giữ nguyên) */
         .envelope-wrapper.hidden {
             opacity: 0;
             pointer-events: none;
@@ -372,7 +365,7 @@
             animation: none !important;
         }
 
-        /* --- MEDIA QUERY: Tối ưu cho Màn hình Điện thoại (Width <= 600px) --- */
+        /* --- MEDIA QUERY (Giữ nguyên) --- */
         @media (max-width: 600px) {
             
             .envelope-wrapper {
@@ -389,15 +382,6 @@
                 padding: 15px; 
             }
             
-            /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
-            .letter-content {
-                font-size: 0.9em; 
-            }
-            .letter-content h2 {
-                font-size: 1.4em; 
-            }
-
-            /* Điều chỉnh kích thước trái tim CSS trên di động */
             .css-heart {
                 width: 80px; 
                 height: 80px; 
@@ -416,14 +400,13 @@
                 top: 0;
             }
             
-            /* Điều chỉnh bàn phím PIN cho mobile */
             #keypad {
                 width: 250px;
                 gap: 10px;
             }
         }
 
-        /* --- CĂN CHỮ VÀO GIỮA THIỆP --- */
+        /* --- CĂN CHỮ VÀO GIỮA THIỆP (Giữ nguyên) --- */
         .letter-content {
             display: flex;
             flex-direction: column; 
@@ -448,7 +431,6 @@
             margin: 5px 0; 
         }
         
-        /* --- Trang trí Chữ --- */
         .letter-content h2 {
             color: #FF69B4; 
             margin-top: 0;
@@ -456,7 +438,6 @@
             text-shadow: 1px 1px 2px rgba(255, 192, 203, 0.5);
         }
         
-        /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
         .letter-content.typing-active p { opacity: 0; }
         .letter-content.typing-active h2 { opacity: 0; }
         
@@ -477,7 +458,7 @@
             100% { opacity: 0.8; }
         }
         
-        /* CĂN GIỮA TUYỆT ĐỐI CHO heartWrapper VÀ envelopeWrapper */
+        /* CĂN GIỮA TUYỆT ĐỐI (Giữ nguyên) */
         .center-container {
             position: absolute;
             top: 50%;
@@ -520,6 +501,7 @@
             <button class="pin-button action-btn" data-action="enter">OK</button>
         </div>
     </div>
+
     <div class="center-container" id="mainContainer">
         <div class="heart-wrapper" id="heartWrapper">
             <div class="css-heart" id="initialHeart"></div>
@@ -541,7 +523,7 @@
 
 
     <script>
-        // --- 1. Canvas Effect ---
+        // --- 1. Canvas Effect (Giữ nguyên) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -602,7 +584,7 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Âm Thanh ---
+        // --- 2. Logic Âm Thanh (Giữ nguyên) ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
         let isMuted = true;
@@ -611,7 +593,6 @@
 
         function toggleSound() {
             if (isMuted) {
-                // Play nhạc khi người dùng click bật
                 bgm.muted = false;
                 bgm.play().catch(error => {
                     console.error("Lỗi phát nhạc:", error);
@@ -626,7 +607,7 @@
             }
         }
         
-        // --- 3. Hiệu ứng Chữ Động ---
+        // --- 3. Hiệu ứng Chữ Động (Giữ nguyên) ---
         function applyTypewriterEffect(contentElement, delay = 500) {
             setTimeout(() => {
                 const elements = contentElement.querySelectorAll('h2, p');
@@ -655,8 +636,8 @@
             }, delay);
         }
         
-        // --- 4. Logic Nhập PIN ---
-        const CORRECT_PIN = "1234"; // 🔑 Mật khẩu mặc định: 1234.
+        // --- 4. Logic Nhập PIN (Giữ nguyên) ---
+        const CORRECT_PIN = "1234"; 
         const MAX_PIN_LENGTH = 4;
 
         const pinScreen = document.getElementById('pinScreen');
@@ -706,7 +687,6 @@
                 currentPin = "";
                 updatePinDisplay();
                 
-                // Thêm hiệu ứng rung cho bàn phím
                 keypad.style.animation = 'shake 0.5s';
                 setTimeout(() => {
                     keypad.style.animation = 'none';
@@ -714,7 +694,6 @@
             }
         }
 
-        // Event listener cho bàn phím số
         keypad.addEventListener('click', (event) => {
             if (event.target.classList.contains('pin-button')) {
                 const value = event.target.textContent;
@@ -735,9 +714,8 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
         const flapDuration = 800; 
-        const heartTransitionDuration = 300; // 0.3 giây
+        const heartTransitionDuration = 300; 
 
-        // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
             <h2 style="color: #FF69B4;">💖 Gửi Người Em/Anh Yêu 💌</h2>
             <p style="margin-top: 10px;"><strong>Chào em/anh,</strong></p>
@@ -755,34 +733,43 @@
             statusMessage.style.bottom = '20px';
         }
 
+        // --- SỬA LỖI 1: Đảm bảo trái tim có thể click và bì thư ẩn ---
         function showHeart() {
             // 1. Tiết lộ Trái tim
             heartWrapper.style.opacity = '1';
-            heartWrapper.style.pointerEvents = 'all'; 
-            heartWrapper.classList.remove('invisible'); // Đảm bảo nó được hiển thị
+            heartWrapper.style.pointerEvents = 'all'; // Kích hoạt click cho trái tim
+            heartWrapper.classList.remove('invisible'); 
+            heartWrapper.classList.remove('hidden'); 
             
+            // 2. Đảm bảo bì thư KHÔNG thể tương tác
+            envelopeWrapper.style.pointerEvents = 'none';
+            envelopeWrapper.classList.remove('visible'); 
+
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
             
-            // Cố gắng chạy nhạc (Muted) sau tương tác người dùng đầu tiên
             bgm.muted = true; 
             bgm.play().catch(error => console.log("Không thể tự động phát nhạc."));
         }
 
+        // --- SỬA LỖI 2: Đảm bảo bì thư xuất hiện và có thể click ---
         function showEnvelope() {
             // 1. Kích hoạt hiển thị bì thư NGAY LẬP TỨC
             envelopeWrapper.classList.add('visible');
+            envelopeWrapper.style.pointerEvents = 'all'; // Kích hoạt click cho bì thư
             
-            // 2. Ẩn trái tim (dùng class hidden, có transition 0.3s)
+            // 2. Ẩn trái tim và vô hiệu hóa click
             heartWrapper.classList.add('hidden'); 
-            
+            heartWrapper.style.pointerEvents = 'none'; // Vô hiệu hóa click trái tim
+
             statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
             statusMessage.style.bottom = '20px';
             
-            // 3. Gắn sự kiện click bì thư ngay lập tức (vì nó đã visible và có z-index cao)
+            // 3. Gắn sự kiện click bì thư (nếu nó chưa được gắn)
+            // (Đã gắn ở initializeApp nhưng chỉ gắn cho heart. Cần gắn cho envelope ở đây)
             envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
 
-            // 4. KHẮC PHỤC LỖI: Xóa hẳn trái tim khỏi luồng hiển thị sau khi transition kết thúc
+            // 4. Xóa hẳn trái tim khỏi luồng hiển thị sau khi transition kết thúc
             setTimeout(() => { 
                 heartWrapper.classList.add('invisible');
             }, heartTransitionDuration); 
@@ -803,14 +790,13 @@
             letter.style.height = `${rect.height}px`;
             letter.style.opacity = '1';
             
-            // 3. DI CHUYỂN THIỆP (đưa letter ra khỏi envelopeWrapper)
+            // 3. DI CHUYỂN THIỆP
             document.body.appendChild(letter);
 
-            // 4. Ẩn bì thư và bắt đầu chuyển đổi (sau khi nắp thư lật xong 800ms)
+            // 4. Ẩn bì thư và bắt đầu chuyển đổi
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // Yêu cầu trình duyệt áp dụng CSS trước khi chuyển đổi phóng to
                 requestAnimationFrame(() => {
                     letter.style.top = '';
                     letter.style.left = '';
@@ -820,7 +806,7 @@
                     letter.classList.add('opened'); // Phóng to thiệp
                 });
                 
-                // Bắt đầu gõ chữ sau khi phóng to xong (1500ms)
+                // Bắt đầu gõ chữ sau khi phóng to xong
                 setTimeout(() => {
                     checkAndSetContent(); 
                     statusMessage.style.opacity = '1';
@@ -831,10 +817,12 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            // Đảm bảo trái tim và bì thư ẩn ban đầu
+            // Khởi tạo trạng thái ẩn và vô hiệu hóa click cho cả hai
             heartWrapper.classList.add('invisible'); 
+            heartWrapper.style.pointerEvents = 'none'; 
+            envelopeWrapper.style.pointerEvents = 'none';
             
-            // GÁN LISTENER CHO heartWrapper 
+            // CHỈ GÁN LISTENER CHO heartWrapper. Sự kiện cho Envelope được gán sau đó.
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
