@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Lãng Mạn 💐</title>
+    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -162,7 +162,7 @@
         }
 
 
-        /* --- Nội Dung Thiệp (Letter Content - TRẠNG THÁI BAN ĐẦU TRONG BÌ THƯ) --- */
+        /* --- Nội Dung Thiệp (TRẠNG THÁI BAN ĐẦU) --- */
         .letter {
             position: absolute; 
             top: 0;
@@ -196,11 +196,14 @@
             pointer-events: all; 
             z-index: 999; 
 
-            /* 🛑 CĂN GIỮA TUYỆT ĐỐI */
-            width: 90vw; 
-            height: 90vh; 
-            max-width: 700px; 
-            max-height: 800px;
+            /* Kích thước & Căn giữa tuyệt đối */
+            /* 🛑 ĐÃ GIẢM KÍCH THƯỚC TỐI ĐA CHO PC/TABLET */
+            width: auto;
+            height: auto; 
+            min-width: 300px;
+            min-height: 400px;
+            max-width: 550px; 
+            max-height: 700px;
             
             top: 50%;
             left: 50%;
@@ -210,6 +213,9 @@
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
             
             border-radius: 10px;
+            
+            /* Tăng nhẹ padding để nội dung không bị dính sát viền */
+            padding: 25px; 
         }
 
         /* Lớp ẩn vỏ thư hoàn toàn */
@@ -228,9 +234,12 @@
             }
 
             .letter.opened { 
-                width: 90vw; 
-                height: 90vh; 
-                padding: 10px; 
+                /* 🛑 ĐIỀU CHỈNH: Giảm xuống 85% màn hình để có viền đẹp hơn */
+                width: 85vw; 
+                height: 85vh; 
+                max-width: 85vw;
+                max-height: 85vh;
+                padding: 15px; /* Giảm padding cho mobile */
             }
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
@@ -246,8 +255,8 @@
         .letter-content {
             display: flex;
             flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
+            justify-content: center; /* Căn giữa dọc */
+            align-items: center; /* Căn giữa ngang */
             
             overflow-y: hidden; 
             
@@ -259,7 +268,7 @@
             height: 100%;
             box-sizing: border-box;
             
-            padding: 5px; 
+            padding: 0; /* Đã có padding ở .letter.opened */
         }
         
         .letter-content > * {
@@ -302,7 +311,7 @@
 
     <div id="soundToggle">🔇</div> 
     <audio id="bgm" loop>
-        <source src="halloween_music.mp3" type="audio/mpeg" /> 
+        <source src="nhac.mp3" type="audio/mpeg" /> 
     </audio>
 
     <div class="heart-wrapper" id="heartWrapper">
@@ -446,7 +455,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI CĂN GIỮA) ---
+        // --- 4. Logic Mở Thư (Đã sửa lỗi và tối ưu) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -510,13 +519,11 @@
                 
                 // SỬ DỤNG requestAnimationFrame ĐỂ ĐẢM BẢO CHUYỂN ĐỔI BẮT ĐẦU TỪ VỊ TRÍ ĐÃ ĐỊNH
                 requestAnimationFrame(() => {
-                    // 🛑 BƯỚC SỬA LỖI: Xóa các thuộc tính định vị INLINE (top, left, width, height) 
-                    // để các thuộc tính của class .opened có thể áp dụng ngay lập tức
+                    // Xóa các thuộc tính định vị INLINE
                     letter.style.top = '';
                     letter.style.left = '';
                     letter.style.width = '';
                     letter.style.height = '';
-                    // Giữ position fixed
                     
                     // Áp dụng class phóng to và căn giữa
                     letter.classList.add('opened'); 
