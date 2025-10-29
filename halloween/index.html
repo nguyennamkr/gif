@@ -150,6 +150,10 @@
             width: 100%;
             height: 100%;
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            
+            /* Đảm bảo trạng thái ban đầu là ẩn */
+            opacity: 0; 
+            pointer-events: none; 
         }
 
         /* Trái tim CSS */
@@ -212,7 +216,7 @@
         
         /* Vỏ thư */
         .envelope-wrapper {
-            position: relative;
+            position: relative; /* Đặt lại vị trí tương đối */
             width: 350px; 
             height: 220px;
             cursor: pointer;
@@ -225,7 +229,10 @@
             overflow: hidden; 
             border-radius: 5px; 
             
-            /* Perspective cho nắp thư xoay trong không gian 3D */
+            /* Đảm bảo trạng thái ban đầu là ẩn */
+            opacity: 0;
+            pointer-events: none;
+            
             perspective: 1000px;
         }
 
@@ -463,6 +470,19 @@
             50% { opacity: 1; }
             100% { opacity: 0.8; }
         }
+        
+        /* CĂN GIỮA TUYỆT ĐỐI CHO heartWrapper VÀ envelopeWrapper */
+        .center-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+        }
     </style>
 </head>
 <body>
@@ -494,22 +514,25 @@
             <button class="pin-button action-btn" data-action="enter">OK</button>
         </div>
     </div>
-    <div class="heart-wrapper" id="heartWrapper">
-        <div class="css-heart" id="initialHeart"></div>
+    <div class="center-container" id="mainContainer">
+        <div class="heart-wrapper" id="heartWrapper">
+            <div class="css-heart" id="initialHeart"></div>
+        </div>
+
+        <div class="envelope-wrapper" id="envelopeWrapper">
+            <div class="flap"></div>
+            <div class="envelope"></div>
+            <div class="letter" id="letter">
+                <div class="letter-content" id="letterContent">
+                </div>
+            </div>
+            
+            <p class="status-message" id="statusMessage">
+                Chạm vào trái tim để bắt đầu...
+            </p>
+        </div>
     </div>
 
-    <div class="envelope-wrapper" id="envelopeWrapper">
-        <div class="flap"></div>
-        <div class="envelope"></div>
-        <div class="letter" id="letter">
-             <div class="letter-content" id="letterContent">
-                </div>
-        </div>
-        
-        <p class="status-message" id="statusMessage">
-            Chạm vào trái tim để bắt đầu...
-        </p>
-    </div>
 
     <script>
         // --- 1. Canvas Effect ---
@@ -670,7 +693,7 @@
                 pinScreen.classList.add('hidden');
                 pinMessage.textContent = "Mật khẩu đúng! Đang mở khóa...";
                 
-                // Bắt đầu chuỗi hoạt động chính của thiệp sau khi màn hình PIN ẩn
+                // Đợi transition của pinScreen kết thúc (500ms) trước khi hiển thị trái tim
                 setTimeout(showHeart, 500); 
             } else {
                 pinMessage.textContent = "Sai mật khẩu! Thử lại.";
@@ -701,12 +724,11 @@
 
         // --- 5. Logic Mở Thư (Được gọi sau khi nhập PIN đúng) ---
         const heartWrapper = document.getElementById('heartWrapper');
-        const initialHeart = document.getElementById('initialHeart');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
-        const flapDuration = 800; // 0.8 giây
+        const flapDuration = 800; 
 
         // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
@@ -727,9 +749,9 @@
         }
 
         function showHeart() {
-             // 1. Tiết lộ Trái tim
+            // 1. Tiết lộ Trái tim
             heartWrapper.style.opacity = '1';
-            heartWrapper.style.pointerEvents = 'all'; // Cho phép click
+            heartWrapper.style.pointerEvents = 'all'; 
             
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
@@ -740,17 +762,19 @@
         }
 
         function showEnvelope() {
-            // 1. Ẩn trái tim ngay lập tức và kích hoạt transition CSS (0.8s)
+            // 1. Ẩn trái tim (dùng class hidden, có transition 0.8s)
             heartWrapper.classList.add('hidden'); 
             
-            // 2. HIỆN BÌ THƯ GẦN NHƯ TỨC THÌ
-            // Đã thay 800ms thành 10ms để đảm bảo chuyển đổi diễn ra ngay lập tức sau khi ẩn trái tim.
+            // 2. Đợi 800ms để hiệu ứng ẩn trái tim hoàn thành
             setTimeout(() => { 
+                // 3. HIỆN BÌ THƯ
                 envelopeWrapper.classList.add('visible');
                 statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
                 statusMessage.style.bottom = '20px';
+                
+                // 4. Gắn sự kiện click để mở thiệp
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
-            }, 10); 
+            }, 800); 
         }
 
         function openEnvelope() {
@@ -758,7 +782,7 @@
             envelopeWrapper.classList.add('open'); 
             statusMessage.style.opacity = '0';
 
-            // 2. TẠO VỊ TRÍ BAN ĐẦU (Start Point)
+            // 2. Lấy vị trí ban đầu của bì thư
             const rect = envelopeWrapper.getBoundingClientRect();
             
             letter.style.position = 'fixed'; 
@@ -768,23 +792,24 @@
             letter.style.height = `${rect.height}px`;
             letter.style.opacity = '1';
             
-            // 3. DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
+            // 3. DI CHUYỂN THIỆP (đưa letter ra khỏi envelopeWrapper để có thể cố định trên body)
             document.body.appendChild(letter);
 
-            // 4. Ẩn bì thư và bắt đầu chuyển đổi
+            // 4. Ẩn bì thư và bắt đầu chuyển đổi (sau khi nắp thư lật xong 800ms)
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
+                // Yêu cầu trình duyệt áp dụng CSS trước khi chuyển đổi phóng to
                 requestAnimationFrame(() => {
                     letter.style.top = '';
                     letter.style.left = '';
                     letter.style.width = '';
                     letter.style.height = '';
                     
-                    letter.classList.add('opened'); 
+                    letter.classList.add('opened'); // Phóng to thiệp
                 });
                 
-                // Bắt đầu gõ chữ sau khi phóng to xong
+                // Bắt đầu gõ chữ sau khi phóng to xong (1500ms)
                 setTimeout(() => {
                     checkAndSetContent(); 
                     statusMessage.style.opacity = '1';
@@ -795,13 +820,7 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            // Thiết lập trạng thái ban đầu: Ẩn trái tim và bì thư
-            heartWrapper.style.opacity = '0';
-            heartWrapper.style.pointerEvents = 'none'; 
-            envelopeWrapper.style.opacity = '0';
-            envelopeWrapper.style.pointerEvents = 'none';
-            
-            // GÁN LISTENER CHO heartWrapper
+            // 🛑 GÁN LISTENER CHO heartWrapper KHI KHỞI TẠO
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
