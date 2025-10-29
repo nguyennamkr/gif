@@ -526,7 +526,7 @@
     </div>
 
 
-    <script>
+   <script>
         // --- 1. Canvas Effect (Giữ nguyên) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
@@ -640,9 +640,10 @@
             }, delay);
         }
         
-        // --- 4. Logic Nhập PIN (Giữ nguyên) ---
-        const CORRECT_PIN = "1234"; 
+        // --- 4. Logic Nhập PIN (ĐÃ SỬA ĐỔI) ---
+        const CORRECT_PIN = "2929"; // ĐÃ THAY ĐỔI: Mật khẩu mới
         const MAX_PIN_LENGTH = 4;
+        const SUCCESS_MESSAGE_DELAY = 1000; // ĐỘ TRỄ MỚI: 1 giây
 
         const pinScreen = document.getElementById('pinScreen');
         const pinDisplay = document.getElementById('pinDisplay');
@@ -681,13 +682,19 @@
             }
 
             if (currentPin === CORRECT_PIN) {
-                pinScreen.classList.add('hidden');
-                pinMessage.textContent = "Mật khẩu đúng! Đang mở khóa...";
+                // THAY ĐỔI: Thông báo thành công mới
+                pinMessage.textContent = "Xin mời vào! ❤️";
                 
-                // Đợi transition của pinScreen kết thúc (500ms) trước khi hiển thị trái tim
-                setTimeout(showHeart, 500); 
+                // THAY ĐỔI: Delay 1 giây trước khi ẩn màn hình PIN
+                setTimeout(() => {
+                    pinScreen.classList.add('hidden');
+                    // Đợi transition của pinScreen kết thúc (500ms) trước khi hiển thị trái tim
+                    setTimeout(showHeart, 500); 
+                }, SUCCESS_MESSAGE_DELAY);
+
             } else {
-                pinMessage.textContent = "Sai mật khẩu! Thử lại.";
+                // THAY ĐỔI: Thông báo lỗi mới
+                pinMessage.textContent = "Trái tim đóng cửa 💔";
                 currentPin = "";
                 updatePinDisplay();
                 
@@ -711,7 +718,7 @@
             }
         });
 
-        // --- 5. Logic Mở Thư ---
+        // --- 5. Logic Mở Thư (Giữ nguyên) ---
         const heartWrapper = document.getElementById('heartWrapper');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
