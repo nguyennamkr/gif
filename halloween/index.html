@@ -107,18 +107,31 @@
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ: HỒNG NHẠT --- */
+        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC VÀ TRANG TRÍ ĐẸP --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #FFC0CB; /* Light Pink */
+            background-color: #FFC0CB; /* Light Pink Base */
+            
+            /* HỌA TIẾT KẺ SỌC HỒNG NHẠT */
+            background-image: repeating-linear-gradient(
+                45deg,
+                #FFC0CB, /* Light Pink */
+                #FFC0CB 10px,
+                #FFD9E6 10px, /* Slightly Lighter Pink/White for stripe */
+                #FFD9E6 20px
+            );
+
             border-radius: 5px;
             z-index: 50;
+            
+            /* TRANG TRÍ: Thêm viền đẹp */
+            border: 3px solid #ff99cc; 
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
         }
 
-        /* --- NẮP BÌ THƯ: VÀNG NHẸ (Creamy Yellow) --- */
+        /* --- NẮP BÌ THƯ: VÀNG NHẸ KẺ SỌC VÀ TRANG TRÍ ĐẸP --- */
         .flap {
             position: absolute;
             top: 0;
@@ -126,12 +139,25 @@
             width: 100%;
             height: 50%;
             
-            background-color: #FFFFAA; /* Light Yellow/Cream */
+            background-color: #FFFFAA; /* Light Yellow Base */
+            
+            /* HỌA TIẾT KẺ SỌC VÀNG NHẠT */
+            background-image: repeating-linear-gradient(
+                -45deg, /* Angle khác cho đẹp */
+                #FFFFAA, /* Light Yellow */
+                #FFFFAA 10px,
+                #FFFFCC 10px, /* Lighter Yellow/Cream for stripe */
+                #FFFFCC 20px
+            );
+
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
             z-index: 150; 
+            
+            /* TRANG TRÍ: Thêm viền dưới (nơi nắp gặp thân) */
+            border-bottom: 3px solid #ffd700; 
         }
         /* Hiệu ứng Nắp Thư Lật */
         .envelope-wrapper.open .flap {
@@ -143,7 +169,6 @@
 
         /* --- Nội Dung Thiệp (Letter Content) --- */
         .letter {
-            /* Vị trí ban đầu: Tuyệt đối bên trong bì thư */
             position: absolute; 
             top: 0;
             left: 0;
@@ -154,12 +179,9 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            /* Đặt transform ban đầu */
             transform: translate(0, 0); 
             
-            /* SỬA LỖI: Đảm bảo transition áp dụng cho tất cả thuộc tính */
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
-            
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
             z-index: 45; 
             clip-path: none; 
@@ -172,12 +194,11 @@
             pointer-events: none; 
         }
 
-        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO: Đảm bảo selector có ưu tiên cao */
+        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ */
         .envelope-wrapper.opened-state > .letter { 
-            /* 🛑 BẮT BUỘC: Chuyển sang position: fixed để thoát khỏi bì thư */
-            position: fixed !important; /* Dùng !important để đảm bảo không bị ghi đè */
+            position: fixed !important; 
             
-            opacity: 1; /* Hiện thiệp */
+            opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
@@ -190,11 +211,10 @@
             /* CĂN CHỈNH GIỮA MÀN HÌNH */
             top: 50%;
             left: 50%;
-            /* 🛑 Dùng transform để căn giữa tuyệt đối */
             transform: translate(-50%, -50%); 
             
-            /* TRANG TRÍ ĐÁNG YÊU */
-            border: 5px solid #FF69B4; 
+            /* TRANG TRÍ ĐÁNG YÊU CHO THIỆP */
+            border: 5px solid #FF69B4; /* Hot Pink Border */
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
             
             clip-path: none; 
@@ -263,7 +283,7 @@
             margin: 5px 0; 
         }
         
-        /* --- Trang trí Đáng Yêu --- */
+        /* --- Trang trí Đáng Yêu cho chữ --- */
         .letter-content h2 {
             color: #FF69B4; 
             margin-top: 0;
@@ -340,7 +360,8 @@
                 this.speedX = Math.random() * 0.1;
                 this.speedY = Math.random() * 1 + 0.5;
                 this.opacity = Math.random() * 0.5 + 0.3;
-                this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, ';
+                // Màu cam và tím cho Halloween (có thể thay đổi nếu bạn muốn tông màu tình cảm hơn)
+                this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, '; 
             }
             draw() {
                 ctx.fillStyle = this.color + this.opacity + ')';
@@ -451,13 +472,12 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp (Chủ đề đáng yêu)
+        // Nội dung thiệp (Cỡ chữ vừa phải, gói gọn)
         const firstTimeContent = `
             <h2 style="color: #FF69B4; margin-bottom: 10px;">💖 Dành tặng người đặc biệt nhất 💌</h2>
             <p><strong>Chào em/anh,</strong></p>
-            <p>Nếu chiếc bì thư này đến được tay em/anh, điều đó có nghĩa là phép màu đã xảy ra! Nó được gói ghém bằng tất cả sự quan tâm và mong muốn thấy em/anh cười.</p>
-            <p>Anh/Em muốn em/anh biết rằng: Dù bận rộn đến mấy, em/anh luôn là suy nghĩ ngọt ngào nhất của anh/em.</p>
-            <p>Mãi đáng yêu và hạnh phúc như bây giờ nhé!</p>
+            <p>Chiếc thiệp này là lời nhắc nhở nhỏ bé: Dù thế giới có bận rộn và nhiều thứ hỗn độn, anh/em vẫn luôn dành một góc yên tĩnh trong tim để nhớ đến em/anh.</p>
+            <p>Mỗi ngày trôi qua, anh/em lại mong chờ hơn nữa giây phút chúng ta có thể gặp nhau. Hãy cứ là chính em/anh: đáng yêu, mạnh mẽ và tuyệt vời như bây giờ nhé!</p>
             <p style="color: #FF69B4; font-weight: bold;">— Gửi từ trái tim luôn hướng về em/anh 💕</p>
         `;
 
