@@ -1,380 +1,158 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thư Tình Yêu 💌</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thiệp Chúc Mừng</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(135deg, #ffe6f0, #ffb3c6);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: "Segoe UI", sans-serif;
+        overflow: hidden;
+    }
 
-    <style>
-        /* === CSS HOÀN CHỈNH === */
+    /* Trái tim mở đầu */
+    .start-btn {
+        font-size: 3rem;
+        cursor: pointer;
+        animation: pulse 1.5s infinite;
+        user-select: none;
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
 
-        body {
-            background-color: #0d0d0d;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            margin: 0;
-            overflow: hidden;
-            perspective: 1000px;
-        }
+    /* Bì thư */
+    .envelope-wrapper {
+        position: relative;
+        width: 300px;
+        height: 200px;
+        cursor: pointer;
+        display: none;
+        perspective: 800px;
+    }
+    .envelope {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background: #ff7aa2;
+        border-radius: 10px;
+        box-shadow: 0 0 20px rgba(0,0,0,0.2);
+        transition: transform 1s ease-in-out;
+    }
+    .flap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: #ff4d88;
+        border-radius: 10px 10px 0 0;
+        transform-origin: top;
+        transition: transform 1s ease-in-out;
+    }
 
-        /* Nền hiệu ứng (Canvas) */
-        #magicCanvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
+    /* Thiệp chúc mừng */
+    .letter {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        width: 90vw;
+        max-width: 700px;
+        height: 85vh;
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 0 40px rgba(255, 105, 180, 0.8);
+        border: 5px solid #ff4da6;
+        opacity: 0;
+        z-index: 999;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 30px;
+        transition: all 0.8s ease;
+    }
 
-        /* Nút bật/tắt âm thanh */
-        #soundToggle {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            font-size: 24px;
-            cursor: pointer;
-            color: #ff9900;
-            z-index: 300;
-            transition: color 0.3s, transform 0.2s;
-        }
-        #soundToggle:hover {
-            color: #ff69b4;
-            transform: scale(1.1) rotate(5deg);
-        }
+    .letter-content {
+        font-size: 1.2rem;
+        line-height: 1.6;
+        color: #333;
+        overflow-y: auto;
+    }
 
-        /* Trái tim mở đầu */
-        .heart-wrapper {
-            position: absolute;
-            z-index: 200;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            height: 100%;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-        .heart {
-            font-size: 80px;
-            color: #ff4d4d;
-            cursor: pointer;
-            animation: pulse-heart 1.5s infinite ease-in-out;
-            text-shadow: 0 0 25px rgba(255, 77, 77, 1);
-            line-height: 1;
-        }
-        @keyframes pulse-heart {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-            100% { transform: scale(1); }
-        }
-        .heart-wrapper.hidden {
-            opacity: 0;
-            transform: scale(0.5) translateY(-50px);
-            pointer-events: none;
-        }
+    .show-letter {
+        transform: translate(-50%, -50%) scale(1);
+        opacity: 1;
+    }
 
-        /* Bì thư */
-        .envelope-wrapper {
-            position: relative;
-            width: 300px;
-            height: 200px;
-            cursor: pointer;
-            z-index: 100;
-            transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s;
-            box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7);
-            opacity: 0;
-            pointer-events: none;
-            transform: scale(0.8);
-            overflow: hidden;
-            border-radius: 5px;
-        }
-        .envelope-wrapper.visible {
-            opacity: 1;
-            transform: scale(1);
-            pointer-events: all;
-        }
-        .envelope-wrapper:hover:not(.opened-state) {
-            transform: scale(1.05) rotateZ(-1deg);
-            box-shadow: 0 15px 70px rgba(255, 105, 180, 0.9);
-        }
-
-        /* Thân bì thư */
-        .envelope {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background-color: #FFC0CB;
-            background-image: repeating-linear-gradient(
-                45deg,
-                #FFC0CB, #FFC0CB 10px,
-                #FFD9E6 10px, #FFD9E6 20px
-            );
-            border-radius: 5px;
-            border: 3px solid #ff99cc;
-            z-index: 50;
-        }
-
-        /* Nắp bì thư */
-        .flap {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background-color: #FFFFAA;
-            background-image: repeating-linear-gradient(
-                -45deg,
-                #FFFFAA, #FFFFAA 10px,
-                #FFFFCC 10px, #FFFFCC 20px
-            );
-            clip-path: polygon(0 0, 100% 0, 50% 100%);
-            transform-origin: top;
-            transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
-            border-bottom: 3px solid #ffd700;
-            z-index: 150;
-        }
-        .envelope-wrapper.open .flap {
-            transform: rotateX(180deg);
-            z-index: 40;
-            transition: transform 0.8s ease-in-out;
-        }
-
-        /* Thiệp bên trong */
+    @media (max-width: 600px) {
         .letter {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            border-radius: 10px;
+            width: 95vw;
+            height: 80vh;
             padding: 20px;
-            box-sizing: border-box;
-            transform: scale(0.1);
-            transition: all 1.5s ease-in-out;
-            opacity: 0;
-            pointer-events: none;
-            z-index: 45;
         }
-
-        /* Khi thiệp phóng to */
-        .envelope-wrapper.opened-state > .letter {
-            position: fixed !important;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) scale(1) !important;
-            width: 90vw;
-            height: auto;
-            max-width: 600px;
-            max-height: 85vh;
-            overflow-y: auto;
-            opacity: 1;
-            z-index: 999;
-            background-color: #fff;
-            pointer-events: all;
-            border: 4px solid #FF69B4;
-            box-shadow: 0 0 30px rgba(255, 105, 180, 0.8);
-            border-radius: 15px;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
         .letter-content {
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            overflow-y: auto;
-            padding: 10px 15px;
-            box-sizing: border-box;
-            color: #333;
-            font-size: 1.05em;
-            line-height: 1.6;
+            font-size: 1rem;
         }
-        .letter-content h2 {
-            color: #FF69B4;
-            font-size: 1.8em;
-            margin-top: 0;
-            text-shadow: 1px 1px 2px rgba(255,192,203,0.5);
-        }
-
-        /* Responsive cho điện thoại */
-        @media (max-width: 600px) {
-            .envelope-wrapper {
-                width: 250px;
-                height: 160px;
-            }
-            .envelope-wrapper.opened-state > .letter {
-                width: 95vw;
-                height: auto;
-                max-height: 90vh;
-                padding: 15px;
-            }
-            .letter-content {
-                font-size: 0.9em;
-                line-height: 1.4;
-            }
-        }
-
-        .status-message {
-            position: absolute;
-            bottom: -50px;
-            color: #ffd700;
-            font-style: italic;
-            font-size: 0.9em;
-            width: 100%;
-            text-align: center;
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%,100% { opacity: 0.8; }
-            50% { opacity: 1; }
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
-    <canvas id="magicCanvas"></canvas>
-    <div id="soundToggle">🔇</div> 
 
-    <audio id="bgm" loop>
-        <source src="halloween_music.mp3" type="audio/mpeg">
-    </audio>
+<div class="start-btn" onclick="showEnvelope()">💌</div>
 
-    <div class="heart-wrapper" id="heartWrapper">
-        <span class="heart" id="initialHeart">❤️</span>
-    </div>
-
-    <div class="envelope-wrapper" id="envelopeWrapper">
+<div class="envelope-wrapper" id="envelopeWrapper" onclick="openEnvelope()">
+    <div class="envelope">
         <div class="flap"></div>
-        <div class="envelope"></div>
-        <div class="letter" id="letter">
-            <div class="letter-content" id="letterContent"></div>
-        </div>
-        <p class="status-message" id="statusMessage">Ấn vào đây để mở thư...</p>
     </div>
+</div>
 
-    <script>
-        // --- Canvas nền ---
-        const canvas = document.getElementById('magicCanvas');
-        const ctx = canvas.getContext('2d');
-        let width = window.innerWidth, height = window.innerHeight;
-        canvas.width = width; canvas.height = height;
-        let particles = [];
-        const particleCount = 70;
+<div class="letter" id="letter">
+    <div class="letter-content">
+        <h1>🎉 Chúc Mừng Bạn 🎉</h1>
+        <p>Chúc bạn có một ngày tuyệt vời, tràn ngập niềm vui, hạnh phúc và yêu thương!<br>
+        Mong những điều tốt đẹp nhất sẽ luôn đến với bạn 💖</p>
+    </div>
+</div>
 
-        class Particle {
-            constructor() { this.reset(); }
-            reset() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.size = Math.random() * 1.5 + 0.5;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.3;
-                this.color = Math.random() > 0.5 ? 'rgba(255,140,0,' : 'rgba(138,43,226,';
-            }
-            draw() {
-                ctx.fillStyle = this.color + this.opacity + ')';
-                ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fill();
-            }
-            update() {
-                this.y += this.speedY;
-                if (this.y > height) this.reset(), this.y = 0;
-            }
-        }
-        function initCanvas() { for (let i=0;i<particleCount;i++) particles.push(new Particle()); }
-        function animateCanvas() {
-            ctx.fillStyle = 'rgba(13,13,13,0.1)';
-            ctx.fillRect(0,0,width,height);
-            particles.forEach(p=>{p.update();p.draw();});
-            requestAnimationFrame(animateCanvas);
-        }
-        window.addEventListener('resize', ()=>{ width=innerWidth; height=innerHeight; canvas.width=width; canvas.height=height; particles=[]; initCanvas(); });
-        initCanvas(); animateCanvas();
+<audio id="bgMusic" src="music.mp3"></audio>
 
-        // --- Âm nhạc ---
-        const bgm = document.getElementById('bgm');
-        const soundToggle = document.getElementById('soundToggle');
-        let isMuted = true;
-        soundToggle.addEventListener('click', ()=>{
-            if(isMuted){ bgm.play().catch(()=>{}); bgm.muted=false; soundToggle.textContent='🔊'; }
-            else { bgm.pause(); bgm.currentTime=0; soundToggle.textContent='🔇'; }
-            isMuted=!isMuted;
-        });
+<script>
+function showEnvelope() {
+    document.querySelector('.start-btn').style.display = 'none';
+    document.getElementById('envelopeWrapper').style.display = 'block';
+}
 
-        // --- Hiệu ứng typewriter ---
-        function applyTypewriterEffect(contentElement, delay=500){
-            setTimeout(()=>{
-                const elements=contentElement.querySelectorAll('h2,p');
-                elements.forEach((el,index)=>{
-                    const text=el.innerHTML; el.innerHTML='';
-                    setTimeout(()=>{
-                        let i=0; function type(){ if(i<text.length){ el.innerHTML+=text.charAt(i); i++; setTimeout(type,25); } }
-                        type();
-                    }, index*500);
-                });
-            }, delay);
-        }
+function openEnvelope() {
+    const flap = document.querySelector('.flap');
+    const envelope = document.querySelector('.envelope');
+    const letter = document.getElementById('letter');
+    const music = document.getElementById('bgMusic');
 
-        // --- Mở thư ---
-        const heartWrapper=document.getElementById('heartWrapper');
-        const initialHeart=document.getElementById('initialHeart');
-        const envelopeWrapper=document.getElementById('envelopeWrapper');
-        const letter=document.getElementById('letter');
-        const letterContent=document.getElementById('letterContent');
-        const statusMessage=document.getElementById('statusMessage');
+    flap.style.transform = 'rotateX(-180deg)';
 
-        const firstTimeContent = `
-            <h2>💖 Dành tặng người đặc biệt nhất 💌</h2>
-            <p><strong>Chào em/anh,</strong></p>
-            <p>Chiếc thiệp này là lời nhắc nhỏ: Dù cuộc sống có bận rộn thế nào, anh/em vẫn luôn dành một góc bình yên trong tim để nhớ đến em/anh.</p>
-            <p>Mỗi ngày trôi qua, anh/em lại mong chờ giây phút chúng ta gặp lại. Hãy cứ là chính em/anh — đáng yêu, mạnh mẽ và tuyệt vời như bây giờ nhé!</p>
-            <p style="color:#FF69B4;font-weight:bold;">— Gửi từ trái tim luôn hướng về em/anh 💕</p>
-        `;
+    setTimeout(() => {
+        // Ẩn bì thư
+        envelope.style.opacity = '0';
+        envelope.style.transition = 'opacity 0.8s ease';
+        document.getElementById('envelopeWrapper').style.pointerEvents = 'none';
 
-        function checkAndSetContent(){
-            letterContent.innerHTML = firstTimeContent;
-            applyTypewriterEffect(letterContent, 1000);
-            statusMessage.textContent = "Ấn vào đây để mở thư...";
-        }
-
-        function showEnvelope(){
-            heartWrapper.classList.add('hidden');
-            setTimeout(()=>{
-                envelopeWrapper.classList.add('visible');
-                envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
-            },800);
-        }
-
-        function openEnvelope(){
-            if(envelopeWrapper.classList.contains('opened-state')) return;
-            envelopeWrapper.classList.add('open');
-            setTimeout(()=>{
-                envelopeWrapper.classList.add('opened-state');
-                letter.style.position='fixed';
-                letter.style.top='50%';
-                letter.style.left='50%';
-                letter.style.transform='translate(-50%, -50%) scale(1)';
-                letter.style.opacity='1';
-                letter.style.pointerEvents='all';
-                setTimeout(()=>{
-                    envelopeWrapper.classList.add('hidden');
-                    checkAndSetContent();
-                },1500);
-                statusMessage.textContent="Thiệp đã mở! 💖";
-            },50);
-        }
-
-        function initializeApp(){
-            initialHeart.addEventListener('click', showEnvelope);
-        }
-        initializeApp();
-    </script>
+        // Hiện thiệp phóng to giữa màn hình
+        letter.classList.add('show-letter');
+        // Phát nhạc
+        music.play().catch(() => {});
+    }, 800);
+}
+</script>
 </body>
 </html>
