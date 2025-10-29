@@ -62,7 +62,7 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        /* 🛑 SỬA LỖI NHỊP ĐẬP TRÁI TIM: Đảm bảo animation được khai báo đủ */
+        /* Trái tim CSS */
         .css-heart {
             position: relative;
             width: 100px; 
@@ -99,7 +99,7 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Giữ nguyên */
+        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.15) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
@@ -118,7 +118,6 @@
             opacity: 0;
             transform: scale(0.5) translateY(-50px);
             pointer-events: none; 
-            /* Khi ẩn, dừng animation */
             animation: none !important;
         }
         
@@ -194,7 +193,8 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
-            transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
+            /* 🛑 ĐÃ SỬA CHUYỂN ĐỘNG NẮP THƯ: Chậm và mềm mại hơn */
+            transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 1.2s;
             z-index: 150; 
             border-bottom: 3px solid #ffd700; 
         }
@@ -202,7 +202,8 @@
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
-            transition: transform 0.8s ease-in-out, z-index 0s 0s;
+            /* Phải khớp thời gian lật nắp */
+            transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0s; 
         }
 
 
@@ -393,7 +394,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Đã tăng số lượng hạt lấp lánh) ---
+        // --- 1. Canvas Effect (Giữ nguyên số lượng mới) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -401,7 +402,6 @@
         canvas.width = width;
         canvas.height = height;
         let particles = [];
-        // 🛑 ĐÃ TĂNG: Số lượng hạt lấp lánh/sao băng
         const particleCount = 120; 
 
         class Particle {
@@ -411,11 +411,10 @@
             reset() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                // 🛑 ĐÃ SỬA: Size lớn hơn và tốc độ rơi nhanh hơn
                 this.size = Math.random() * 2 + 1; 
                 this.speedX = Math.random() * 0.1;
-                this.speedY = Math.random() * 1.5 + 1; // Tốc độ rơi nhanh hơn
-                this.opacity = Math.random() * 0.7 + 0.5; // Độ mờ cao hơn
+                this.speedY = Math.random() * 1.5 + 1; 
+                this.opacity = Math.random() * 0.7 + 0.5; 
                 this.color = Math.random() > 0.5 ? 'rgba(255, 105, 180, ' : 'rgba(199, 21, 133, '; 
             }
             draw() {
@@ -440,7 +439,6 @@
             }
         }
         function animateCanvas() {
-            // Giảm độ trong suốt của lớp phủ để hạt rõ ràng hơn
             ctx.fillStyle = 'rgba(247, 240, 255, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -519,7 +517,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (Giữ nguyên) ---
+        // --- 4. Logic Mở Thư (Điều chỉnh thời gian) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -527,6 +525,9 @@
         const letter = document.getElementById('letter'); 
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
+        
+        // Thời gian chuyển đổi nắp thư mới (phải khớp với CSS)
+        const flapDuration = 1200; // 1.2 giây
 
         // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
@@ -578,6 +579,7 @@
             document.body.appendChild(letter);
 
             // 4. Ẩn bì thư và bắt đầu chuyển đổi
+            // Thời gian chờ được tăng để bì thư ẩn sau khi nắp lật xong
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
@@ -599,7 +601,7 @@
                     statusMessage.style.opacity = '1';
                 }, 1500); 
 
-            }, 500); 
+            }, flapDuration + 100); // 1.2s (flap duration) + 0.1s delay
         }
 
         // --- KHỞI TẠO CUỐI CÙNG ---
