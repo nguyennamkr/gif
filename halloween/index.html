@@ -196,14 +196,14 @@
             pointer-events: all; 
             z-index: 999; 
 
-            /* Kích thước & Căn giữa tuyệt đối */
-            /* 🛑 ĐÃ GIẢM KÍCH THƯỚC TỐI ĐA CHO PC/TABLET */
+            /* Kích thước & Căn giữa tuyệt đối (PC/Tablet Default) */
             width: auto;
             height: auto; 
             min-width: 300px;
             min-height: 400px;
-            max-width: 550px; 
-            max-height: 700px;
+            /* 🛑 ĐÃ GIẢM KÍCH THƯỚC TỐI ĐA CHO PC/TABLET */
+            max-width: 500px; 
+            max-height: 600px;
             
             top: 50%;
             left: 50%;
@@ -214,7 +214,6 @@
             
             border-radius: 10px;
             
-            /* Tăng nhẹ padding để nội dung không bị dính sát viền */
             padding: 25px; 
         }
 
@@ -234,12 +233,12 @@
             }
 
             .letter.opened { 
-                /* 🛑 ĐIỀU CHỈNH: Giảm xuống 85% màn hình để có viền đẹp hơn */
-                width: 85vw; 
-                height: 85vh; 
-                max-width: 85vw;
-                max-height: 85vh;
-                padding: 15px; /* Giảm padding cho mobile */
+                /* 🛑 ĐIỀU CHỈNH MỚI: Giảm kích thước thiệp trên mobile */
+                width: 80vw; 
+                height: 70vh; 
+                max-width: 90vw;
+                max-height: 90vh;
+                padding: 15px; /* Giữ padding gọn cho mobile */
             }
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
@@ -268,7 +267,7 @@
             height: 100%;
             box-sizing: border-box;
             
-            padding: 0; /* Đã có padding ở .letter.opened */
+            padding: 0; 
         }
         
         .letter-content > * {
