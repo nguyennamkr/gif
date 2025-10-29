@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thư Tình Yêu Nhỏ 💌</title>
+    <title>💌 Thư Yêu Thương 💌</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -17,13 +17,13 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; /* Đảm bảo không có thanh cuộn không mong muốn */
             perspective: 1000px; 
         }
 
         /* --- Hiệu ứng Nền (Canvas) --- */
         #magicCanvas {
-            position: fixed; /* Dùng fixed cho nền để tránh cuộn */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
@@ -41,6 +41,10 @@
             color: #ff9900;
             z-index: 300; 
             transition: color 0.3s, transform 0.2s;
+        }
+        #soundToggle:hover {
+            color: #ff69b4; 
+            transform: scale(1.1) rotate(5deg);
         }
 
         /* --- Trái Tim Mở Đầu --- */
@@ -156,9 +160,8 @@
 
 
         /* --- Nội Dung Thiệp (Letter Content) --- */
-        .letter {
-            /* Vị trí ban đầu: Tuyệt đối, nhỏ bằng bì thư */
-            position: absolute; 
+        #letter {
+            position: absolute; /* Vẫn là absolute ban đầu để nằm gọn trong bì thư */
             top: 0;
             left: 0;
             width: 100%;
@@ -168,27 +171,30 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            /* Dùng opacity để ẩn, không dùng scale(0.1) vì đã di chuyển phần tử */
-            opacity: 0; 
-            
+            opacity: 0; /* Ẩn hoàn toàn khi chưa mở */
+            pointer-events: none; 
+            z-index: 45; 
+
+            /* 🛑 HIỆU ỨNG XUẤT HIỆN SINH ĐỘNG */
+            transform: scale(0.7) rotateY(45deg); /* Khởi điểm nhỏ hơn, xoay nhẹ */
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            z-index: 45; 
-            pointer-events: none; 
+
+            /* TRANG TRÍ THIỆP ĐẸP HƠN VỚI HỌA TIẾT NỀN */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,229,165,0.8) 0%, rgba(250,190,123,0.8) 90%), /* Vàng nhẹ, hồng cam nhẹ */
+                url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23fce4ec" fill-opacity="0.5"%3E%3Cpath d="M25 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3Cpath d="M75 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3C/g%3E%3C/svg%3E'); /* Họa tiết nhẹ nhàng */
+            background-size: cover, 50px 50px; /* Họa tiết nhỏ hơn */
+            background-blend-mode: soft-light; /* Pha trộn nhẹ nhàng */
         }
 
-        /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO) --- */
-
-        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ (Áp dụng cho thiệp đã ra khỏi bì thư) */
-        .letter.opened { 
-            /* BẮT BUỘC phải là fixed để thoát khỏi body và căn giữa viewport */
+        /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO & HIỆU ỨNG MỚI) --- */
+        #letter.opened { 
             position: fixed; 
-            
             opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
-            /* Thiết lập kích thước gần tối đa, căn giữa */
             width: 90vw; 
             height: 90vh; 
             max-width: 700px; 
@@ -196,10 +202,9 @@
             
             top: 50%;
             left: 50%;
-            /* Dùng transform để căn giữa tuyệt đối */
-            transform: translate(-50%, -50%); 
+            /* 🛑 HIỆU ỨNG XUẤT HIỆN CUỐI CÙNG */
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg); /* Phóng to và thẳng đứng */
             
-            /* TRANG TRÍ */
             border: 5px solid #FF69B4; 
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
             
@@ -221,9 +226,10 @@
                 height: 160px;
             }
 
-            .letter.opened { 
-                width: 98vw; 
-                height: 98vh; 
+            #letter.opened { 
+                /* 🛑 KÍCH THƯỚC THIỆP TRÊN ĐIỆN THOẠI 70% */
+                width: 70vw; 
+                height: 70vh; 
                 padding: 10px; 
             }
             
@@ -447,7 +453,7 @@
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
         const letterContent = document.getElementById('letterContent');
-        const statusMessage = document.getElementById('statusMessage');
+        const statusMessage = document.getElementById('letterStatusMessage'); // Đổi ID để tránh trùng lặp
 
         // Nội dung thiệp
         const firstTimeContent = `
@@ -461,8 +467,6 @@
         function checkAndSetContent() {
             letterContent.innerHTML = firstTimeContent;
             applyTypewriterEffect(letterContent, 1000); 
-            statusMessage.textContent = "Thiệp đã mở! Chúc bạn vui vẻ!";
-            statusMessage.style.animation = 'none';
         }
 
         function showEnvelope() {
@@ -471,6 +475,9 @@
             
             setTimeout(() => { 
                 envelopeWrapper.classList.add('visible');
+                // Thay đổi statusMessage ở đây
+                document.querySelector('.status-message').textContent = "Ấn vào bì thư để mở ra nhé!";
+                document.querySelector('.status-message').style.bottom = '20px';
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
             }, 800); 
         }
@@ -479,29 +486,39 @@
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             
-            // 2. 🛑 DI CHUYỂN THIỆP RA KHỎI BÌ THƯ (KHẮC PHỤC LỖI KHUNG HÌNH)
+            // 2. Ẩn status message
+            document.querySelector('.status-message').style.opacity = '0';
+
+            // 3. 🛑 DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
+            // Đảm bảo thiệp ở vị trí hiện tại của bì thư trước khi chuyển
+            const rect = envelopeWrapper.getBoundingClientRect();
+            letter.style.top = `${rect.top}px`;
+            letter.style.left = `${rect.left}px`;
+            letter.style.width = `${rect.width}px`;
+            letter.style.height = `${rect.height}px`;
+            letter.style.position = 'fixed'; // Tạm thời fixed để giữ vị trí
+            
             document.body.appendChild(letter);
             
-            // 3. Ẩn bì thư và phóng to thiệp ngay lập tức
+            // 4. Ẩn bì thư và áp dụng hiệu ứng phóng to cho thiệp
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // 4. Áp dụng class phóng to cho thiệp (Bây giờ nó là phần tử con trực tiếp của Body)
+                // 5. Áp dụng class phóng to cho thiệp
                 letter.classList.add('opened'); 
                 
                 // Bắt đầu gõ chữ sau khi phóng to xong
                 setTimeout(() => {
                     checkAndSetContent(); 
-                }, 1500); 
+                }, 1500); // Khoảng thời gian để thiệp phóng to và ổn định
 
-            }, 500); // 500ms sau khi nắp lật (0.8s), bì thư bắt đầu ẩn đi
+            }, 500); // 500ms sau khi nắp lật, bì thư và thiệp bắt đầu di chuyển
 
         }
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
             initialHeart.addEventListener('click', showEnvelope);
-            initialHeart.addEventListener('click', activateMusic); 
         }
 
         initializeApp();
