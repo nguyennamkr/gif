@@ -31,7 +31,7 @@
             width: 100%;
             height: 100%;
             z-index: 1;
-            opacity: 0.5; /* Giảm độ tương phản của nền */
+            opacity: 0.5; 
         }
 
         /* --- Nút Bật/Tắt Âm Thanh --- */
@@ -41,7 +41,7 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
-            color: #FF69B4; /* Hồng kẹo ngọt */
+            color: #FF69B4; 
             z-index: 300; 
             transition: color 0.3s, transform 0.2s;
         }
@@ -110,23 +110,23 @@
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC (Theme lãng mạn) --- */
+        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #FFC0CB; /* Hồng Nhạt */
+            background-color: #FFC0CB; 
             background-image: repeating-linear-gradient(
                 45deg,
                 #FFC0CB, 
                 #FFC0CB 10px,
-                #FFD9E6 10px, /* Hồng Nhạt hơn */
+                #FFD9E6 10px, 
                 #FFD9E6 20px
             );
 
             border-radius: 5px;
             z-index: 50;
-            border: 3px solid #FF69B4; /* Hồng đậm viền */
+            border: 3px solid #FF69B4; 
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
         }
 
@@ -138,12 +138,12 @@
             width: 100%;
             height: 50%;
             
-            background-color: #FFFFAA; /* Vàng Nhạt */
+            background-color: #FFFFAA; 
             background-image: repeating-linear-gradient(
                 -45deg, 
                 #FFFFAA, 
                 #FFFFAA 10px,
-                #FFFFCC 10px, /* Vàng Nhạt hơn */
+                #FFFFCC 10px, 
                 #FFFFCC 20px
             );
 
@@ -152,7 +152,7 @@
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
             z-index: 150; 
-            border-bottom: 3px solid #ffd700; /* Vàng ánh kim viền */
+            border-bottom: 3px solid #ffd700; 
         }
         
         .envelope-wrapper.open .flap {
@@ -162,7 +162,7 @@
         }
 
 
-        /* --- Nội Dung Thiệp (Letter Content) --- */
+        /* --- Nội Dung Thiệp (Letter Content - TRẠNG THÁI BAN ĐẦU) --- */
         .letter {
             /* Vị trí ban đầu: Tuyệt đối, nhỏ bằng bì thư */
             position: absolute; 
@@ -175,12 +175,11 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            opacity: 0; 
+            opacity: 0; /* Ẩn cho đến khi được di chuyển ra body */
             pointer-events: none; 
             z-index: 45; 
 
-            /* HIỆU ỨNG XUẤT HIỆN SINH ĐỘNG */
-            transform: scale(0.7) rotateY(45deg); 
+            /* HIỆU ỨNG CHUYỂN ĐỔI CHUNG */
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 
@@ -189,17 +188,16 @@
                 radial-gradient(circle at 10% 20%, rgba(255,229,165,0.8) 0%, rgba(250,190,123,0.8) 90%), 
                 url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23fce4ec" fill-opacity="0.5"%3E%3Cpath d="M25 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm25 8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm30-90a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 8a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM95 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H93a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 98a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3C/g%3E%3C/svg%3E'); 
             background-size: cover, 50px 50px; 
-            background-blend-mode: soft-light; 
         }
 
-        /* --- TRẠNG THÁI MỞ (PHÓNG TO GẦN HẾT MÀN HÌNH) --- */
+        /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO & CĂN GIỮA) --- */
         .letter.opened { 
             position: fixed; 
             opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
-            /* Kích thước PC/Tablet: 90% view port */
+            /* Kích thước & Căn giữa tuyệt đối */
             width: 90vw; 
             height: 90vh; 
             max-width: 700px; 
@@ -207,6 +205,7 @@
             
             top: 50%;
             left: 50%;
+            /* 🛑 BƯỚC QUAN TRỌNG: Căn giữa bằng transform */
             transform: translate(-50%, -50%) scale(1) rotateY(0deg); 
             
             border: 5px solid #FF69B4; 
@@ -231,7 +230,7 @@
             }
 
             .letter.opened { 
-                /* 🛑 ĐIỀU CHỈNH KÍCH THƯỚC: 90% MÀN HÌNH ĐIỆN THOẠI */
+                /* 🛑 Đảm bảo kích thước tối đa 90% màn hình */
                 width: 90vw; 
                 height: 90vh; 
                 padding: 10px; 
@@ -253,7 +252,7 @@
             justify-content: center; 
             align-items: center; 
             
-            overflow-y: hidden; /* Quan trọng: Ngăn thanh cuộn */
+            overflow-y: hidden; 
             
             text-align: center;
             color: #333;
@@ -271,7 +270,7 @@
             margin: 5px 0; 
         }
         
-        /* --- Trang trí Đáng Yêu cho chữ --- */
+        /* --- Trang trí Chữ --- */
         .letter-content h2 {
             color: #FF69B4; 
             margin-top: 0;
@@ -327,7 +326,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Tạo hạt Lãng Mạn) ---
+        // --- 1. Canvas Effect (Giữ nguyên) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -348,7 +347,6 @@
                 this.speedX = Math.random() * 0.1;
                 this.speedY = Math.random() * 1 + 0.5;
                 this.opacity = Math.random() * 0.5 + 0.3;
-                // Màu lãng mạn: Hồng và Tím
                 this.color = Math.random() > 0.5 ? 'rgba(255, 105, 180, ' : 'rgba(199, 21, 133, '; 
             }
             draw() {
@@ -373,7 +371,7 @@
             }
         }
         function animateCanvas() {
-            ctx.fillStyle = 'rgba(247, 240, 255, 0.1)'; /* Màu nền nhạt */
+            ctx.fillStyle = 'rgba(247, 240, 255, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
             requestAnimationFrame(animateCanvas);
@@ -414,15 +412,14 @@
         
         function activateMusic() {
             bgm.load(); 
-            bgm.muted = true; // Bắt đầu tắt tiếng
+            bgm.muted = true; 
             bgm.play().catch(error => {
                 console.log("Không thể tự động phát, chờ người dùng bật tiếng...");
             });
-            // Tạm thời để lại sự kiện click cho initialHeart để kích hoạt âm thanh khi người dùng tương tác
             document.getElementById('initialHeart').removeEventListener('click', activateMusic);
         }
 
-        // --- 3. Hiệu ứng Chữ Động (Typewriter Effect) ---
+        // --- 3. Hiệu ứng Chữ Động (Giữ nguyên) ---
         function applyTypewriterEffect(contentElement, delay = 500) {
             setTimeout(() => {
                 const elements = contentElement.querySelectorAll('h2, p');
@@ -452,7 +449,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (Đã fix lỗi khung hình và kích thước) ---
+        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI PHÓNG TO) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -494,26 +491,36 @@
         function openEnvelope() {
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
-            
-            // 2. Ẩn status message (tạm thời)
             statusMessage.style.opacity = '0';
 
-            // 3. DI CHUYỂN THIỆP RA KHỎI BÌ THƯ (ĐỂ PHÓNG TO KHÔNG BỊ GIỚI HẠN)
+            // 2. TẠO VỊ TRÍ BAN ĐẦU (Start Point)
             const rect = envelopeWrapper.getBoundingClientRect();
-            // Đặt thiệp ở vị trí bì thư trước khi di chuyển
+            // Đặt các thuộc tính vị trí/kích thước ban đầu bằng style inline
             letter.style.top = `${rect.top}px`;
             letter.style.left = `${rect.left}px`;
             letter.style.width = `${rect.width}px`;
             letter.style.height = `${rect.height}px`;
             letter.style.position = 'fixed'; 
             
-            document.body.appendChild(letter);
+            // Đảm bảo thiệp hiển thị và bỏ đi transform mặc định
+            letter.style.opacity = '1';
+            letter.style.transform = 'scale(1) rotateY(0deg)'; 
             
-            // 4. Ẩn bì thư và áp dụng hiệu ứng phóng to cho thiệp
+            // 3. DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
+            document.body.appendChild(letter);
+
+            // 4. Ẩn bì thư và bắt đầu chuyển đổi
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // 5. Áp dụng class phóng to cho thiệp
+                // 🛑 BƯỚC SỬA LỖI: Xóa các thuộc tính định vị/kích thước INLINE
+                // để CSS trong .opened (top: 50%, width: 90vw) có thể áp dụng 
+                letter.style.top = '';
+                letter.style.left = '';
+                letter.style.width = '';
+                letter.style.height = '';
+                
+                // 5. Áp dụng class phóng to cho thiệp. Transition sẽ chạy mượt mà đến vị trí căn giữa.
                 letter.classList.add('opened'); 
                 
                 // Bắt đầu gõ chữ sau khi phóng to xong
@@ -523,7 +530,6 @@
                 }, 1500); 
 
             }, 500); 
-
         }
 
         // --- KHỞI TẠO CUỐI CÙNG ---
