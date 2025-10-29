@@ -582,6 +582,7 @@
 
         function toggleSound() {
             if (isMuted) {
+                // 🛑 Play nhạc khi người dùng click bật
                 bgm.muted = false;
                 bgm.play().catch(error => {
                     console.error("Lỗi phát nhạc:", error);
@@ -596,15 +597,6 @@
             }
         }
         
-        function activateMusic() {
-            bgm.load(); 
-            bgm.muted = true; 
-            bgm.play().catch(error => {
-                console.log("Không thể tự động phát, chờ người dùng bật tiếng...");
-            });
-            // 🛑 LƯU Ý: Listener cho trái tim đã được gán trong initializeApp(), không cần gán lại.
-        }
-
         // --- 3. Hiệu ứng Chữ Động ---
         function applyTypewriterEffect(contentElement, delay = 500) {
             setTimeout(() => {
@@ -737,15 +729,19 @@
         function showHeart() {
              // 1. Tiết lộ Trái tim
             heartWrapper.style.opacity = '1';
-            // 🛑 Gán lại pointer-events để cho phép click (Fix lỗi)
-            heartWrapper.style.pointerEvents = 'all';
+            heartWrapper.style.pointerEvents = 'all'; // Cho phép click
             
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
+            
+            // 🛑 Cố gắng chạy nhạc (Muted) sau tương tác người dùng đầu tiên
+            bgm.muted = true; 
+            bgm.play().catch(error => console.log("Không thể tự động phát nhạc."));
         }
 
         function showEnvelope() {
-            activateMusic(); 
+            // 🛑 Loại bỏ activateMusic() để tránh xung đột
+            
             heartWrapper.classList.add('hidden'); 
             
             setTimeout(() => { 
@@ -800,12 +796,12 @@
         function initializeApp() {
             // Thiết lập trạng thái ban đầu: Ẩn trái tim và bì thư
             heartWrapper.style.opacity = '0';
-            heartWrapper.style.pointerEvents = 'none'; // <-- Vô hiệu hóa click ban đầu
+            heartWrapper.style.pointerEvents = 'none'; 
             envelopeWrapper.style.opacity = '0';
             envelopeWrapper.style.pointerEvents = 'none';
             
-            // 🛑 GÁN LISTENER CHO TRÁI TIM NGAY TỪ ĐẦU (Đã Sửa Lỗi)
-            initialHeart.addEventListener('click', showEnvelope); 
+            // 🛑 ĐÃ SỬA LỖI: GÁN LISTENER VÀO heartWrapper VÀ DÙNG { once: true }
+            heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
             updatePinDisplay(); 
