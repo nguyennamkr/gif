@@ -143,7 +143,7 @@
         /* --- Trái Tim Mở Đầu (Container) --- */
         .heart-wrapper {
             position: absolute;
-            z-index: 200; /* Cao hơn bì thư khi cả hai cùng hiện diện */
+            z-index: 200; 
             display: flex;
             justify-content: center;
             align-items: center;
@@ -152,7 +152,12 @@
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             
             opacity: 0; 
-            pointer-events: none; /* Khởi tạo: không tương tác */
+            pointer-events: none; /* Mặc định: KHÔNG tương tác */
+        }
+        
+        /* KHẮC PHỤC LỖI CLICK: Chỉ cho phép tương tác khi có class này */
+        .heart-wrapper.active {
+            pointer-events: all;
         }
 
         /* Trái tim CSS */
@@ -170,7 +175,7 @@
                         -5px 5px 20px rgba(255, 105, 180, 0.5); 
             cursor: pointer;
         }
-        /* Các phần còn lại của trái tim CSS (::before, ::after) giữ nguyên */
+
         .css-heart::before,
         .css-heart::after {
             content: "";
@@ -191,7 +196,6 @@
             top: 0;
         }
 
-        /* Keyframes giữ nguyên */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.25) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
@@ -212,7 +216,6 @@
             animation: none !important;
         }
         
-        /* KHẮC PHỤC LỖI: Class mới để xóa hoàn toàn trái tim khỏi luồng */
         .heart-wrapper.invisible {
             display: none; 
         }
@@ -223,7 +226,7 @@
             width: 350px; 
             height: 220px;
             cursor: pointer;
-            z-index: 210; /* Cao hơn trái tim một chút */
+            z-index: 210; 
             transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
             box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
             
@@ -232,21 +235,23 @@
             overflow: hidden; 
             border-radius: 5px; 
             
-            /* Đặt trạng thái ban đầu là ẩn */
             opacity: 0;
-            pointer-events: none; /* Khởi tạo: không tương tác */
+            pointer-events: none; /* Mặc định: KHÔNG tương tác */
             
             perspective: 1000px;
+        }
+
+        /* KHẮC PHỤC LỖI CLICK: Chỉ cho phép tương tác khi có class này */
+        .envelope-wrapper.active {
+            pointer-events: all;
         }
 
         /* BÌ THƯ: NHỊP ĐẬP KHI HIỆN RA */
         .envelope-wrapper.visible {
             opacity: 1;
             animation: pulse-envelope 2s infinite ease-in-out;
-            /* pointer-events được điều khiển bằng JS */
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (BÌ THƯ) giữ nguyên */
         @keyframes pulse-envelope {
             0% { transform: scale(0.95); }
             50% { transform: scale(1.02); }
@@ -707,7 +712,7 @@
             }
         });
 
-        // --- 5. Logic Mở Thư (Được gọi sau khi nhập PIN đúng) ---
+        // --- 5. Logic Mở Thư ---
         const heartWrapper = document.getElementById('heartWrapper');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
@@ -733,18 +738,15 @@
             statusMessage.style.bottom = '20px';
         }
 
-        // --- SỬA LỖI 1: Đảm bảo trái tim có thể click và bì thư ẩn ---
         function showHeart() {
-            // 1. Tiết lộ Trái tim
+            // 1. Kích hoạt trái tim
             heartWrapper.style.opacity = '1';
-            heartWrapper.style.pointerEvents = 'all'; // Kích hoạt click cho trái tim
-            heartWrapper.classList.remove('invisible'); 
-            heartWrapper.classList.remove('hidden'); 
+            heartWrapper.classList.add('active'); // Cho phép click
+            heartWrapper.classList.remove('invisible', 'hidden'); 
             
-            // 2. Đảm bảo bì thư KHÔNG thể tương tác
-            envelopeWrapper.style.pointerEvents = 'none';
-            envelopeWrapper.classList.remove('visible'); 
-
+            // 2. Vô hiệu hóa bì thư (bảo đảm)
+            envelopeWrapper.classList.remove('visible', 'active');
+            
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
             
@@ -752,30 +754,32 @@
             bgm.play().catch(error => console.log("Không thể tự động phát nhạc."));
         }
 
-        // --- SỬA LỖI 2: Đảm bảo bì thư xuất hiện và có thể click ---
         function showEnvelope() {
-            // 1. Kích hoạt hiển thị bì thư NGAY LẬP TỨC
-            envelopeWrapper.classList.add('visible');
-            envelopeWrapper.style.pointerEvents = 'all'; // Kích hoạt click cho bì thư
+            // 1. Vô hiệu hóa click trái tim ngay lập tức
+            heartWrapper.classList.remove('active'); 
             
-            // 2. Ẩn trái tim và vô hiệu hóa click
+            // 2. Kích hoạt hiển thị bì thư NGAY LẬP TỨC
+            envelopeWrapper.classList.add('visible', 'active'); // Hiển thị và cho phép click
+            
+            // 3. Ẩn trái tim (có transition 0.3s)
             heartWrapper.classList.add('hidden'); 
-            heartWrapper.style.pointerEvents = 'none'; // Vô hiệu hóa click trái tim
 
             statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
             statusMessage.style.bottom = '20px';
             
-            // 3. Gắn sự kiện click bì thư (nếu nó chưa được gắn)
-            // (Đã gắn ở initializeApp nhưng chỉ gắn cho heart. Cần gắn cho envelope ở đây)
+            // 4. Gắn sự kiện click bì thư (chỉ gắn một lần)
             envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
 
-            // 4. Xóa hẳn trái tim khỏi luồng hiển thị sau khi transition kết thúc
+            // 5. Xóa hẳn trái tim khỏi luồng hiển thị sau khi transition kết thúc
             setTimeout(() => { 
                 heartWrapper.classList.add('invisible');
             }, heartTransitionDuration); 
         }
 
         function openEnvelope() {
+            // Vô hiệu hóa click bì thư ngay lập tức để tránh click đúp
+            envelopeWrapper.classList.remove('active');
+            
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             statusMessage.style.opacity = '0';
@@ -817,12 +821,10 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            // Khởi tạo trạng thái ẩn và vô hiệu hóa click cho cả hai
+            // Đảm bảo trạng thái ban đầu là ẩn
             heartWrapper.classList.add('invisible'); 
-            heartWrapper.style.pointerEvents = 'none'; 
-            envelopeWrapper.style.pointerEvents = 'none';
             
-            // CHỈ GÁN LISTENER CHO heartWrapper. Sự kiện cho Envelope được gán sau đó.
+            // GÁN LISTENER CHÍNH CHO TRÁI TIM
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
