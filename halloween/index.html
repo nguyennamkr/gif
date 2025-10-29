@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
+    <title>💌 Điều bất ngờ cho Emm 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -62,13 +62,14 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        /* 🛑 ĐÃ SỬA: Trái tim CSS mới, cân đối (100px x 100px) */
+        /* Trái tim CSS */
         .css-heart {
             position: relative;
             width: 100px; 
-            height: 100px; /* Đã sửa: Phải bằng width để cân đối */
+            height: 100px; 
             background-color: #ff4d4d; 
             transform: rotate(-45deg); 
+            /* 🛑 TRÁI TIM: ĐÃ CÓ NHỊP ĐẬP SẴN */
             animation: pulse-heart 1.5s infinite ease-in-out, subtle-wiggle 3s infinite ease-in-out 0.5s; 
             box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), 
                         -5px 5px 20px rgba(255, 105, 180, 0.5); 
@@ -95,14 +96,14 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập */
+        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.15) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
             100% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
         }
 
-        /* Keyframes cho hiệu ứng rung nhẹ */
+        /* Keyframes cho hiệu ứng rung nhẹ (TRÁI TIM) */
         @keyframes subtle-wiggle {
             0%, 100% { transform: scale(1) rotate(-45deg); }
             25% { transform: scale(1.02) rotate(-46deg); }
@@ -128,17 +129,26 @@
             
             opacity: 0;
             pointer-events: none;
-            transform: scale(0.8);
+            /* Thay thế transform: scale(0.8) bằng scale(0.95) để bắt đầu nhịp đập */
+            transform: scale(0.95);
             
             overflow: hidden; 
             border-radius: 5px; 
         }
 
-        /* Khi vỏ thư hiện ra */
+        /* 🛑 BÌ THƯ: THÊM NHỊP ĐẬP KHI HIỆN RA */
         .envelope-wrapper.visible {
             opacity: 1;
-            transform: scale(1);
+            /* Kích hoạt animation khi visible */
+            animation: pulse-envelope 2s infinite ease-in-out;
             pointer-events: all;
+        }
+
+        /* Keyframes cho hiệu ứng nhịp đập (BÌ THƯ) */
+        @keyframes pulse-envelope {
+            0% { transform: scale(0.95); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(0.95); }
         }
         
         /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC --- */
@@ -189,6 +199,8 @@
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
+            /* Khi mở, dừng animation bì thư để nó đứng yên */
+            animation: none;
             transition: transform 0.8s ease-in-out, z-index 0s 0s;
         }
 
@@ -252,6 +264,8 @@
             opacity: 0;
             pointer-events: none;
             transform: scale(0);
+            /* Khi ẩn, dừng animation */
+            animation: none !important;
         }
 
         /* --- MEDIA QUERY: Tối ưu cho Màn hình Điện thoại (Width <= 600px) --- */
@@ -278,10 +292,10 @@
                 font-size: 1.4em; 
             }
 
-            /* 🛑 ĐÃ SỬA: Điều chỉnh kích thước trái tim CSS trên di động để cân đối (80px x 80px) */
+            /* Điều chỉnh kích thước trái tim CSS trên di động để cân đối (80px x 80px) */
             .css-heart {
                 width: 80px; 
-                height: 80px; /* Đã sửa: Phải bằng width để cân đối */
+                height: 80px; 
             }
             .css-heart::before,
             .css-heart::after {
@@ -513,11 +527,11 @@
 
         // Nội dung thiệp (Đã sửa tiêu đề để gọn gàng hơn)
         const firstTimeContent = `
-            <h2 style="color: #FF69B4;">💖 Gửi Người Em/Anh Yêu 💌</h2>
-            <p style="margin-top: 10px;"><strong>Chào em/anh,</strong></p>
-            <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn em/anh đã đến và làm cuộc đời anh/em trở nên tươi đẹp hơn mỗi ngày.</p>
-            <p>Dù ở bất cứ đâu, anh/em cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với em/anh.</p>
-            <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ [Tên Của Bạn] 💕</p>
+            <h2 style="color: #FF69B4;">💖 Gửi cho Emmm 💌</h2>
+            <p style="margin-top: 10px;">💐 Chào Emm bé,💐</p>
+            <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn Emm đã đến và làm cuộc đời Anh trở nên tươi đẹp hơn mỗi ngày.</p>
+            <p>Dù ở bất cứ đâu, Anh cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với Emm.</p>
+            <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ 남 💕</p>
         `;
 
         function checkAndSetContent() {
