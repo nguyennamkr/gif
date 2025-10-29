@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
+    <title>💌 Thiệp Cho Emmm 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -18,7 +18,6 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden; 
-            /* perspective được đặt ở body là tốt, nhưng tôi sẽ thêm vào envelope-wrapper để local */
             perspective: 1000px; 
             background-image: radial-gradient(#ffe6f2 1px, transparent 0);
             background-size: 20px 20px;
@@ -70,7 +69,7 @@
             height: 100px; 
             background-color: #ff4d4d; 
             
-            /* Kích hoạt animation nhịp đập và rung nhẹ ngay từ đầu */
+            /* ĐẢM BẢO LOOP VÔ HẠN (infinite) - Đã SẴN CÓ */
             animation: pulse-heart 1.5s infinite ease-in-out, 
                        subtle-wiggle 3s infinite ease-in-out 0.5s; 
 
@@ -100,7 +99,7 @@
             top: 0;
         }
 
-        /* 🛑 ĐÃ SỬA: Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Tăng scale lên 1.25 */
+        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Giữ scale lớn hơn (1.25) */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.25) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
@@ -139,7 +138,7 @@
             overflow: hidden; 
             border-radius: 5px; 
             
-            /* 🛑 ĐÃ THÊM: Perspective để nắp thư xoay trong không gian 3D */
+            /* Perspective để nắp thư xoay trong không gian 3D */
             perspective: 1000px;
         }
 
@@ -197,8 +196,8 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
-            /* Chuyển động lật nắp chậm và mềm mại */
-            transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 1.2s;
+            /* 🛑 ĐÃ SỬA: Thời gian chuyển đổi nắp thư về 0.8s */
+            transition: transform 0.8s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0.8s;
             z-index: 150; 
             border-bottom: 3px solid #ffd700; 
             
@@ -209,7 +208,8 @@
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
-            transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0s; 
+            /* Phải khớp thời gian lật nắp */
+            transition: transform 0.8s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0s; 
         }
 
 
@@ -401,7 +401,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Giữ nguyên số lượng mới) ---
+        // --- 1. Canvas Effect ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -462,7 +462,7 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Âm Thanh (Giữ nguyên) ---
+        // --- 2. Logic Âm Thanh ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
         let isMuted = true;
@@ -494,7 +494,7 @@
             document.getElementById('initialHeart').removeEventListener('click', activateMusic);
         }
 
-        // --- 3. Hiệu ứng Chữ Động (Giữ nguyên) ---
+        // --- 3. Hiệu ứng Chữ Động ---
         function applyTypewriterEffect(contentElement, delay = 500) {
             setTimeout(() => {
                 const elements = contentElement.querySelectorAll('h2, p');
@@ -524,7 +524,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (Giữ nguyên) ---
+        // --- 4. Logic Mở Thư ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -533,7 +533,8 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
         
-        const flapDuration = 1200; // 1.2 giây
+        // 🛑 ĐÃ SỬA: Thời gian chuyển đổi nắp thư về 0.8 giây
+        const flapDuration = 800; 
 
         // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
@@ -585,7 +586,6 @@
             document.body.appendChild(letter);
 
             // 4. Ẩn bì thư và bắt đầu chuyển đổi
-            // Thời gian chờ được tăng để bì thư ẩn sau khi nắp lật xong
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
@@ -607,7 +607,7 @@
                     statusMessage.style.opacity = '1';
                 }, 1500); 
 
-            }, flapDuration + 100); // 1.2s (flap duration) + 0.1s delay
+            }, flapDuration + 100); 
         }
 
         // --- KHỞI TẠO CUỐI CÙNG ---
