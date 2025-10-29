@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thư Yêu Thương 💌</title>
+    <title>💌 Thư Tình Yêu Nhỏ 💌</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -17,7 +17,7 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden; /* Đảm bảo không có thanh cuộn không mong muốn */
+            overflow: hidden; 
             perspective: 1000px; 
         }
 
@@ -161,7 +161,7 @@
 
         /* --- Nội Dung Thiệp (Letter Content) --- */
         #letter {
-            position: absolute; /* Vẫn là absolute ban đầu để nằm gọn trong bì thư */
+            position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
@@ -171,21 +171,21 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            opacity: 0; /* Ẩn hoàn toàn khi chưa mở */
+            opacity: 0; 
             pointer-events: none; 
             z-index: 45; 
 
             /* 🛑 HIỆU ỨNG XUẤT HIỆN SINH ĐỘNG */
-            transform: scale(0.7) rotateY(45deg); /* Khởi điểm nhỏ hơn, xoay nhẹ */
+            transform: scale(0.7) rotateY(45deg); 
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 
             /* TRANG TRÍ THIỆP ĐẸP HƠN VỚI HỌA TIẾT NỀN */
             background-image: 
-                radial-gradient(circle at 10% 20%, rgba(255,229,165,0.8) 0%, rgba(250,190,123,0.8) 90%), /* Vàng nhẹ, hồng cam nhẹ */
-                url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23fce4ec" fill-opacity="0.5"%3E%3Cpath d="M25 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3Cpath d="M75 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3C/g%3E%3C/svg%3E'); /* Họa tiết nhẹ nhàng */
-            background-size: cover, 50px 50px; /* Họa tiết nhỏ hơn */
-            background-blend-mode: soft-light; /* Pha trộn nhẹ nhàng */
+                radial-gradient(circle at 10% 20%, rgba(255,229,165,0.8) 0%, rgba(250,190,123,0.8) 90%), 
+                url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="%23fce4ec" fill-opacity="0.5"%3E%3Cpath d="M25 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM35 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM15 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H13a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM5 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM25 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H23a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3Cpath d="M75 18a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm-20 10a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 28a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 38a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 48a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM85 58a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 68a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM65 78a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H63a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm20 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM55 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H53a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zM75 88a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H73a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2zm10 0a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h2z" /%3E%3C/g%3E%3C/svg%3E'); 
+            background-size: cover, 50px 50px; 
+            background-blend-mode: soft-light; 
         }
 
         /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO & HIỆU ỨNG MỚI) --- */
@@ -195,6 +195,7 @@
             pointer-events: all; 
             z-index: 999; 
 
+            /* Kích thước PC/Tablet */
             width: 90vw; 
             height: 90vh; 
             max-width: 700px; 
@@ -202,8 +203,7 @@
             
             top: 50%;
             left: 50%;
-            /* 🛑 HIỆU ỨNG XUẤT HIỆN CUỐI CÙNG */
-            transform: translate(-50%, -50%) scale(1) rotateY(0deg); /* Phóng to và thẳng đứng */
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg); 
             
             border: 5px solid #FF69B4; 
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
@@ -227,18 +227,18 @@
             }
 
             #letter.opened { 
-                /* 🛑 KÍCH THƯỚC THIỆP TRÊN ĐIỆN THOẠI 70% */
-                width: 70vw; 
-                height: 70vh; 
+                /* 🛑 ĐIỀU CHỈNH KÍCH THƯỚC THIỆP TRÊN ĐIỆN THOẠI LỚN HƠN */
+                width: 95vw; 
+                height: 95vh; 
                 padding: 10px; 
             }
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
             .letter-content {
-                font-size: 0.8em; 
+                font-size: 0.9em; /* Tăng kích thước chữ nhẹ */
             }
             .letter-content h2 {
-                font-size: 1.2em;
+                font-size: 1.4em; /* Tăng kích thước tiêu đề */
             }
         }
 
@@ -249,7 +249,7 @@
             justify-content: center; 
             align-items: center; 
             
-            overflow-y: hidden; 
+            overflow-y: auto; /* Cho phép cuộn nếu nội dung quá dài */
             
             text-align: center;
             color: #333;
@@ -453,7 +453,7 @@
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
         const letterContent = document.getElementById('letterContent');
-        const statusMessage = document.getElementById('letterStatusMessage'); // Đổi ID để tránh trùng lặp
+        const statusMessage = document.getElementById('statusMessage');
 
         // Nội dung thiệp
         const firstTimeContent = `
@@ -490,14 +490,15 @@
             document.querySelector('.status-message').style.opacity = '0';
 
             // 3. 🛑 DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
-            // Đảm bảo thiệp ở vị trí hiện tại của bì thư trước khi chuyển
+            // Lấy vị trí và kích thước của bì thư
             const rect = envelopeWrapper.getBoundingClientRect();
             letter.style.top = `${rect.top}px`;
             letter.style.left = `${rect.left}px`;
             letter.style.width = `${rect.width}px`;
             letter.style.height = `${rect.height}px`;
             letter.style.position = 'fixed'; // Tạm thời fixed để giữ vị trí
-            
+
+            // Đặt vào body để thoát khỏi giới hạn khung hình của bì thư
             document.body.appendChild(letter);
             
             // 4. Ẩn bì thư và áp dụng hiệu ứng phóng to cho thiệp
@@ -512,7 +513,7 @@
                     checkAndSetContent(); 
                 }, 1500); // Khoảng thời gian để thiệp phóng to và ổn định
 
-            }, 500); // 500ms sau khi nắp lật, bì thư và thiệp bắt đầu di chuyển
+            }, 500); 
 
         }
 
