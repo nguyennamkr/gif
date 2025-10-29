@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Điều bất ngờ cho Emm 💐</title>
+    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -62,15 +62,18 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        /* Trái tim CSS */
+        /* 🛑 SỬA LỖI NHỊP ĐẬP TRÁI TIM: Đảm bảo animation được khai báo đủ */
         .css-heart {
             position: relative;
             width: 100px; 
             height: 100px; 
             background-color: #ff4d4d; 
+            
+            /* Kích hoạt animation nhịp đập và rung nhẹ ngay từ đầu */
+            animation: pulse-heart 1.5s infinite ease-in-out, 
+                       subtle-wiggle 3s infinite ease-in-out 0.5s; 
+
             transform: rotate(-45deg); 
-            /* 🛑 TRÁI TIM: ĐÃ CÓ NHỊP ĐẬP SẴN */
-            animation: pulse-heart 1.5s infinite ease-in-out, subtle-wiggle 3s infinite ease-in-out 0.5s; 
             box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), 
                         -5px 5px 20px rgba(255, 105, 180, 0.5); 
             cursor: pointer;
@@ -96,7 +99,7 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
+        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Giữ nguyên */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.15) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
@@ -115,6 +118,8 @@
             opacity: 0;
             transform: scale(0.5) translateY(-50px);
             pointer-events: none; 
+            /* Khi ẩn, dừng animation */
+            animation: none !important;
         }
         
         /* Vỏ thư */
@@ -129,17 +134,15 @@
             
             opacity: 0;
             pointer-events: none;
-            /* Thay thế transform: scale(0.8) bằng scale(0.95) để bắt đầu nhịp đập */
             transform: scale(0.95);
             
             overflow: hidden; 
             border-radius: 5px; 
         }
 
-        /* 🛑 BÌ THƯ: THÊM NHỊP ĐẬP KHI HIỆN RA */
+        /* BÌ THƯ: NHỊP ĐẬP KHI HIỆN RA */
         .envelope-wrapper.visible {
             opacity: 1;
-            /* Kích hoạt animation khi visible */
             animation: pulse-envelope 2s infinite ease-in-out;
             pointer-events: all;
         }
@@ -199,8 +202,6 @@
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
-            /* Khi mở, dừng animation bì thư để nó đứng yên */
-            animation: none;
             transition: transform 0.8s ease-in-out, z-index 0s 0s;
         }
 
@@ -264,7 +265,6 @@
             opacity: 0;
             pointer-events: none;
             transform: scale(0);
-            /* Khi ẩn, dừng animation */
             animation: none !important;
         }
 
@@ -372,7 +372,7 @@
 
     <div id="soundToggle">🔇</div> 
     <audio id="bgm" loop>
-        <source src="halloween_music.mp3" type="audio/mpeg" /> 
+        <source src="nhac.mp3" type="audio/mpeg" /> 
     </audio>
 
     <div class="heart-wrapper" id="heartWrapper">
@@ -393,7 +393,7 @@
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Giữ nguyên) ---
+        // --- 1. Canvas Effect (Đã tăng số lượng hạt lấp lánh) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -401,7 +401,8 @@
         canvas.width = width;
         canvas.height = height;
         let particles = [];
-        const particleCount = 70;
+        // 🛑 ĐÃ TĂNG: Số lượng hạt lấp lánh/sao băng
+        const particleCount = 120; 
 
         class Particle {
             constructor() {
@@ -410,10 +411,11 @@
             reset() {
                 this.x = Math.random() * width;
                 this.y = Math.random() * height;
-                this.size = Math.random() * 1.5 + 0.5;
+                // 🛑 ĐÃ SỬA: Size lớn hơn và tốc độ rơi nhanh hơn
+                this.size = Math.random() * 2 + 1; 
                 this.speedX = Math.random() * 0.1;
-                this.speedY = Math.random() * 1 + 0.5;
-                this.opacity = Math.random() * 0.5 + 0.3;
+                this.speedY = Math.random() * 1.5 + 1; // Tốc độ rơi nhanh hơn
+                this.opacity = Math.random() * 0.7 + 0.5; // Độ mờ cao hơn
                 this.color = Math.random() > 0.5 ? 'rgba(255, 105, 180, ' : 'rgba(199, 21, 133, '; 
             }
             draw() {
@@ -438,6 +440,7 @@
             }
         }
         function animateCanvas() {
+            // Giảm độ trong suốt của lớp phủ để hạt rõ ràng hơn
             ctx.fillStyle = 'rgba(247, 240, 255, 0.1)'; 
             ctx.fillRect(0, 0, width, height);
             particles.forEach(p => { p.update(); p.draw(); });
@@ -516,7 +519,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (Đã sửa lỗi và tối ưu) ---
+        // --- 4. Logic Mở Thư (Giữ nguyên) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -525,13 +528,13 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp (Đã sửa tiêu đề để gọn gàng hơn)
+        // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
-            <h2 style="color: #FF69B4;">💖 Gửi cho Emmm 💌</h2>
-            <p style="margin-top: 10px;">💐 Chào Emm bé,💐</p>
-            <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn Emm đã đến và làm cuộc đời Anh trở nên tươi đẹp hơn mỗi ngày.</p>
-            <p>Dù ở bất cứ đâu, Anh cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với Emm.</p>
-            <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ 남 💕</p>
+            <h2 style="color: #FF69B4;">💖 Gửi Người Em/Anh Yêu 💌</h2>
+            <p style="margin-top: 10px;"><strong>Chào em/anh,</strong></p>
+            <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn em/anh đã đến và làm cuộc đời anh/em trở nên tươi đẹp hơn mỗi ngày.</p>
+            <p>Dù ở bất cứ đâu, anh/em cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với em/anh.</p>
+            <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ [Tên Của Bạn] 💕</p>
         `;
 
         function checkAndSetContent() {
