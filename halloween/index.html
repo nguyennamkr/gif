@@ -40,10 +40,11 @@
             cursor: pointer;
             color: #ff9900;
             z-index: 300; 
-            transition: color 0.3s;
+            transition: color 0.3s, transform 0.2s;
         }
         #soundToggle:hover {
             color: #ff69b4; 
+            transform: scale(1.1) rotate(5deg);
         }
 
         /* --- Trái Tim Mở Đầu --- */
@@ -63,21 +64,21 @@
             color: #ff4d4d; 
             cursor: pointer;
             animation: pulse-heart 1.5s infinite ease-in-out;
-            text-shadow: 0 0 15px rgba(255, 77, 77, 0.8);
+            text-shadow: 0 0 25px rgba(255, 77, 77, 1); 
             line-height: 1; 
             display: inline-block;
         }
 
         @keyframes pulse-heart {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
+            0% { transform: scale(1); filter: hue-rotate(0deg); }
+            50% { transform: scale(1.15); filter: hue-rotate(10deg); }
+            100% { transform: scale(1); filter: hue-rotate(0deg); }
         }
 
         /* Khi trái tim biến mất */
         .heart-wrapper.hidden {
             opacity: 0;
-            transform: scale(0.5); 
+            transform: scale(0.5) translateY(-50px);
             pointer-events: none; 
         }
         
@@ -88,16 +89,21 @@
             height: 200px;
             cursor: pointer;
             z-index: 100;
-            transition: transform 0.8s, opacity 0.8s; 
+            transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
             box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
             
-            /* TRẠNG THÁI BAN ĐẦU: Ẩn */
             opacity: 0;
             pointer-events: none;
             transform: scale(0.8);
             
             overflow: hidden; 
             border-radius: 5px; 
+        }
+
+        /* Hover effect for envelope (Lively) */
+        .envelope-wrapper:hover:not(.opened-state) {
+            transform: scale(1.05) rotateZ(-1deg);
+            box-shadow: 0 15px 70px rgba(255, 105, 180, 0.9);
         }
 
         /* Khi vỏ thư hiện ra (Sau khi click trái tim) */
@@ -107,31 +113,27 @@
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC VÀ TRANG TRÍ ĐẸP --- */
+        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #FFC0CB; /* Light Pink Base */
-            
-            /* HỌA TIẾT KẺ SỌC HỒNG NHẠT */
+            background-color: #FFC0CB; 
             background-image: repeating-linear-gradient(
                 45deg,
-                #FFC0CB, /* Light Pink */
+                #FFC0CB, 
                 #FFC0CB 10px,
-                #FFD9E6 10px, /* Slightly Lighter Pink/White for stripe */
+                #FFD9E6 10px, 
                 #FFD9E6 20px
             );
 
             border-radius: 5px;
             z-index: 50;
-            
-            /* TRANG TRÍ: Thêm viền đẹp */
             border: 3px solid #ff99cc; 
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
         }
 
-        /* --- NẮP BÌ THƯ: VÀNG NHẸ KẺ SỌC VÀ TRANG TRÍ ĐẸP --- */
+        /* --- NẮP BÌ THƯ: VÀNG NHẠT KẺ SỌC --- */
         .flap {
             position: absolute;
             top: 0;
@@ -139,14 +141,12 @@
             width: 100%;
             height: 50%;
             
-            background-color: #FFFFAA; /* Light Yellow Base */
-            
-            /* HỌA TIẾT KẺ SỌC VÀNG NHẠT */
+            background-color: #FFFFAA; 
             background-image: repeating-linear-gradient(
-                -45deg, /* Angle khác cho đẹp */
-                #FFFFAA, /* Light Yellow */
+                -45deg, 
+                #FFFFAA, 
                 #FFFFAA 10px,
-                #FFFFCC 10px, /* Lighter Yellow/Cream for stripe */
+                #FFFFCC 10px, 
                 #FFFFCC 20px
             );
 
@@ -155,8 +155,6 @@
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
             z-index: 150; 
-            
-            /* TRANG TRÍ: Thêm viền dưới (nơi nắp gặp thân) */
             border-bottom: 3px solid #ffd700; 
         }
         /* Hiệu ứng Nắp Thư Lật */
@@ -169,6 +167,7 @@
 
         /* --- Nội Dung Thiệp (Letter Content) --- */
         .letter {
+            /* Vị trí ban đầu: Ẩn và nhỏ */
             position: absolute; 
             top: 0;
             left: 0;
@@ -179,7 +178,8 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            transform: translate(0, 0); 
+            /* 🛑 SỬA LỖI: Thiệp khởi điểm phải nhỏ để scale mượt mà */
+            transform: scale(0.1); 
             
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
@@ -194,9 +194,9 @@
             pointer-events: none; 
         }
 
-        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ */
+        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ (Sử dụng Fixed và scale 1) */
         .envelope-wrapper.opened-state > .letter { 
-            position: fixed !important; 
+            position: fixed; /* Bỏ !important vì đã tối ưu */
             
             opacity: 1; 
             pointer-events: all; 
@@ -208,13 +208,13 @@
             max-width: 650px; 
             max-height: 600px;
             
-            /* CĂN CHỈNH GIỮA MÀN HÌNH */
+            /* CĂN CHỈNH GIỮA MÀN HÌNH và PHÓNG TO */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%) scale(1); /* Scale về kích thước đầy đủ */
             
             /* TRANG TRÍ ĐÁNG YÊU CHO THIỆP */
-            border: 5px solid #FF69B4; /* Hot Pink Border */
+            border: 5px solid #FF69B4; 
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
             
             clip-path: none; 
@@ -240,13 +240,13 @@
                 width: 95vw; 
                 height: 95vh; 
                 
-                position: fixed !important; 
+                position: fixed; 
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%); 
+                transform: translate(-50%, -50%) scale(1); 
                 
                 padding: 10px; 
-                overflow-y: hidden; /* Xóa thanh cuộn */
+                overflow-y: hidden; 
             }
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
@@ -360,7 +360,6 @@
                 this.speedX = Math.random() * 0.1;
                 this.speedY = Math.random() * 1 + 0.5;
                 this.opacity = Math.random() * 0.5 + 0.3;
-                // Màu cam và tím cho Halloween (có thể thay đổi nếu bạn muốn tông màu tình cảm hơn)
                 this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, '; 
             }
             draw() {
@@ -463,7 +462,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (ĐÃ KHẮC PHỤC LỖI PHÓNG TO) ---
+        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI PHÓNG TO) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -472,7 +471,7 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp (Cỡ chữ vừa phải, gói gọn)
+        // Nội dung thiệp
         const firstTimeContent = `
             <h2 style="color: #FF69B4; margin-bottom: 10px;">💖 Dành tặng người đặc biệt nhất 💌</h2>
             <p><strong>Chào em/anh,</strong></p>
@@ -509,7 +508,7 @@
             setTimeout(() => {
                 envelopeWrapper.classList.add('opened-state'); 
                 
-                // 🛑 BẮT BUỘC: Đảm bảo thiệp hiện ra và phóng to
+                // Đảm bảo thiệp hiện ra
                 letter.style.opacity = '1'; 
                 letter.style.pointerEvents = 'all'; 
 
