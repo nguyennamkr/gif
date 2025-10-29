@@ -178,7 +178,6 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            /* 🛑 SỬA LỖI: Thiệp khởi điểm phải nhỏ để scale mượt mà */
             transform: scale(0.1); 
             
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
@@ -194,30 +193,31 @@
             pointer-events: none; 
         }
 
-        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ (Sử dụng Fixed và scale 1) */
+        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ */
         .envelope-wrapper.opened-state > .letter { 
-            position: fixed; /* Bỏ !important vì đã tối ưu */
+            /* BẮT BUỘC phải là fixed để thoát khỏi body và căn giữa viewport */
+            position: fixed !important; 
             
             opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
-            /* Kích thước PC/Tablet lớn */
-            width: 60vw; 
-            height: 70vh; 
-            max-width: 650px; 
-            max-height: 600px;
+            /* Thiết lập kích thước tối đa cho PC/Tablet */
+            width: 90vw; 
+            height: 90vh; 
+            max-width: 700px; 
+            max-height: 800px;
             
             /* CĂN CHỈNH GIỮA MÀN HÌNH và PHÓNG TO */
             top: 50%;
             left: 50%;
-            transform: translate(-50%, -50%) scale(1); /* Scale về kích thước đầy đủ */
+            /* 🛑 Đảm bảo scale về kích thước 100% (của 90vw/90vh) */
+            transform: translate(-50%, -50%) scale(1) !important; 
             
-            /* TRANG TRÍ ĐÁNG YÊU CHO THIỆP */
+            /* TRANG TRÍ */
             border: 5px solid #FF69B4; 
             box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
             
-            clip-path: none; 
             border-radius: 10px;
         }
 
@@ -237,13 +237,13 @@
 
             .envelope-wrapper.opened-state > .letter { 
                 /* Thiệp Bung To chiếm gần hết màn hình */
-                width: 95vw; 
-                height: 95vh; 
+                width: 98vw; 
+                height: 98vh; 
                 
-                position: fixed; 
+                position: fixed !important; 
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%) scale(1); 
+                transform: translate(-50%, -50%) scale(1) !important; 
                 
                 padding: 10px; 
                 overflow-y: hidden; 
@@ -251,10 +251,10 @@
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
             .letter-content {
-                font-size: 0.85em; 
+                font-size: 0.8em; 
             }
             .letter-content h2 {
-                font-size: 1.3em;
+                font-size: 1.2em;
             }
         }
 
