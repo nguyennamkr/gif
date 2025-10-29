@@ -149,7 +149,8 @@
             align-items: center;
             width: 100%;
             height: 100%;
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            /* Giảm transition để trái tim biến mất nhanh hơn */
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             
             /* Đảm bảo trạng thái ban đầu là ẩn */
             opacity: 0; 
@@ -214,13 +215,18 @@
             animation: none !important;
         }
         
+        /* KHẮC PHỤC LỖI: Class mới để xóa hoàn toàn trái tim khỏi luồng */
+        .heart-wrapper.invisible {
+            display: none; 
+        }
+        
         /* Vỏ thư */
         .envelope-wrapper {
-            position: relative; /* Đặt lại vị trí tương đối */
+            position: relative; 
             width: 350px; 
             height: 220px;
             cursor: pointer;
-            z-index: 100;
+            z-index: 300; /* Đảm bảo cao hơn trái tim (200) */
             transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
             box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
             
@@ -229,7 +235,7 @@
             overflow: hidden; 
             border-radius: 5px; 
             
-            /* Đảm bảo trạng thái ban đầu là ẩn */
+            /* Đặt trạng thái ban đầu là ẩn */
             opacity: 0;
             pointer-events: none;
             
@@ -729,6 +735,7 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
         const flapDuration = 800; 
+        const heartTransitionDuration = 300; // 0.3 giây
 
         // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
@@ -752,6 +759,7 @@
             // 1. Tiết lộ Trái tim
             heartWrapper.style.opacity = '1';
             heartWrapper.style.pointerEvents = 'all'; 
+            heartWrapper.classList.remove('invisible'); // Đảm bảo nó được hiển thị
             
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
@@ -762,19 +770,22 @@
         }
 
         function showEnvelope() {
-            // 1. Ẩn trái tim (dùng class hidden, có transition 0.8s)
+            // 1. Kích hoạt hiển thị bì thư NGAY LẬP TỨC
+            envelopeWrapper.classList.add('visible');
+            
+            // 2. Ẩn trái tim (dùng class hidden, có transition 0.3s)
             heartWrapper.classList.add('hidden'); 
             
-            // 2. Đợi 800ms để hiệu ứng ẩn trái tim hoàn thành
+            statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
+            statusMessage.style.bottom = '20px';
+            
+            // 3. Gắn sự kiện click bì thư ngay lập tức (vì nó đã visible và có z-index cao)
+            envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
+
+            // 4. KHẮC PHỤC LỖI: Xóa hẳn trái tim khỏi luồng hiển thị sau khi transition kết thúc
             setTimeout(() => { 
-                // 3. HIỆN BÌ THƯ
-                envelopeWrapper.classList.add('visible');
-                statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
-                statusMessage.style.bottom = '20px';
-                
-                // 4. Gắn sự kiện click để mở thiệp
-                envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
-            }, 800); 
+                heartWrapper.classList.add('invisible');
+            }, heartTransitionDuration); 
         }
 
         function openEnvelope() {
@@ -792,7 +803,7 @@
             letter.style.height = `${rect.height}px`;
             letter.style.opacity = '1';
             
-            // 3. DI CHUYỂN THIỆP (đưa letter ra khỏi envelopeWrapper để có thể cố định trên body)
+            // 3. DI CHUYỂN THIỆP (đưa letter ra khỏi envelopeWrapper)
             document.body.appendChild(letter);
 
             // 4. Ẩn bì thư và bắt đầu chuyển đổi (sau khi nắp thư lật xong 800ms)
@@ -820,7 +831,10 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            // 🛑 GÁN LISTENER CHO heartWrapper KHI KHỞI TẠO
+            // Đảm bảo trái tim và bì thư ẩn ban đầu
+            heartWrapper.classList.add('invisible'); 
+            
+            // GÁN LISTENER CHO heartWrapper 
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
