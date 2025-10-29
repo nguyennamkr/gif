@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thư Tình Yêu Nhỏ 💌</title>
+    <title>🎃 Thiệp Halloween Ma Mị 🦇</title>
     
     <style>
-        /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
+        /* --- CSS HOÀN CHỈNH & RESPONSIVE (HALLOWEEN THEME) --- */
 
         /* --- CSS Chung --- */
         body {
@@ -17,13 +17,13 @@
             align-items: center;
             min-height: 100vh;
             margin: 0;
-            overflow: hidden;
+            overflow: hidden; 
             perspective: 1000px; 
         }
 
         /* --- Hiệu ứng Nền (Canvas) --- */
         #magicCanvas {
-            position: fixed; /* Dùng fixed cho nền để tránh cuộn */
+            position: fixed; 
             top: 0;
             left: 0;
             width: 100%;
@@ -38,12 +38,16 @@
             right: 15px;
             font-size: 24px;
             cursor: pointer;
-            color: #ff9900;
+            color: #ff8c00; /* Orange ma quái */
             z-index: 300; 
             transition: color 0.3s, transform 0.2s;
         }
+        #soundToggle:hover {
+            color: #4B0082; /* Tím đậm */
+            transform: scale(1.1) rotate(5deg);
+        }
 
-        /* --- Trái Tim Mở Đầu --- */
+        /* --- Bí Ngô Mở Đầu --- */
         .heart-wrapper {
             position: absolute;
             z-index: 200; 
@@ -55,23 +59,23 @@
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
-        .heart {
+        .spooky-icon {
             font-size: 80px; 
-            color: #ff4d4d; 
+            color: #ff4d00; /* Orange rực rỡ */
             cursor: pointer;
-            animation: pulse-heart 1.5s infinite ease-in-out;
-            text-shadow: 0 0 25px rgba(255, 77, 77, 1); 
+            animation: pulse-spooky 1.5s infinite ease-in-out;
+            text-shadow: 0 0 30px rgba(255, 77, 0, 1); 
             line-height: 1; 
             display: inline-block;
         }
 
-        @keyframes pulse-heart {
+        @keyframes pulse-spooky {
             0% { transform: scale(1); filter: hue-rotate(0deg); }
-            50% { transform: scale(1.15); filter: hue-rotate(10deg); }
+            50% { transform: scale(1.15); filter: hue-rotate(30deg); }
             100% { transform: scale(1); filter: hue-rotate(0deg); }
         }
 
-        /* Khi trái tim biến mất */
+        /* Khi icon biến mất */
         .heart-wrapper.hidden {
             opacity: 0;
             transform: scale(0.5) translateY(-50px);
@@ -86,7 +90,8 @@
             cursor: pointer;
             z-index: 100;
             transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
-            box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
+            /* Glow tím ma quái */
+            box-shadow: 0 10px 50px rgba(138, 43, 226, 0.7); 
             
             opacity: 0;
             pointer-events: none;
@@ -96,34 +101,34 @@
             border-radius: 5px; 
         }
 
-        /* Khi vỏ thư hiện ra (Sau khi click trái tim) */
+        /* Khi vỏ thư hiện ra */
         .envelope-wrapper.visible {
             opacity: 1;
             transform: scale(1);
             pointer-events: all;
         }
         
-        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC --- */
+        /* --- THÂN BÌ THƯ: TÍM THAN KẺ SỌC --- */
         .envelope {
             position: absolute;
             width: 100%;
             height: 100%;
-            background-color: #FFC0CB; 
+            background-color: #4B0082; /* Tím Indigo */
             background-image: repeating-linear-gradient(
                 45deg,
-                #FFC0CB, 
-                #FFC0CB 10px,
-                #FFD9E6 10px, 
-                #FFD9E6 20px
+                #4B0082, 
+                #4B0082 10px,
+                #2f4f4f 10px, /* Dark Slate Gray */
+                #2f4f4f 20px
             );
 
             border-radius: 5px;
             z-index: 50;
-            border: 3px solid #ff99cc; 
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
+            border: 3px solid #1a1a1a; /* Dark border */
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.5); 
         }
 
-        /* --- NẮP BÌ THƯ: VÀNG NHẠT KẺ SỌC --- */
+        /* --- NẮP BÌ THƯ: CAM LỬA KẺ SỌC --- */
         .flap {
             position: absolute;
             top: 0;
@@ -131,13 +136,13 @@
             width: 100%;
             height: 50%;
             
-            background-color: #FFFFAA; 
+            background-color: #ff8c00; /* Dark Orange */
             background-image: repeating-linear-gradient(
                 -45deg, 
-                #FFFFAA, 
-                #FFFFAA 10px,
-                #FFFFCC 10px, 
-                #FFFFCC 20px
+                #ff8c00, 
+                #ff8c00 10px,
+                #36454F 10px, /* Charcoal */
+                #36454F 20px
             );
 
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
@@ -145,7 +150,7 @@
             transform-origin: top;
             transition: transform 0.8s ease-in-out, z-index 0s 0.8s;
             z-index: 150; 
-            border-bottom: 3px solid #ffd700; 
+            border-bottom: 3px solid #1a1a1a; 
         }
         
         .envelope-wrapper.open .flap {
@@ -157,38 +162,42 @@
 
         /* --- Nội Dung Thiệp (Letter Content) --- */
         .letter {
-            /* Vị trí ban đầu: Tuyệt đối, nhỏ bằng bì thư */
             position: absolute; 
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #fff;
+            background-color: #fcf8e8; /* White/Cream */
             padding: 20px;
             box-sizing: border-box;
             border-radius: 10px;
             
-            /* Dùng opacity để ẩn, không dùng scale(0.1) vì đã di chuyển phần tử */
             opacity: 0; 
-            
+            pointer-events: none; 
+            z-index: 45; 
+
+            /* HIỆU ỨNG XUẤT HIỆN 3D */
+            transform: scale(0.7) rotateY(45deg); 
             transition: all 1.5s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-            z-index: 45; 
-            pointer-events: none; 
+
+            /* TRANG TRÍ HALLOWEEN (Mạng Nhện Mờ) */
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(200,165,255,0.4) 0%, rgba(123,100,250,0.4) 90%), 
+                url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"%3E%3Cpath d="M49 0A49 49 0 0 0 1 49h2C3 26 21.6 8 44 8v-8c-23.7 0-43 19.3-43 43h2c0-21.6 18.4-39 40-39v-2zm-2 49c0-21.6 18.4-39 40-39v-2C62.7 8 43.4 27.3 43.4 51h-2c0-21.6 18.4-39 40-39v-2c-23.7 0-43 19.3-43 43h2zm0 0h2c0 21.6-18.4 39-40 39v2C37.3 92 56.6 72.7 56.6 49h-2c0 21.6-18.4 39-40 39v2c23.7 0 43-19.3 43-43z" fill="%234b0082" opacity="0.1"%3E%3C/path%3E%3C/svg%3E');
+            background-size: cover, 100px 100px;
+            background-blend-mode: soft-light;
+            border: 5px solid #ff8c00; 
         }
 
-        /* --- TRẠNG THÁI MỞ (KÍCH HOẠT PHÓNG TO) --- */
-
-        /* 🛑 KHẮC PHỤC LỖI PHÓNG TO TRIỆT ĐỂ (Áp dụng cho thiệp đã ra khỏi bì thư) */
+        /* --- TRẠNG THÁI MỞ (KÍCH THƯỚC & HIỆU ỨNG CUỐI CÙNG) --- */
         .letter.opened { 
-            /* BẮT BUỘC phải là fixed để thoát khỏi body và căn giữa viewport */
             position: fixed; 
-            
             opacity: 1; 
             pointer-events: all; 
             z-index: 999; 
 
-            /* Thiết lập kích thước gần tối đa, căn giữa */
+            /* Kích thước PC/Tablet */
             width: 90vw; 
             height: 90vh; 
             max-width: 700px; 
@@ -196,12 +205,11 @@
             
             top: 50%;
             left: 50%;
-            /* Dùng transform để căn giữa tuyệt đối */
-            transform: translate(-50%, -50%); 
+            transform: translate(-50%, -50%) scale(1) rotateY(0deg); 
             
-            /* TRANG TRÍ */
-            border: 5px solid #FF69B4; 
-            box-shadow: 0 0 50px rgba(255, 105, 180, 0.9); 
+            /* Viền Tím Neon Ma Quái */
+            border: 5px solid #8A2BE2; 
+            box-shadow: 0 0 50px rgba(138, 43, 226, 0.9); 
             
             border-radius: 10px;
         }
@@ -222,17 +230,18 @@
             }
 
             .letter.opened { 
-                width: 98vw; 
-                height: 98vh; 
+                /* 🛑 KÍCH THƯỚC MỚI: 85% MÀN HÌNH */
+                width: 85vw; 
+                height: 85vh; 
                 padding: 10px; 
             }
             
             /* CỠ CHỮ PHÙ HỢP CHO MOBILE */
             .letter-content {
-                font-size: 0.8em; 
+                font-size: 0.9em; 
             }
             .letter-content h2 {
-                font-size: 1.2em;
+                font-size: 1.4em; 
             }
         }
 
@@ -243,7 +252,7 @@
             justify-content: center; 
             align-items: center; 
             
-            overflow-y: hidden; 
+            overflow-y: auto; 
             
             text-align: center;
             color: #333;
@@ -261,12 +270,12 @@
             margin: 5px 0; 
         }
         
-        /* --- Trang trí Đáng Yêu cho chữ --- */
+        /* --- Trang trí Chủ đề Halloween cho chữ --- */
         .letter-content h2 {
-            color: #FF69B4; 
+            color: #00FF00; /* Neon Green */
             margin-top: 0;
             font-size: 1.8em;
-            text-shadow: 1px 1px 2px rgba(255, 192, 203, 0.5);
+            text-shadow: 0 0 10px rgba(0, 255, 0, 0.7);
         }
         
         /* --- Hiệu ứng Chữ Động (Typewriter Effect) --- */
@@ -276,7 +285,7 @@
         .status-message {
             position: absolute;
             bottom: -50px;
-            color: #ffd700;
+            color: #ff8c00;
             font-style: italic;
             font-size: 0.9em;
             width: 100%;
@@ -300,7 +309,7 @@
     </audio>
 
     <div class="heart-wrapper" id="heartWrapper">
-        <span class="heart" id="initialHeart">❤️</span>
+        <span class="spooky-icon" id="initialHeart">🎃</span>
     </div>
 
     <div class="envelope-wrapper" id="envelopeWrapper">
@@ -312,12 +321,12 @@
         </div>
         
         <p class="status-message" id="statusMessage">
-            Ấn vào đây để mở thư...
+            Chạm vào Bí Ngô để mở ra lời nguyền...
         </p>
     </div>
 
     <script>
-        // --- 1. Canvas Effect (Giữ nguyên) ---
+        // --- 1. Canvas Effect (Đã đổi màu hạt) ---
         const canvas = document.getElementById('magicCanvas');
         const ctx = canvas.getContext('2d');
         let width = window.innerWidth;
@@ -338,7 +347,8 @@
                 this.speedX = Math.random() * 0.1;
                 this.speedY = Math.random() * 1 + 0.5;
                 this.opacity = Math.random() * 0.5 + 0.3;
-                this.color = Math.random() > 0.5 ? 'rgba(255, 140, 0, ' : 'rgba(138, 43, 226, '; 
+                // Đổi màu hạt sang Xanh Neon và Tím Điện
+                this.color = Math.random() > 0.5 ? 'rgba(0, 255, 0, ' : 'rgba(138, 43, 226, '; 
             }
             draw() {
                 ctx.fillStyle = this.color + this.opacity + ')';
@@ -410,7 +420,7 @@
             document.getElementById('initialHeart').removeEventListener('click', activateMusic);
         }
 
-        // --- 3. Hiệu ứng Chữ Động (Typewriter Effect) ---
+        // --- 3. Hiệu ứng Chữ Động (Giữ nguyên) ---
         function applyTypewriterEffect(contentElement, delay = 500) {
             setTimeout(() => {
                 const elements = contentElement.querySelectorAll('h2, p');
@@ -440,7 +450,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI PHÓNG TO TRIỆT ĐỂ BẰNG CÁCH DI CHUYỂN DOM) ---
+        // --- 4. Logic Mở Thư (Giữ nguyên logic phóng to) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -449,20 +459,22 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
 
-        // Nội dung thiệp
+        // Nội dung thiệp (Đã cập nhật cho Halloween)
         const firstTimeContent = `
-            <h2 style="color: #FF69B4; margin-bottom: 10px;">💖 Dành tặng người đặc biệt nhất 💌</h2>
-            <p><strong>Chào em/anh,</strong></p>
-            <p>Chiếc thiệp này là lời nhắc nhở nhỏ bé: Dù thế giới có bận rộn và nhiều thứ hỗn độn, anh/em vẫn luôn dành một góc yên tĩnh trong tim để nhớ đến em/anh.</p>
-            <p>Mỗi ngày trôi qua, anh/em lại mong chờ hơn nữa giây phút chúng ta có thể gặp nhau. Hãy cứ là chính em/anh: đáng yêu, mạnh mẽ và tuyệt vời như bây giờ nhé!</p>
-            <p style="color: #FF69B4; font-weight: bold;">— Gửi từ trái tim luôn hướng về em/anh 💕</p>
+            <h2 style="color: #00FF00; margin-bottom: 15px;">🦇 CHÚC MỪNG ĐÊM HALLOWEEN 👻</h2>
+            <p><strong>Chào (Tên Người Yêu),</strong></p>
+            <p>Xin chào từ cõi chết! Thiệp này được gửi đến em/anh từ một nơi bí ẩn nhất. Mong rằng đêm nay sẽ mang đến những điều kỳ diệu và những cú giật mình vui vẻ nhất.</p>
+            <p>Chúc em/anh có một mùa Halloween đầy tiếng cười, kẹo ngọt và những bộ trang phục thật **ma mị** nhé!</p>
+            <p style="color: #ff8c00; font-weight: bold; margin-top: 15px;">— Ký tên: Con Ma Vui Tính Yêu Em/Anh Nhất 🕸️</p>
         `;
 
         function checkAndSetContent() {
             letterContent.innerHTML = firstTimeContent;
             applyTypewriterEffect(letterContent, 1000); 
-            statusMessage.textContent = "Thiệp đã mở! Chúc bạn vui vẻ!";
+            statusMessage.textContent = "Lời nguyền đã được mở khóa! Happy Halloween!";
+            statusMessage.style.color = '#00FF00';
             statusMessage.style.animation = 'none';
+            statusMessage.style.bottom = '20px';
         }
 
         function showEnvelope() {
@@ -471,6 +483,8 @@
             
             setTimeout(() => { 
                 envelopeWrapper.classList.add('visible');
+                statusMessage.textContent = "Bì thư đã xuất hiện... Ấn vào để mở ra nhé!";
+                statusMessage.style.bottom = '20px';
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
             }, 800); 
         }
@@ -479,29 +493,39 @@
             // 1. Kích hoạt hiệu ứng lật nắp
             envelopeWrapper.classList.add('open'); 
             
-            // 2. 🛑 DI CHUYỂN THIỆP RA KHỎI BÌ THƯ (KHẮC PHỤC LỖI KHUNG HÌNH)
+            // 2. Ẩn status message (tạm thời)
+            statusMessage.style.opacity = '0';
+
+            // 3. DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
+            const rect = envelopeWrapper.getBoundingClientRect();
+            letter.style.top = `${rect.top}px`;
+            letter.style.left = `${rect.left}px`;
+            letter.style.width = `${rect.width}px`;
+            letter.style.height = `${rect.height}px`;
+            letter.style.position = 'fixed'; 
+            
             document.body.appendChild(letter);
             
-            // 3. Ẩn bì thư và phóng to thiệp ngay lập tức
+            // 4. Ẩn bì thư và áp dụng hiệu ứng phóng to cho thiệp
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // 4. Áp dụng class phóng to cho thiệp (Bây giờ nó là phần tử con trực tiếp của Body)
+                // 5. Áp dụng class phóng to cho thiệp
                 letter.classList.add('opened'); 
                 
                 // Bắt đầu gõ chữ sau khi phóng to xong
                 setTimeout(() => {
                     checkAndSetContent(); 
+                    statusMessage.style.opacity = '1';
                 }, 1500); 
 
-            }, 500); // 500ms sau khi nắp lật (0.8s), bì thư bắt đầu ẩn đi
+            }, 500); 
 
         }
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
             initialHeart.addEventListener('click', showEnvelope);
-            initialHeart.addEventListener('click', activateMusic); 
         }
 
         initializeApp();
