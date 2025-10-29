@@ -582,7 +582,7 @@
 
         function toggleSound() {
             if (isMuted) {
-                // 🛑 Play nhạc khi người dùng click bật
+                // Play nhạc khi người dùng click bật
                 bgm.muted = false;
                 bgm.play().catch(error => {
                     console.error("Lỗi phát nhạc:", error);
@@ -734,22 +734,23 @@
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
             
-            // 🛑 Cố gắng chạy nhạc (Muted) sau tương tác người dùng đầu tiên
+            // Cố gắng chạy nhạc (Muted) sau tương tác người dùng đầu tiên
             bgm.muted = true; 
             bgm.play().catch(error => console.log("Không thể tự động phát nhạc."));
         }
 
         function showEnvelope() {
-            // 🛑 Loại bỏ activateMusic() để tránh xung đột
-            
+            // 1. Ẩn trái tim ngay lập tức và kích hoạt transition CSS (0.8s)
             heartWrapper.classList.add('hidden'); 
             
+            // 2. HIỆN BÌ THƯ GẦN NHƯ TỨC THÌ
+            // Đã thay 800ms thành 10ms để đảm bảo chuyển đổi diễn ra ngay lập tức sau khi ẩn trái tim.
             setTimeout(() => { 
                 envelopeWrapper.classList.add('visible');
                 statusMessage.textContent = "Ấn vào bì thư để mở ra nhé!";
                 statusMessage.style.bottom = '20px';
                 envelopeWrapper.addEventListener('click', openEnvelope, { once: true });
-            }, 800); 
+            }, 10); 
         }
 
         function openEnvelope() {
@@ -800,7 +801,7 @@
             envelopeWrapper.style.opacity = '0';
             envelopeWrapper.style.pointerEvents = 'none';
             
-            // 🛑 ĐÃ SỬA LỖI: GÁN LISTENER VÀO heartWrapper VÀ DÙNG { once: true }
+            // GÁN LISTENER CHO heartWrapper
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
 
             // Bắt đầu bằng màn hình PIN
