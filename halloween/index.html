@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
+    <title>💌 Thiệp Lãng Mạn 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
 
         /* --- CSS Chung --- */
         body {
-            background-color: #f7f0ff; /* Nền tím hoa oải hương nhạt */
+            background-color: #f7f0ff; 
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
@@ -162,9 +162,8 @@
         }
 
 
-        /* --- Nội Dung Thiệp (Letter Content - TRẠNG THÁI BAN ĐẦU) --- */
+        /* --- Nội Dung Thiệp (Letter Content - TRẠNG THÁI BAN ĐẦU TRONG BÌ THƯ) --- */
         .letter {
-            /* Vị trí ban đầu: Tuyệt đối, nhỏ bằng bì thư */
             position: absolute; 
             top: 0;
             left: 0;
@@ -175,7 +174,7 @@
             box-sizing: border-box;
             border-radius: 10px;
             
-            opacity: 0; /* Ẩn cho đến khi được di chuyển ra body */
+            opacity: 0; 
             pointer-events: none; 
             z-index: 45; 
 
@@ -197,7 +196,7 @@
             pointer-events: all; 
             z-index: 999; 
 
-            /* Kích thước & Căn giữa tuyệt đối */
+            /* 🛑 CĂN GIỮA TUYỆT ĐỐI */
             width: 90vw; 
             height: 90vh; 
             max-width: 700px; 
@@ -205,7 +204,6 @@
             
             top: 50%;
             left: 50%;
-            /* 🛑 BƯỚC QUAN TRỌNG: Căn giữa bằng transform */
             transform: translate(-50%, -50%) scale(1) rotateY(0deg); 
             
             border: 5px solid #FF69B4; 
@@ -230,7 +228,6 @@
             }
 
             .letter.opened { 
-                /* 🛑 Đảm bảo kích thước tối đa 90% màn hình */
                 width: 90vw; 
                 height: 90vh; 
                 padding: 10px; 
@@ -449,7 +446,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI PHÓNG TO) ---
+        // --- 4. Logic Mở Thư (ĐÃ SỬA LỖI CĂN GIỮA) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -495,16 +492,14 @@
 
             // 2. TẠO VỊ TRÍ BAN ĐẦU (Start Point)
             const rect = envelopeWrapper.getBoundingClientRect();
-            // Đặt các thuộc tính vị trí/kích thước ban đầu bằng style inline
+            
+            // Đặt các thuộc tính vị trí/kích thước ban đầu bằng style inline (Start State)
+            letter.style.position = 'fixed'; 
             letter.style.top = `${rect.top}px`;
             letter.style.left = `${rect.left}px`;
             letter.style.width = `${rect.width}px`;
             letter.style.height = `${rect.height}px`;
-            letter.style.position = 'fixed'; 
-            
-            // Đảm bảo thiệp hiển thị và bỏ đi transform mặc định
             letter.style.opacity = '1';
-            letter.style.transform = 'scale(1) rotateY(0deg)'; 
             
             // 3. DI CHUYỂN THIỆP RA KHỎI BÌ THƯ
             document.body.appendChild(letter);
@@ -513,15 +508,19 @@
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // 🛑 BƯỚC SỬA LỖI: Xóa các thuộc tính định vị/kích thước INLINE
-                // để CSS trong .opened (top: 50%, width: 90vw) có thể áp dụng 
-                letter.style.top = '';
-                letter.style.left = '';
-                letter.style.width = '';
-                letter.style.height = '';
-                
-                // 5. Áp dụng class phóng to cho thiệp. Transition sẽ chạy mượt mà đến vị trí căn giữa.
-                letter.classList.add('opened'); 
+                // SỬ DỤNG requestAnimationFrame ĐỂ ĐẢM BẢO CHUYỂN ĐỔI BẮT ĐẦU TỪ VỊ TRÍ ĐÃ ĐỊNH
+                requestAnimationFrame(() => {
+                    // 🛑 BƯỚC SỬA LỖI: Xóa các thuộc tính định vị INLINE (top, left, width, height) 
+                    // để các thuộc tính của class .opened có thể áp dụng ngay lập tức
+                    letter.style.top = '';
+                    letter.style.left = '';
+                    letter.style.width = '';
+                    letter.style.height = '';
+                    // Giữ position fixed
+                    
+                    // Áp dụng class phóng to và căn giữa
+                    letter.classList.add('opened'); 
+                });
                 
                 // Bắt đầu gõ chữ sau khi phóng to xong
                 setTimeout(() => {
