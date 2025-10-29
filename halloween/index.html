@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Cho Emmm 💐</title>
+    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -22,6 +22,97 @@
             background-image: radial-gradient(#ffe6f2 1px, transparent 0);
             background-size: 20px 20px;
         }
+
+        /* --- PHẦN MỚI: MÀN HÌNH NHẬP PIN --- */
+        #pinScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: #f7f0ff; 
+            z-index: 1000; /* Hiển thị cao nhất */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.5s;
+        }
+
+        #pinScreen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        #pinDisplay {
+            font-family: monospace; 
+            font-size: 2.5em;
+            letter-spacing: 10px;
+            border-bottom: 3px solid #FFC0CB; 
+            padding: 10px;
+            min-width: 280px;
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            user-select: none;
+        }
+
+        #pinMessage {
+            color: #FF4D4D;
+            height: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        #keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 300px;
+        }
+        
+        /* Keyframes cho rung nhẹ khi sai PIN */
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            20% { transform: translateX(-10px); }
+            40% { transform: translateX(10px); }
+            60% { transform: translateX(-8px); }
+            80% { transform: translateX(8px); }
+            100% { transform: translateX(0); }
+        }
+
+        .pin-button {
+            background-color: #fff;
+            border: 2px solid #FFC0CB;
+            color: #FF69B4;
+            font-size: 1.5em;
+            font-weight: bold;
+            padding: 15px 0;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.1s, transform 0.1s;
+            box-shadow: 0 4px #FFC0CB;
+        }
+
+        .pin-button:active {
+            background-color: #FFC0CB;
+            color: #fff;
+            transform: translateY(4px);
+            box-shadow: 0 0 #FFC0CB;
+        }
+
+        .action-btn {
+            background-color: #eee;
+            color: #666;
+            box-shadow: 0 4px #ccc;
+        }
+
+        .action-btn:active {
+            background-color: #ccc;
+            color: #333;
+            box-shadow: 0 0 #ccc;
+        }
+        /* --- KẾT THÚC PHẦN MỚI: MÀN HÌNH NHẬP PIN --- */
 
         /* --- Hiệu ứng Nền (Canvas) --- */
         #magicCanvas {
@@ -59,6 +150,7 @@
             align-items: center;
             width: 100%;
             height: 100%;
+            /* 🛑 Đã đặt opacity và pointer-events ban đầu là 0/none trong JS */
             transition: opacity 0.8s ease-out, transform 0.8s ease-out;
         }
 
@@ -69,7 +161,7 @@
             height: 100px; 
             background-color: #ff4d4d; 
             
-            /* ĐẢM BẢO LOOP VÔ HẠN (infinite) - Đã SẴN CÓ */
+            /* Đảm bảo lặp vô hạn (infinite) */
             animation: pulse-heart 1.5s infinite ease-in-out, 
                        subtle-wiggle 3s infinite ease-in-out 0.5s; 
 
@@ -99,7 +191,7 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Giữ scale lớn hơn (1.25) */
+        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
             50% { transform: scale(1.25) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
@@ -128,17 +220,16 @@
             height: 220px;
             cursor: pointer;
             z-index: 100;
+            /* 🛑 Đã đặt opacity và pointer-events ban đầu là 0/none trong JS */
             transition: transform 0.8s, opacity 0.8s, box-shadow 0.5s; 
             box-shadow: 0 10px 50px rgba(255, 105, 180, 0.7); 
             
-            opacity: 0;
-            pointer-events: none;
             transform: scale(0.95);
             
             overflow: hidden; 
             border-radius: 5px; 
             
-            /* Perspective để nắp thư xoay trong không gian 3D */
+            /* Perspective cho nắp thư xoay trong không gian 3D */
             perspective: 1000px;
         }
 
@@ -156,7 +247,7 @@
             100% { transform: scale(0.95); }
         }
         
-        /* --- THÂN BÌ THƯ: HỒNG NHẠT KẺ SỌC --- */
+        /* --- THÂN BÌ THƯ --- */
         .envelope {
             position: absolute;
             width: 100%;
@@ -176,7 +267,7 @@
             box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.1); 
         }
 
-        /* --- NẮP BÌ THƯ: VÀNG NHẠT KẺ SỌC --- */
+        /* --- NẮP BÌ THƯ --- */
         .flap {
             position: absolute;
             top: 0;
@@ -196,7 +287,7 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
-            /* 🛑 ĐÃ SỬA: Thời gian chuyển đổi nắp thư về 0.8s */
+            /* Thời gian chuyển đổi nắp thư về 0.8s, giữ độ mềm mại và 3D */
             transition: transform 0.8s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0.8s;
             z-index: 150; 
             border-bottom: 3px solid #ffd700; 
@@ -281,7 +372,7 @@
             .envelope-wrapper {
                 width: 300px; 
                 height: 180px;
-                perspective: 800px; /* Điều chỉnh perspective cho mobile */
+                perspective: 800px; 
             }
 
             .letter.opened { 
@@ -300,7 +391,7 @@
                 font-size: 1.4em; 
             }
 
-            /* Điều chỉnh kích thước trái tim CSS trên di động để cân đối (80px x 80px) */
+            /* Điều chỉnh kích thước trái tim CSS trên di động */
             .css-heart {
                 width: 80px; 
                 height: 80px; 
@@ -317,6 +408,12 @@
             .css-heart::after {
                 left: 40px; 
                 top: 0;
+            }
+            
+            /* Điều chỉnh bàn phím PIN cho mobile */
+            #keypad {
+                width: 250px;
+                gap: 10px;
             }
         }
 
@@ -383,6 +480,27 @@
         <source src="nhac.mp3" type="audio/mpeg" /> 
     </audio>
 
+    <div id="pinScreen">
+        <h2 style="color: #FF69B4; margin-bottom: 30px;">Nhập Mật Khẩu Tình Yêu 🔒</h2>
+        <div id="pinDisplay">_ _ _ _</div>
+        <div id="pinMessage"></div>
+        
+        <div id="keypad">
+            <button class="pin-button">1</button>
+            <button class="pin-button">2</button>
+            <button class="pin-button">3</button>
+            <button class="pin-button">4</button>
+            <button class="pin-button">5</button>
+            <button class="pin-button">6</button>
+            <button class="pin-button">7</button>
+            <button class="pin-button">8</button>
+            <button class="pin-button">9</button>
+            
+            <button class="pin-button action-btn" data-action="delete">⌫</button>
+            <button class="pin-button">0</button>
+            <button class="pin-button action-btn" data-action="enter">OK</button>
+        </div>
+    </div>
     <div class="heart-wrapper" id="heartWrapper">
         <div class="css-heart" id="initialHeart"></div>
     </div>
@@ -522,19 +640,90 @@
                 });
             }, delay);
         }
+        
+        // --- 4. Logic Nhập PIN Mới ---
+        const CORRECT_PIN = "1234"; // 🔑 Mật khẩu mặc định: 1234. Bạn có thể thay đổi ở đây.
+        const MAX_PIN_LENGTH = 4;
 
+        const pinScreen = document.getElementById('pinScreen');
+        const pinDisplay = document.getElementById('pinDisplay');
+        const pinMessage = document.getElementById('pinMessage');
+        const keypad = document.getElementById('keypad');
+        let currentPin = "";
 
-        // --- 4. Logic Mở Thư ---
+        function updatePinDisplay() {
+            let maskedPin = currentPin.padEnd(MAX_PIN_LENGTH, '_');
+            // Thêm khoảng cách giữa các ký tự
+            pinDisplay.textContent = maskedPin.split('').join(' '); 
+        }
 
+        function handleKeyPress(key) {
+            pinMessage.textContent = "";
+
+            if (key === 'delete') {
+                currentPin = currentPin.slice(0, -1);
+            } else if (key === 'enter') {
+                checkPin();
+                return;
+            } else if (currentPin.length < MAX_PIN_LENGTH) {
+                currentPin += key;
+            }
+            
+            updatePinDisplay();
+            
+            // Tự động kiểm tra nếu đủ 4 chữ số
+            if (currentPin.length === MAX_PIN_LENGTH) {
+                setTimeout(checkPin, 300); 
+            }
+        }
+
+        function checkPin() {
+            if (currentPin.length !== MAX_PIN_LENGTH) {
+                pinMessage.textContent = "Vui lòng nhập đủ 4 chữ số.";
+                return;
+            }
+
+            if (currentPin === CORRECT_PIN) {
+                pinScreen.classList.add('hidden');
+                pinMessage.textContent = "Mật khẩu đúng! Đang mở khóa...";
+                
+                // Bắt đầu chuỗi hoạt động chính của thiệp sau khi màn hình PIN ẩn
+                setTimeout(showHeart, 500); 
+            } else {
+                pinMessage.textContent = "Sai mật khẩu! Thử lại.";
+                currentPin = "";
+                updatePinDisplay();
+                
+                // Thêm hiệu ứng rung cho bàn phím
+                keypad.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    keypad.style.animation = 'none';
+                }, 500);
+            }
+        }
+
+        // Event listener cho bàn phím số
+        keypad.addEventListener('click', (event) => {
+            if (event.target.classList.contains('pin-button')) {
+                const value = event.target.textContent;
+                const action = event.target.dataset.action;
+                
+                if (action) {
+                    handleKeyPress(action);
+                } else if (!isNaN(parseInt(value))) {
+                    handleKeyPress(value);
+                }
+            }
+        });
+
+        // --- 5. Logic Mở Thư (Được gọi sau khi nhập PIN đúng) ---
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
         const envelopeWrapper = document.getElementById('envelopeWrapper');
         const letter = document.getElementById('letter'); 
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
-        
-        // 🛑 ĐÃ SỬA: Thời gian chuyển đổi nắp thư về 0.8 giây
-        const flapDuration = 800; 
+        const flapDuration = 800; // 0.8 giây
 
         // Nội dung thiệp (Giữ nguyên)
         const firstTimeContent = `
@@ -552,6 +741,17 @@
             statusMessage.style.color = '#FF69B4';
             statusMessage.style.animation = 'none';
             statusMessage.style.bottom = '20px';
+        }
+
+        function showHeart() {
+             // 1. Tiết lộ Trái tim
+            heartWrapper.style.opacity = '1';
+            heartWrapper.style.pointerEvents = 'all';
+            
+            statusMessage.style.bottom = '10px'; 
+            statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
+
+            initialHeart.addEventListener('click', showEnvelope);
         }
 
         function showEnvelope() {
@@ -574,7 +774,6 @@
             // 2. TẠO VỊ TRÍ BAN ĐẦU (Start Point)
             const rect = envelopeWrapper.getBoundingClientRect();
             
-            // Đặt các thuộc tính vị trí/kích thước ban đầu bằng style inline (Start State)
             letter.style.position = 'fixed'; 
             letter.style.top = `${rect.top}px`;
             letter.style.left = `${rect.left}px`;
@@ -589,15 +788,12 @@
             setTimeout(() => {
                 envelopeWrapper.classList.add('hidden');
                 
-                // SỬ DỤNG requestAnimationFrame ĐỂ ĐẢM BẢO CHUYỂN ĐỔI BẮT ĐẦU TỪ VỊ TRÍ ĐÃ ĐỊNH
                 requestAnimationFrame(() => {
-                    // Xóa các thuộc tính định vị INLINE
                     letter.style.top = '';
                     letter.style.left = '';
                     letter.style.width = '';
                     letter.style.height = '';
                     
-                    // Áp dụng class phóng to và căn giữa
                     letter.classList.add('opened'); 
                 });
                 
@@ -612,7 +808,14 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            initialHeart.addEventListener('click', showEnvelope);
+            // Thiết lập trạng thái ban đầu: Ẩn trái tim và bì thư
+            heartWrapper.style.opacity = '0';
+            heartWrapper.style.pointerEvents = 'none';
+            envelopeWrapper.style.opacity = '0';
+            envelopeWrapper.style.pointerEvents = 'none';
+            
+            // Bắt đầu bằng màn hình PIN
+            updatePinDisplay(); 
         }
 
         initializeApp();
