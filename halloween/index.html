@@ -18,6 +18,7 @@
             min-height: 100vh;
             margin: 0;
             overflow: hidden; 
+            /* perspective được đặt ở body là tốt, nhưng tôi sẽ thêm vào envelope-wrapper để local */
             perspective: 1000px; 
             background-image: radial-gradient(#ffe6f2 1px, transparent 0);
             background-size: 20px 20px;
@@ -99,10 +100,10 @@
             top: 0;
         }
 
-        /* Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) */
+        /* 🛑 ĐÃ SỬA: Keyframes cho hiệu ứng nhịp đập (TRÁI TIM) - Tăng scale lên 1.25 */
         @keyframes pulse-heart {
             0% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
-            50% { transform: scale(1.15) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
+            50% { transform: scale(1.25) rotate(-45deg); box-shadow: 0 15px 40px rgba(255, 77, 77, 1), -7px 7px 25px rgba(255, 105, 180, 0.8); }
             100% { transform: scale(1) rotate(-45deg); box-shadow: 0 10px 30px rgba(255, 77, 77, 0.7), -5px 5px 20px rgba(255, 105, 180, 0.5); }
         }
 
@@ -137,6 +138,9 @@
             
             overflow: hidden; 
             border-radius: 5px; 
+            
+            /* 🛑 ĐÃ THÊM: Perspective để nắp thư xoay trong không gian 3D */
+            perspective: 1000px;
         }
 
         /* BÌ THƯ: NHỊP ĐẬP KHI HIỆN RA */
@@ -193,16 +197,18 @@
             clip-path: polygon(0 0, 100% 0, 50% 100%); 
             
             transform-origin: top;
-            /* 🛑 ĐÃ SỬA CHUYỂN ĐỘNG NẮP THƯ: Chậm và mềm mại hơn */
+            /* Chuyển động lật nắp chậm và mềm mại */
             transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 1.2s;
             z-index: 150; 
             border-bottom: 3px solid #ffd700; 
+            
+            /* Đảm bảo mặt sau của nắp được nhìn thấy trong 3D */
+            transform-style: preserve-3d;
         }
         
         .envelope-wrapper.open .flap {
             transform: rotateX(180deg);
             z-index: 40;
-            /* Phải khớp thời gian lật nắp */
             transition: transform 1.2s cubic-bezier(0.5, 0, 0.5, 1), z-index 0s 0s; 
         }
 
@@ -275,6 +281,7 @@
             .envelope-wrapper {
                 width: 300px; 
                 height: 180px;
+                perspective: 800px; /* Điều chỉnh perspective cho mobile */
             }
 
             .letter.opened { 
@@ -517,7 +524,7 @@
         }
 
 
-        // --- 4. Logic Mở Thư (Điều chỉnh thời gian) ---
+        // --- 4. Logic Mở Thư (Giữ nguyên) ---
 
         const heartWrapper = document.getElementById('heartWrapper');
         const initialHeart = document.getElementById('initialHeart');
@@ -526,7 +533,6 @@
         const letterContent = document.getElementById('letterContent');
         const statusMessage = document.getElementById('statusMessage');
         
-        // Thời gian chuyển đổi nắp thư mới (phải khớp với CSS)
         const flapDuration = 1200; // 1.2 giây
 
         // Nội dung thiệp (Giữ nguyên)
