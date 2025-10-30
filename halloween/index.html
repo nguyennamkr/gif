@@ -668,7 +668,7 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Âm Thanh (ĐÃ SỬA LỖI PHÁT NHẠC) ---
+        // --- 2. Logic Âm Thanh ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
         let isMuted = true;
@@ -792,15 +792,8 @@
             if (currentPin === CORRECT_PIN) {
                 pinMessage.textContent = "Xin Mời Em Vào ❤️ A";
                 
-                // *** PHẦN SỬA LỖI: Bắt đầu phát nhạc ngay lập tức sau PIN thành công ***
-                if (isMuted) { 
-                    bgm.muted = false;
-                    bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau PIN:", error));
-                    isMuted = false;
-                    bgmUserInitiated = true; 
-                    soundToggle.textContent = '🔊';
-                }
-                // *** KẾT THÚC PHẦN SỬA LỖI ***
+                // *** ĐÃ XÓA LỆNH PHÁT NHẠC NỀN Ở ĐÂY ***
+                // Nhạc nền sẽ được phát khi người dùng nhấn vào trái tim (hàm showEnvelope)
                 
                 setTimeout(() => {
                     pinScreen.classList.add('hidden');
@@ -931,6 +924,16 @@
             setTimeout(() => { 
                 heartWrapper.classList.add('invisible');
             }, heartTransitionDuration); 
+            
+            // *** PHẦN KHẮC PHỤC: Phát nhạc nền khi người dùng tương tác với Trái Tim ***
+            if (isMuted) { 
+                bgm.muted = false;
+                bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau tương tác Trái tim:", error));
+                isMuted = false;
+                bgmUserInitiated = true; // Đánh dấu đã kích hoạt
+                soundToggle.textContent = '🔊';
+            }
+            // *** KẾT THÚC PHẦN KHẮC PHỤC ***
         }
 
         function openEnvelope() {
