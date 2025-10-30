@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>💌 Thiệp Tình Yêu Lãng Mạn 💐</title>
+    <title>💌 Bất Ngờ Cho Em 💐</title>
     
     <style>
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
@@ -491,14 +491,14 @@
     <canvas id="magicCanvas"></canvas>
 
     <div id="soundToggle">🔇</div> 
-    <audio id="bgm" loop><source src="nhac.mp3" type="audio/mpeg" /></audio>
+    <audio id="bgm" loop><source src="halloween_music.mp3" type="audio/mpeg" /></audio>
     <audio id="pinClickSound"><source src="pin_click.mp3" type="audio/mpeg" /></audio>
     <audio id="envelopeOpenSound"><source src="envelope_open.mp3" type="audio/mpeg" /></audio>
     <audio id="typewriterStartSound"><source src="typewriter_start.mp3" type="audio/mpeg" /></audio>
 
 
     <div id="pinScreen">
-        <h2 style="color: #FF69B4; margin-bottom: 30px;">Nhập Mật Khẩu Tình Yêu 🔒</h2>
+        <h2 style="color: #FF69B4; margin-bottom: 30px;">Vừng Ơi Mở Cửa 🔒</h2>
         <div id="pinDisplay">_ _ _ _</div>
         <div id="pinMessage"></div>
         
@@ -725,7 +725,7 @@
             }
 
             if (currentPin === CORRECT_PIN) {
-                pinMessage.textContent = "Xin mời vào! ❤️";
+                pinMessage.textContent = "Xin Mời Em Vào ❤️ A";
                 
                 setTimeout(() => {
                     pinScreen.classList.add('hidden');
@@ -733,7 +733,7 @@
                 }, SUCCESS_MESSAGE_DELAY);
 
             } else {
-                pinMessage.textContent = "Trái tim đóng cửa 💔";
+                pinMessage.textContent = "Ơ, Sai Rồi À 💔";
                 currentPin = "";
                 updatePinDisplay();
                 
@@ -767,11 +767,11 @@
         const heartTransitionDuration = 300; 
 
         const firstTimeContent = `
-            <h2 style="color: #FF69B4;">💖 Gửi Người Em/Anh Yêu 💌</h2>
-            <p style="margin-top: 10px;"><strong>Chào em/anh,</strong></p>
-            <p>Anh/Em muốn gửi một chút nắng ấm và thật nhiều yêu thương qua chiếc thiệp nhỏ này. Cảm ơn em/anh đã đến và làm cuộc đời anh/em trở nên tươi đẹp hơn mỗi ngày.</p>
-            <p>Dù ở bất cứ đâu, anh/em cũng luôn dõi theo và cầu chúc những điều tốt đẹp nhất sẽ đến với em/anh.</p>
-            <p style="color: #FF69B4; font-weight: bold;">— Yêu thương từ [Tên Của Bạn] 💕</p>
+            <h2 style="color: #FF69B4;">💖 Dành Cho Em 💌</h2>
+            <p style="margin-top: 10px;"><heart>Chào Em Bé Nh ^^,<heart></p>
+            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau nãy nữa vẫn sẽ như vậy.</p>
+            <p>1 chiếc CV đang được Anh viết cẩn thận, với sự nghiêm túc để dành cho Em.</p>
+            <p style="color: #FF69B4; font-weight: bold;">— From 남 with 💕</p>
         `;
 
         // CONFETTI FUNCTION (Giữ nguyên)
