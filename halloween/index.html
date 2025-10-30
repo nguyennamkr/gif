@@ -668,11 +668,11 @@
         initCanvas();
         animateCanvas();
 
-        // --- 2. Logic Âm Thanh (Tự động tắt/mở) ---
+        // --- 2. Logic Âm Thanh (ĐÃ SỬA LỖI PHÁT NHẠC) ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
         let isMuted = true;
-        let bgmUserInitiated = false; // Theo dõi liệu người dùng đã tự bật BGM chưa
+        let bgmUserInitiated = false; 
 
         soundToggle.addEventListener('click', toggleSound);
 
@@ -684,25 +684,22 @@
                 });
                 soundToggle.textContent = '🔊';
                 isMuted = false;
-                bgmUserInitiated = true; // Đánh dấu là đã được người dùng bật
+                bgmUserInitiated = true; 
             } else {
                 bgm.pause();
                 bgm.currentTime = 0; 
                 soundToggle.textContent = '🔇';
                 isMuted = true;
-                bgmUserInitiated = false; // Đánh dấu là đã bị người dùng tắt
+                bgmUserInitiated = false; 
             }
         }
         
-        // Logic Tự Động Tắt/Mở Nhạc Nền Khi Chuyển Tab/Ứng Dụng
         function handleVisibilityChange() {
             if (document.hidden) {
-                // Tạm dừng nhạc nền khi tab/trình duyệt bị ẩn, chỉ khi nó đang phát
                 if (!bgm.paused && !isMuted) {
                     bgm.pause();
                 }
             } else {
-                // Chạy lại nhạc nền nếu đã từng được người dùng bật VÀ hiện tại không bị tắt tiếng
                 if (bgmUserInitiated && !isMuted) {
                      bgm.play().catch(error => console.log("Lỗi tự động phát nhạc sau khi chuyển tab:", error));
                 }
@@ -795,6 +792,16 @@
             if (currentPin === CORRECT_PIN) {
                 pinMessage.textContent = "Xin Mời Em Vào ❤️ A";
                 
+                // *** PHẦN SỬA LỖI: Bắt đầu phát nhạc ngay lập tức sau PIN thành công ***
+                if (isMuted) { 
+                    bgm.muted = false;
+                    bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau PIN:", error));
+                    isMuted = false;
+                    bgmUserInitiated = true; 
+                    soundToggle.textContent = '🔊';
+                }
+                // *** KẾT THÚC PHẦN SỬA LỖI ***
+                
                 setTimeout(() => {
                     pinScreen.classList.add('hidden');
                     setTimeout(showHeart, 500); 
@@ -834,13 +841,12 @@
         const flapDuration = 800; 
         const heartTransitionDuration = 300; 
 
-        // ĐÃ SỬA: Thêm icon đáng yêu vào sau "Chào Em Bé Nh"
         const firstTimeContent = `
             <h2 style="color: #FF69B4;">💖 Dành Cho Em 💌</h2>
-            <p style="margin-top: 10px;">Chào Em Bé Nh (≧◡≦)🥰</p>
-            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau này nữa vẫn sẽ như vậy.</p>
-            <p>1 chiếc "CV" đang được Anh viết cẩn thận, với sự nghiêm túc để dành sự "ưu tiên" từ Em.</p>
-            <p style="color: #FF69B4; font-weight: bold;">— From 남 with... 💕</p>
+            <p style="margin-top: 10px;"><heart>Chào Em Bé Nh **(≧◡≦)** <heart> Anh Yêu Em 🥰</p>
+            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau nãy nữa vẫn sẽ như vậy.</p>
+            <p>1 chiếc CV đang được Anh viết cẩn thận, với sự nghiêm túc để dành cho Em.</p>
+            <p style="color: #FF69B4; font-weight: bold;">— From 남 with 💕</p>
         `;
 
         // CONFETTI FUNCTION (Giữ nguyên)
@@ -887,7 +893,7 @@
             applyTypewriterEffect(letterContent, 1000); 
             
             // Cập nhật và hiển thị ngay lập tức thông báo trạng thái
-            statusMessage.textContent = "Với Anh điều tuyệt vời là làm Em hạnh phúc! 💐";
+            statusMessage.textContent = "Chúc Em luôn hạnh phúc! 💐";
             statusMessage.style.color = '#FF69B4';
             statusMessage.style.animation = 'none';
             statusMessage.style.bottom = '20px';
@@ -904,7 +910,7 @@
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
             
-            bgm.play().catch(error => console.log("Không thể tự động phát nhạc."));
+            // ĐÃ XÓA LỆNH bgm.play() BỊ LỖI Ở ĐÂY
         }
 
         function showEnvelope() {
