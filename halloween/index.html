@@ -509,6 +509,139 @@
                 opacity: 0;
             }
         }
+        
+        /* ======================================= */
+        /* --- BÍ NGÔ HALLOWEEN VÀ MODAL SỢ HÃI --- */
+        /* ======================================= */
+
+        /* Bí Ngô CSS */
+        #pumpkin {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #ff7518; /* Màu cam bí ngô */
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5), 0 0 15px rgba(255, 117, 24, 0.7);
+            z-index: 500; /* Cao hơn mọi thứ trừ Modal */
+            transition: transform 0.2s;
+            animation: breathe-pumpkin 3s infinite ease-in-out;
+            border: 2px solid #550000; 
+        }
+
+        #pumpkin:hover {
+            transform: scale(1.1) rotate(-5deg);
+        }
+        
+        /* Cuống bí ngô */
+        #pumpkin::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 10px;
+            height: 10px;
+            background-color: #228b22; /* Xanh lá cây */
+            border-radius: 3px;
+        }
+        
+        /* Mắt & Miệng (Đáng yêu & Đáng sợ) */
+        #pumpkin::after {
+            content: "👻"; /* Icon thay thế cho khuôn mặt phức tạp */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 30px; 
+            line-height: 1;
+            text-shadow: 1px 1px 2px black;
+        }
+        
+        @keyframes breathe-pumpkin {
+            0%, 100% { transform: scale(1) rotate(0); }
+            50% { transform: scale(1.05) rotate(2deg); }
+        }
+
+
+        /* Modal Đáng Sợ */
+        #scareModal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.85); /* Nền tối mờ */
+            z-index: 5000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+        
+        #scareModal.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        .modal-content {
+            background-color: #330000; /* Nền đỏ đậm, ma mị */
+            border: 5px solid #FF4500; /* Viền cam rực */
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 400px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 69, 0, 0.9);
+            transform: scale(0.8);
+            animation: modal-pop-in 0.4s forwards;
+        }
+        
+        @keyframes modal-pop-in {
+            to { transform: scale(1); }
+        }
+
+        .modal-content h2 {
+            color: #FFD700; /* Vàng kim loại */
+            font-size: 2.2em;
+            text-shadow: 2px 2px #FF4500;
+            margin-bottom: 20px;
+            animation: text-flicker 1.5s infinite alternate;
+        }
+
+        .modal-content p {
+            color: #fff;
+            font-size: 1.1em;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+        
+        @keyframes text-flicker {
+            0% { opacity: 1; text-shadow: 2px 2px #FF4500; }
+            50% { opacity: 0.8; text-shadow: none; }
+            100% { opacity: 1; text-shadow: 2px 2px #FF4500; }
+        }
+
+        .love-button {
+            background-color: #FF4D4D; /* Đỏ tình yêu */
+            color: #fff;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px #CC0000;
+            transition: all 0.1s;
+        }
+        
+        .love-button:active {
+            transform: translateY(5px);
+            box-shadow: 0 0 #CC0000;
+        }
+
     </style>
 </head>
 <body>
@@ -516,6 +649,7 @@
 
     <div id="soundToggle">🔇</div> 
     <audio id="bgm" loop><source src="halloween_music.mp3" type="audio/mpeg" /></audio>
+    <audio id="scarySound"><source src="scary_scream.mp3" type="audio/mpeg" /></audio>
     
     <audio id="pin_0_sound"><source src="pin_0.mp3" type="audio/mpeg" /></audio>
     <audio id="pin_1_sound"><source src="pin_1.mp3" type="audio/mpeg" /></audio>
@@ -531,6 +665,16 @@
     <audio id="pinClickSound"><source src="pin_click.mp3" type="audio/mpeg" /></audio>
     <audio id="envelopeOpenSound"><source src="envelope_open.mp3" type="audio/mpeg" /></audio>
     <audio id="typewriterStartSound"><source src="typewriter_start.mp3" type="audio/mpeg" /></audio>
+
+    <div id="pumpkin"></div>
+    
+    <div id="scareModal">
+        <div class="modal-content">
+            <h2>HALLOWEEN ẢNH HƯỞNG TÍ TEO!</h2>
+            <p>Em dám nhìn thẳng vào đôi mắt này sao? 😈 Hãy nhớ rằng dù đáng sợ đến mấy, thì Anh vẫn sẽ chạy về hướng đó, hướng nào á? Đố Em biết 🥰 </p>
+            <button class="love-button" onclick="hideScaryModal()">CƯỜI MỈM trước khi BẤM ❤️</button>
+        </div>
+    </div>
 
 
     <div id="pinScreen">
@@ -580,6 +724,7 @@
         const pinClickSound = document.getElementById('pinClickSound');
         const envelopeOpenSound = document.getElementById('envelopeOpenSound');
         const typewriterStartSound = document.getElementById('typewriterStartSound');
+        const scarySound = document.getElementById('scarySound'); // Âm thanh mới
 
         // Khai báo Audio Element cho từng phím số (0-9)
         const pinSounds = {};
@@ -792,9 +937,6 @@
             if (currentPin === CORRECT_PIN) {
                 pinMessage.textContent = "Xin Mời Em Vào ❤️ A";
                 
-                // *** ĐÃ XÓA LỆNH PHÁT NHẠC NỀN Ở ĐÂY ***
-                // Nhạc nền sẽ được phát khi người dùng nhấn vào trái tim (hàm showEnvelope)
-                
                 setTimeout(() => {
                     pinScreen.classList.add('hidden');
                     setTimeout(showHeart, 500); 
@@ -833,11 +975,12 @@
         const statusMessage = document.getElementById('statusMessage');
         const flapDuration = 800; 
         const heartTransitionDuration = 300; 
+        const initialHeart = document.getElementById('initialHeart'); // Thêm tham chiếu
 
         const firstTimeContent = `
             <h2 style="color: #FF69B4;">💖 Dành Cho Em 💌</h2>
             <p style="margin-top: 10px;">Chào Em Bé Nh (≧◡≦) 🥰</p>
-            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau này nữa vẫn sẽ như vậy.</p>
+            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau này nữa vẫn sẽ tốt hơn vậy.</p>
             <p>1 chiếc "CV" đang được Anh viết cẩn thận, với sự nghiêm túc để dành sự "ưu tiên" từ Em.</p>
             <p style="color: #FF69B4; font-weight: bold;">— From 남 with... 💕</p>
         `;
@@ -902,8 +1045,6 @@
             
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
-            
-            // ĐÃ XÓA LỆNH bgm.play() BỊ LỖI Ở ĐÂY
         }
 
         function showEnvelope() {
@@ -925,15 +1066,14 @@
                 heartWrapper.classList.add('invisible');
             }, heartTransitionDuration); 
             
-            // *** PHẦN KHẮC PHỤC: Phát nhạc nền khi người dùng tương tác với Trái Tim ***
+            // PHÁT NHẠC NỀN KHI NGƯỜI DÙNG TƯƠNG TÁC LẦN ĐẦU
             if (isMuted) { 
                 bgm.muted = false;
                 bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau tương tác Trái tim:", error));
                 isMuted = false;
-                bgmUserInitiated = true; // Đánh dấu đã kích hoạt
+                bgmUserInitiated = true; 
                 soundToggle.textContent = '🔊';
             }
-            // *** KẾT THÚC PHẦN KHẮC PHỤC ***
         }
 
         function openEnvelope() {
@@ -983,6 +1123,22 @@
 
             }, flapDuration + 100); 
         }
+        
+        // --- 6. Logic Bí Ngô (Pumpkin) và Modal ---
+        const pumpkin = document.getElementById('pumpkin');
+        const scareModal = document.getElementById('scareModal');
+
+        function showScaryModal() {
+            scareModal.classList.add('active');
+            playSound(scarySound, 0.8); 
+        }
+
+        function hideScaryModal() {
+            scareModal.classList.remove('active');
+        }
+
+        pumpkin.addEventListener('click', showScaryModal);
+
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
