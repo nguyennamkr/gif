@@ -9,13 +9,19 @@
         /* --- CSS HOÀN CHỈNH & RESPONSIVE --- */
 
         /* --- CSS Chung --- */
+        
+        /* THÊM MỚI: Đảm bảo html chiếm 100% chiều cao */
+        html {
+            height: 100%;
+        }
+
         body {
             background-color: #f7f0ff; 
             font-family: 'Arial', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vh;
+            min-height: 100%; /* SỬA: từ 100vh sang 100% */
             margin: 0;
             overflow: hidden; 
             perspective: 1000px; 
@@ -51,8 +57,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%; /* SỬA: từ 100vw */
+            height: 100%; /* SỬA: từ 100vh */
             background-color: #f7f0ff; 
             z-index: 1000; 
             display: flex;
@@ -571,8 +577,8 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%; /* SỬA: từ 100vw */
+            height: 100%; /* SỬA: từ 100vh */
             background-color: rgba(0, 0, 0, 0.85); /* Nền tối mờ */
             z-index: 5000;
             display: none;
@@ -647,14 +653,10 @@
 <body>
     <canvas id="magicCanvas"></canvas>
 
-    <div id="soundToggle">🔇</div> 
+    <div id="soundToggle">🔊</div> <!-- SỬA: Đổi từ 🔇 sang 🔊 để hiển thị trạng thái bật tiếng mặc định -->
     <audio id="bgm" loop><source src="halloween_music.mp3" type="audio/mpeg" /></audio>
     <audio id="scarySound"><source src="scary_scream.mp3" type="audio/mpeg" /></audio>
-    
-    <!-- 
-      ĐÃ XÓA 10 THẺ AUDIO (pin_0_sound đến pin_9_sound) Ở ĐÂY ĐỂ TỐI ƯU HÓA 
-    -->
-    
+        
     <audio id="pinClickSound"><source src="pin_click.mp3" type="audio/mpeg" /></audio>
     <audio id="envelopeOpenSound"><source src="envelope_open.mp3" type="audio/mpeg" /></audio>
     <audio id="typewriterStartSound"><source src="typewriter_start.mp3" type="audio/mpeg" /></audio>
@@ -718,8 +720,6 @@
         const envelopeOpenSound = document.getElementById('envelopeOpenSound');
         const typewriterStartSound = document.getElementById('typewriterStartSound');
         const scarySound = document.getElementById('scarySound'); // Âm thanh mới
-
-        // ĐÃ XÓA VÒNG LẶP KHỞI TẠO pinSounds (0-9) ĐỂ TỐI ƯU HÓA
 
         function playSound(audioElement, volume = 1.0) {
             if (!isMuted) {
@@ -805,7 +805,7 @@
         // --- 2. Logic Âm Thanh ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
-        let isMuted = true;
+        let isMuted = false; // SỬA: Mặc định bật tiếng
         let bgmUserInitiated = false; 
 
         soundToggle.addEventListener('click', toggleSound);
@@ -900,8 +900,8 @@
                 checkPin();
                 return;
             } else if (currentPin.length < MAX_PIN_LENGTH) {
-                // ĐÃ THAY ĐỔI: Tái sử dụng âm thanh click chung để tối ưu
-                playSound(pinClickSound, 0.3);
+                // ĐÃ TÁI SỬ DỤNG: playSound sẽ chạy vì isMuted = false
+                playSound(pinClickSound, 0.3); 
                 
                 currentPin += key;
             }
@@ -915,7 +915,7 @@
 
         function checkPin() {
             if (currentPin.length !== MAX_PIN_LENGTH) {
-                pinMessage.textContent = "Nhập 4 số mới vào được tim Anh.";
+                pinMessage.textContent = "Vui lòng nhập đủ 4 chữ số.";
                 return;
             }
 
@@ -965,7 +965,7 @@
         const firstTimeContent = `
             <h2 style="color: #FF69B4;">💖 Dành Cho Em 💌</h2>
             <p style="margin-top: 10px;">Chào Em Bé Nh (≧◡≦) 🥰</p>
-            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã nói chuyện với Anh; hy vọng sau này, sau này và sau này nữa sẽ được đồng hành nhiều hơn cùng Em.</p>
+            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau này nữa sẽ được đồng hành nhiều hơn cùng Em.</p>
             <p>📝 1 chiếc "CV" đang được Anh viết cẩn thận, với sự nghiêm túc để dành được sự "ưu tiên" từ Em.</p>
             <p style="color: #FF69B4; font-weight: bold;">— From 남 with... 💕</p>
         `;
@@ -1052,44 +1052,25 @@
             }, heartTransitionDuration); 
             
             // PHÁT NHẠC NỀN KHI NGƯỜI DÙNG TƯƠNG TÁC LẦN ĐẦU
-            if (isMuted) { 
-                bgm.muted = false;
+            // TỰ ĐỘNG BẬT BGM VÌ isMuted đã là FALSE
+            if (!bgmUserInitiated && !isMuted) { 
                 bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau tương tác Trái tim:", error));
-                isMuted = false;
                 bgmUserInitiated = true; 
-                soundToggle.textContent = '🔊';
             }
         }
 
         function openEnvelope() {
-            envelopeWrapper.classList.remove('active');
-            
-            envelopeWrapper.classList.add('open'); 
-            statusMessage.style.opacity = '0'; // Ẩn Status Message trước khi mở
-            
-            playSound(envelopeOpenSound, 0.7);
+            envelopeWrapper.classList.add('open');
+            playSound(envelopeOpenSound, 0.7); 
 
-            const rect = envelopeWrapper.getBoundingClientRect();
-            
-            // 1. Gán vị trí thiệp bằng vị trí phong bì (bắt đầu chuyển động)
-            letter.style.position = 'fixed'; 
-            letter.style.top = `${rect.top}px`;
-            letter.style.left = `${rect.left}px`;
-            letter.style.width = `${rect.width}px`;
-            letter.style.height = `${rect.height}px`;
-            letter.style.opacity = '1';
-            
-            document.body.appendChild(letter);
-            
-            // 2. Ẩn bì thư và bắt đầu chuyển đổi (thiệp bung ra)
+            // Sau khi mở nắp, kéo thiệp ra
             setTimeout(() => {
-                envelopeWrapper.classList.add('hidden');
+                letter.classList.add('pulled-out'); // Giai đoạn kéo ra một chút
                 
-                requestAnimationFrame(() => {
-                    letter.style.top = '';
-                    letter.style.left = '';
-                    letter.style.width = '';
-                    letter.style.height = '';
+                // Sau đó bung thiệp to ra
+                setTimeout(() => {
+                    // Ẩn wrapper và hiển thị thiệp
+                    envelopeWrapper.classList.add('hidden');
                     
                     letter.classList.add('opened'); // Kích hoạt 3D Pop-Bounce Giai đoạn 1
                     
@@ -1104,7 +1085,7 @@
 
                     }, 1200); // Kích hoạt Giai đoạn 2 và Confetti sau khi Giai đoạn 1 gần xong
 
-                });
+                }, flapDuration + 100); 
 
             }, flapDuration + 100); 
         }
