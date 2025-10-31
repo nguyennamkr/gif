@@ -651,16 +651,9 @@
     <audio id="bgm" loop><source src="halloween_music.mp3" type="audio/mpeg" /></audio>
     <audio id="scarySound"><source src="scary_scream.mp3" type="audio/mpeg" /></audio>
     
-    <audio id="pin_0_sound"><source src="pin_0.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_1_sound"><source src="pin_1.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_2_sound"><source src="pin_2.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_3_sound"><source src="pin_3.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_4_sound"><source src="pin_4.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_5_sound"><source src="pin_5.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_6_sound"><source src="pin_6.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_7_sound"><source src="pin_7.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_8_sound"><source src="pin_8.mp3" type="audio/mpeg" /></audio>
-    <audio id="pin_9_sound"><source src="pin_9.mp3" type="audio/mpeg" /></audio>
+    <!-- 
+      ĐÃ XÓA 10 THẺ AUDIO (pin_0_sound đến pin_9_sound) Ở ĐÂY ĐỂ TỐI ƯU HÓA 
+    -->
     
     <audio id="pinClickSound"><source src="pin_click.mp3" type="audio/mpeg" /></audio>
     <audio id="envelopeOpenSound"><source src="envelope_open.mp3" type="audio/mpeg" /></audio>
@@ -726,11 +719,7 @@
         const typewriterStartSound = document.getElementById('typewriterStartSound');
         const scarySound = document.getElementById('scarySound'); // Âm thanh mới
 
-        // Khai báo Audio Element cho từng phím số (0-9)
-        const pinSounds = {};
-        for (let i = 0; i <= 9; i++) {
-            pinSounds[i.toString()] = document.getElementById(`pin_${i}_sound`);
-        }
+        // ĐÃ XÓA VÒNG LẶP KHỞI TẠO pinSounds (0-9) ĐỂ TỐI ƯU HÓA
 
         function playSound(audioElement, volume = 1.0) {
             if (!isMuted) {
@@ -911,12 +900,8 @@
                 checkPin();
                 return;
             } else if (currentPin.length < MAX_PIN_LENGTH) {
-                // Dùng âm thanh riêng cho từng chữ số
-                if (pinSounds[key]) {
-                     playSound(pinSounds[key], 0.3);
-                } else {
-                     playSound(pinClickSound, 0.3);
-                }
+                // ĐÃ THAY ĐỔI: Tái sử dụng âm thanh click chung để tối ưu
+                playSound(pinClickSound, 0.3);
                 
                 currentPin += key;
             }
@@ -930,7 +915,7 @@
 
         function checkPin() {
             if (currentPin.length !== MAX_PIN_LENGTH) {
-                pinMessage.textContent = "Vui lòng nhập đủ 4 chữ số.";
+                pinMessage.textContent = "Nhập 4 số mới vào đk tim Anh.";
                 return;
             }
 
@@ -980,7 +965,7 @@
         const firstTimeContent = `
             <h2 style="color: #FF69B4;">💖 Dành Cho Em 💌</h2>
             <p style="margin-top: 10px;">Chào Em Bé Nh (≧◡≦) 🥰</p>
-            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau, sau này và sau này nữa sẽ được đồng hành nhiều hơn cùng Em.</p>
+            <p>Anh muốn gửi một chút nắng ấm và thật nhiều chân thành qua chiếc thiệp nhỏ này. Cảm ơn vì đã chia sẻ với Anh mỗi ngày; hy vọng sau này, sau này và sau này nữa sẽ được đồng hành nhiều hơn cùng Em.</p>
             <p>📝 1 chiếc "CV" đang được Anh viết cẩn thận, với sự nghiêm túc để dành được sự "ưu tiên" từ Em.</p>
             <p style="color: #FF69B4; font-weight: bold;">— From 남 with... 💕</p>
         `;
@@ -1023,7 +1008,7 @@
             }
         }
 
-        // HÀM checkAndSetContent ĐÃ ĐƯỢC SỬA LỖI HIỂN THỊ STATUS
+        // HÀM checkAndSetContent (Giữ nguyên)
         function checkAndSetContent() {
             letterContent.innerHTML = firstTimeContent;
             applyTypewriterEffect(letterContent, 1000); 
