@@ -653,7 +653,7 @@
 <body>
     <canvas id="magicCanvas"></canvas>
 
-    <div id="soundToggle">🔊</div> <!-- SỬA: Đổi từ 🔇 sang 🔊 để hiển thị trạng thái bật tiếng mặc định -->
+    <div id="soundToggle">🔇</div> <!-- SỬA: Đổi lại thành 🔇 để hiển thị trạng thái tắt tiếng mặc định -->
     <audio id="bgm" loop><source src="halloween_music.mp3" type="audio/mpeg" /></audio>
     <audio id="scarySound"><source src="scary_scream.mp3" type="audio/mpeg" /></audio>
         
@@ -721,8 +721,9 @@
         const typewriterStartSound = document.getElementById('typewriterStartSound');
         const scarySound = document.getElementById('scarySound'); // Âm thanh mới
 
-        function playSound(audioElement, volume = 1.0) {
-            if (!isMuted) {
+        // SỬA: Thêm tham số forcePlay. Nếu forcePlay là true, âm thanh vẫn phát dù isMuted là true.
+        function playSound(audioElement, volume = 1.0, forcePlay = false) {
+            if (forcePlay || !isMuted) {
                 audioElement.currentTime = 0; 
                 audioElement.volume = volume;
                 audioElement.play().catch(error => console.log("Lỗi phát âm thanh hiệu ứng:", error));
@@ -805,13 +806,14 @@
         // --- 2. Logic Âm Thanh ---
         const bgm = document.getElementById('bgm');
         const soundToggle = document.getElementById('soundToggle');
-        let isMuted = false; // SỬA: Mặc định bật tiếng
+        let isMuted = true; // SỬA: Mặc định tắt tiếng để khớp với icon 🔇
         let bgmUserInitiated = false; 
 
         soundToggle.addEventListener('click', toggleSound);
 
         function toggleSound() {
             if (isMuted) {
+                // Bật tiếng
                 bgm.muted = false;
                 bgm.play().catch(error => {
                     console.error("Lỗi phát nhạc:", error);
@@ -820,6 +822,7 @@
                 isMuted = false;
                 bgmUserInitiated = true; 
             } else {
+                // Tắt tiếng
                 bgm.pause();
                 bgm.currentTime = 0; 
                 soundToggle.textContent = '🔇';
@@ -848,7 +851,8 @@
                 const elements = contentElement.querySelectorAll('h2, p');
                 contentElement.classList.add('typing-active'); 
                 
-                playSound(typewriterStartSound, 0.5);
+                // PHÁT ÂM THANH NÀY LUÔN, KHÔNG CẦN forcePlay VÌ NÓ CHỈ XẢY RA KHI ĐÃ NHẬP PIN THÀNH CÔNG VÀ CHUYỂN QUA TRANG KHÁC
+                playSound(typewriterStartSound, 0.5); 
 
                 let totalDelay = 0;
                 elements.forEach((el) => {
@@ -893,15 +897,14 @@
             pinMessage.textContent = "";
 
             if (key === 'delete') {
-                playSound(pinClickSound, 0.5); 
+                playSound(pinClickSound, 0.5, true); // SỬA: Bật forcePlay
                 currentPin = currentPin.slice(0, -1);
             } else if (key === 'enter') {
-                playSound(pinClickSound, 0.8); 
+                playSound(pinClickSound, 0.8, true); // SỬA: Bật forcePlay
                 checkPin();
                 return;
             } else if (currentPin.length < MAX_PIN_LENGTH) {
-                // ĐÃ TÁI SỬ DỤNG: playSound sẽ chạy vì isMuted = false
-                playSound(pinClickSound, 0.3); 
+                playSound(pinClickSound, 0.3, true); // SỬA: Bật forcePlay
                 
                 currentPin += key;
             }
@@ -924,6 +927,7 @@
                 
                 setTimeout(() => {
                     pinScreen.classList.add('hidden');
+                    // THAY ĐỔI LOGIC: Gọi showHeart
                     setTimeout(showHeart, 500); 
                 }, SUCCESS_MESSAGE_DELAY);
 
@@ -1023,11 +1027,12 @@
         }
 
         function showHeart() {
+            // Sửa lỗi: đảm bảo heartWrapper được hiển thị sau khi PIN screen ẩn
+            heartWrapper.classList.remove('invisible', 'hidden');
             heartWrapper.classList.add('active'); 
-            heartWrapper.classList.remove('invisible', 'hidden'); 
             
-            envelopeWrapper.classList.remove('visible', 'active');
-            
+            envelopeWrapper.classList.remove('visible', 'active', 'hidden'); // Đảm bảo bì thư bị ẩn
+
             statusMessage.style.bottom = '10px'; 
             statusMessage.textContent = "Chạm vào trái tim để bắt đầu...";
         }
@@ -1052,7 +1057,6 @@
             }, heartTransitionDuration); 
             
             // PHÁT NHẠC NỀN KHI NGƯỜI DÙNG TƯƠNG TÁC LẦN ĐẦU
-            // TỰ ĐỘNG BẬT BGM VÌ isMuted đã là FALSE
             if (!bgmUserInitiated && !isMuted) { 
                 bgm.play().catch(error => console.error("Lỗi phát nhạc nền sau tương tác Trái tim:", error));
                 bgmUserInitiated = true; 
@@ -1065,7 +1069,8 @@
 
             // Sau khi mở nắp, kéo thiệp ra
             setTimeout(() => {
-                letter.classList.add('pulled-out'); // Giai đoạn kéo ra một chút
+                // Thêm một lớp CSS giả định cho trạng thái "kéo ra" nếu cần thiết,
+                // nhưng logic chính là chuyển thẳng sang trạng thái "opened"
                 
                 // Sau đó bung thiệp to ra
                 setTimeout(() => {
@@ -1096,7 +1101,7 @@
 
         function showScaryModal() {
             scareModal.classList.add('active');
-            playSound(scarySound, 0.8); 
+            playSound(scarySound, 0.8, true); // Bật forcePlay cho âm thanh đặc biệt này
         }
 
         function hideScaryModal() {
@@ -1108,7 +1113,9 @@
 
         // --- KHỞI TẠO CUỐI CÙNG ---
         function initializeApp() {
-            heartWrapper.classList.add('invisible'); 
+            // THAY ĐỔI: HeartWrapper đã được ẩn mặc định bằng CSS opacity: 0. 
+            // Không cần class 'invisible' hay 'hidden' ở đây, nếu không nó sẽ bị ghi đè.
+            // Chỉ cần set listener và update PIN.
             heartWrapper.addEventListener('click', showEnvelope, { once: true }); 
             updatePinDisplay(); 
         }
