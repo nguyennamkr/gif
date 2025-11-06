@@ -114,22 +114,27 @@
                 Bí Mật Đang Chờ: Giải Mã Thời Gian...
             </h1>
 
-            <!-- Countdown Timer --><div id="countdown-display" class="grid grid-cols-4 gap-4 mb-10">
-                <div class="p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
-                    <div id="days" class="text-4xl md:text-5xl font-bold text-red-500">00</div>
-                    <div class="text-sm font-medium text-gray-500 mt-1">Ngày</div>
+            <!-- Countdown Timer -->
+            <div id="countdown-display" class="grid grid-cols-4 gap-3 md:gap-4 mb-10">
+                <div class="p-2 sm:p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
+                    <!-- FIX: Giảm kích thước số đếm trên mobile -->
+                    <div id="days" class="text-3xl sm:text-4xl md:text-5xl font-bold text-red-500">00</div>
+                    <div class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Ngày</div>
                 </div>
-                <div class="p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
-                    <div id="hours" class="text-4xl md:text-5xl font-bold text-red-500">00</div>
-                    <div class="text-sm font-medium text-gray-500 mt-1">Giờ</div>
+                <div class="p-2 sm:p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
+                    <!-- FIX: Giảm kích thước số đếm trên mobile -->
+                    <div id="hours" class="text-3xl sm:text-4xl md:text-5xl font-bold text-red-500">00</div>
+                    <div class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Giờ</div>
                 </div>
-                <div class="p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
-                    <div id="minutes" class="text-4xl md:text-5xl font-bold text-red-500">00</div>
-                    <div class="text-sm font-medium text-gray-500 mt-1">Phút</div>
+                <div class="p-2 sm:p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
+                    <!-- FIX: Giảm kích thước số đếm trên mobile -->
+                    <div id="minutes" class="text-3xl sm:text-4xl md:text-5xl font-bold text-red-500">00</div>
+                    <div class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Phút</div>
                 </div>
-                <div class="p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
-                    <div id="seconds" class="text-4xl md:text-5xl font-bold text-red-500">00</div>
-                    <div class="text-sm font-medium text-gray-500 mt-1">Giây</div>
+                <div class="p-2 sm:p-3 bg-red-50 rounded-xl shadow-lg border-2 border-pink-200">
+                    <!-- FIX: Giảm kích thước số đếm trên mobile -->
+                    <div id="seconds" class="text-3xl sm:text-4xl md:text-5xl font-bold text-red-500">00</div>
+                    <div class="text-xs sm:text-sm font-medium text-gray-500 mt-1">Giây</div>
                 </div>
             </div>
 
@@ -181,19 +186,23 @@
                 </svg>
             </div>
             
-            <!-- Main Title adjusted line-height in CSS --><h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-red-500 mb-6 pacifico-font animate-pulse extra-loose-line">
+            <!-- Main Title adjusted line-height in CSS -->
+            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-red-500 mb-6 pacifico-font animate-pulse extra-loose-line">
                 Happy Birthday My Dear! 🥳
             </h1>
-            <p class="text-xl text-gray-700 mb-6 leading-relaxed p-4 bg-yellow-50 rounded-xl border-l-4 border-red-400">
+            <!-- FIX: Giảm text-xl thành text-lg trên mobile -->
+            <p class="text-lg sm:text-xl text-gray-700 mb-6 leading-relaxed p-4 bg-yellow-50 rounded-xl border-l-4 border-red-400">
                 Chúc mừng sinh nhật, cô gái tuyệt vời! Anh đã chuẩn bị điều này thật lâu rồi. Mỗi giây phút đếm ngược đều là sự háo hức chờ đợi để gửi lời chúc này đến em.
             </p>
-            <p class="text-2xl font-semibold text-pink-600 mb-8 p-3 italic">
+            <!-- FIX: Giảm text-2xl thành text-xl trên mobile -->
+            <p class="text-xl sm:text-2xl font-semibold text-pink-600 mb-8 p-3 italic">
                 Cầu mong em có một tuổi mới tràn đầy niềm vui, tiếng cười, và những điều tuyệt vời nhất.
             </p>
             <p class="text-gray-500 text-base">
                 Và nhân tiện, đây là cơ hội để anh nói rằng:
             </p>
-            <p class="text-3xl font-black text-pink-800 mt-4 animate-bounce">
+            <!-- FIX: Giảm text-3xl thành text-2xl trên mobile -->
+            <p class="text-2xl sm:text-3xl font-black text-pink-800 mt-4 animate-bounce">
                 Anh rất thích được theo đuổi em. Rất, rất nhiều. ❤️
             </p>
         </div>
@@ -203,7 +212,7 @@
     <!-- JavaScript for Countdown, Effects, and Layer Switching --><script type="module">
         // >>> EASY-TO-EDIT TARGET DATE CONFIGURATION <<<
         const TARGET_DAY = 29; // Day (e.g., 29)
-        const TARGET_MONTH_1_INDEXED = 10; // Month (1 = Jan, 12 = Dec)
+        const TARGET_MONTH_1_INDEXED = 11; // Month (1 = Jan, 12 = Dec)
         const TARGET_YEAR_OVERRIDE = 2025; // Fixed year. Set to null to use current year.
         // >>> END CONFIGURATION <<<
 
