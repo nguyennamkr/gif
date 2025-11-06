@@ -8,17 +8,22 @@
     <!-- Tải Tone.js cho hiệu ứng âm thanh nhỏ --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Inter:wght@100..900&display=swap');
+        
+        /* CĂN CHỈNH TUYỆT ĐỐI */
+        html, body {
+            height: 100%; /* Đảm bảo body chiếm toàn bộ chiều cao */
+        }
+        
         body {
             font-family: 'Inter', sans-serif;
-            /* ĐIỀU CHỈNH QUAN TRỌNG: Đảm bảo body chiếm toàn bộ viewport */
             min-height: 100vh;
+            /* Flexbox này bây giờ chỉ còn giữ chức năng là Fallback và đặt nền */
             display: flex;
             justify-content: center;
             align-items: center;
             background: linear-gradient(135deg, #fef4f4 0%, #ffdfd9 50%, #fef3c7 100%);
-            /* Thay đổi overflow-x thành hidden để tránh cuộn ngang, giữ padding */
             overflow-x: hidden;
-            padding: 20px 0; /* Giữ padding dọc, xóa padding ngang */
+            padding: 20px 0; 
         }
 
         .heart-container {
@@ -105,10 +110,10 @@
 
     <!-- Main Content Container (Structural Layer 2) -->
     <div id="main-container" class="bg-white/95 p-8 md:p-12 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] backdrop-blur-sm 
-                                    max-w-md md:max-w-lg w-11/12 text-center mx-auto
-                                    transition-all duration-700 ease-in-out z-10 relative
-                                    /* THÊM: Cho phép cuộn dọc nếu cần, vẫn giữ căn giữa */
-                                    overflow-y-auto">
+                                    max-w-md md:max-w-lg w-11/12 text-center 
+                                    /* CĂN CHỈNH TUYỆT ĐỐI THEO VIEWPORT */
+                                    absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 
+                                    transition-all duration-700 ease-in-out z-10 relative overflow-y-auto">
         
         <!-- Confetti Layer (Decorative Layer 4, initially hidden) --><div id="confetti-cannon" class="absolute inset-0 z-20 pointer-events-none opacity-0 transition-opacity duration-500"></div>
 
