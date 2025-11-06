@@ -180,30 +180,30 @@
         <!-- LAYER 3: FINAL MESSAGE --><div id="layer-message" class="opacity-0 h-0 overflow-hidden transition-all duration-700 ease-in-out">
             
             <!-- NEW: Dramatic Pulsing Heart Element -->
-            <div id="final-heart" class="mb-6 opacity-0 transform scale-50 transition-all duration-1000 ease-out">
-                <!-- SVG Heart Icon -->
-                <svg class="w-24 h-24 sm:w-32 sm:h-32 mx-auto text-red-500 drop-shadow-2xl" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <div id="final-heart" class="mb-4 opacity-0 transform scale-50 transition-all duration-1000 ease-out">
+                <!-- SVG Heart Icon - Adjusted size for mobile -->
+                <svg class="w-20 h-20 sm:w-32 sm:h-32 mx-auto text-red-500 drop-shadow-2xl" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                 </svg>
             </div>
             
-            <!-- Main Title adjusted line-height in CSS -->
-            <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-red-500 mb-6 pacifico-font animate-pulse extra-loose-line">
+            <!-- Main Title adjusted font size for mobile -->
+            <h1 class="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-red-500 mb-4 pacifico-font animate-pulse extra-loose-line">
                 Happy Birthday My Dear! 🥳
             </h1>
-            <!-- FIX: Giảm text-xl thành text-lg trên mobile -->
-            <p class="text-lg sm:text-xl text-gray-700 mb-6 leading-relaxed p-4 bg-yellow-50 rounded-xl border-l-4 border-red-400">
+            <!-- Main Paragraph adjusted font size for mobile -->
+            <p class="text-base sm:text-xl text-gray-700 mb-4 leading-relaxed p-3 bg-yellow-50 rounded-xl border-l-4 border-red-400">
                 Chúc mừng sinh nhật, cô gái tuyệt vời! Anh đã chuẩn bị điều này thật lâu rồi. Mỗi giây phút đếm ngược đều là sự háo hức chờ đợi để gửi lời chúc này đến em.
             </p>
-            <!-- FIX: Giảm text-2xl thành text-xl trên mobile -->
-            <p class="text-xl sm:text-2xl font-semibold text-pink-600 mb-8 p-3 italic">
+            <!-- Secondary Paragraph adjusted font size for mobile -->
+            <p class="text-lg sm:text-2xl font-semibold text-pink-600 mb-6 p-3 italic">
                 Cầu mong em có một tuổi mới tràn đầy niềm vui, tiếng cười, và những điều tuyệt vời nhất.
             </p>
             <p class="text-gray-500 text-base">
                 Và nhân tiện, đây là cơ hội để anh nói rằng:
             </p>
-            <!-- FIX: Giảm text-3xl thành text-2xl trên mobile -->
-            <p class="text-2xl sm:text-3xl font-black text-pink-800 mt-4 animate-bounce">
+            <!-- Final Line adjusted font size for mobile -->
+            <p class="text-xl sm:text-3xl font-black text-pink-800 mt-4 animate-bounce">
                 Anh rất thích được theo đuổi em. Rất, rất nhiều. ❤️
             </p>
         </div>
@@ -212,8 +212,8 @@
 
     <!-- JavaScript for Countdown, Effects, and Layer Switching --><script type="module">
         // >>> EASY-TO-EDIT TARGET DATE CONFIGURATION <<<
-        // TẠM THỜI ĐẶT NGÀY TRONG QUÁ KHỨ ĐỂ BẠN CÓ THỂ TEST CHỨC NĂNG NHẬP MÃ.
-        // XIN HÃY CHỈNH LẠI THÀNH NGÀY SINH NHẬT THỰC TẾ TRƯỚC KHI GỬI CHO BẠN GÁI!
+        // VUI LÒNG ĐẶT LẠI NGÀY SINH NHẬT THỰC TẾ CỦA BẠN GÁI Ở ĐÂY.
+        // TÔI ĐANG TẠM THỜI ĐẶT NGÀY TRONG QUÁ KHỨ ĐỂ DỄ DÀNG TEST CHỨC NĂNG.
         const TARGET_DAY = 1; // Day (e.g., 29)
         const TARGET_MONTH_1_INDEXED = 11; // Month (1 = Jan, 12 = Dec)
         const TARGET_YEAR_OVERRIDE = 2025; // Fixed year. Set to null to use current year.
@@ -330,7 +330,7 @@
                 document.getElementById('minutes').textContent = '00';
                 document.getElementById('seconds').textContent = '00';
 
-                // NEW: Logic hiển thị ô nhập mã khi countdown kết thúc
+                // Logic hiển thị ô nhập mã khi countdown kết thúc
                 codeInputArea.style.opacity = '1';
                 codeInputArea.classList.remove('pointer-events-none');
                 secretCodeInput.disabled = false;
@@ -354,7 +354,7 @@
                 document.getElementById('minutes').textContent = formatTime(minutes);
                 document.getElementById('seconds').textContent = formatTime(seconds);
 
-                // Logic ẩn ô nhập mã khi countdown đang chạy (đây là lý do ban đầu bạn không thấy nó)
+                // Logic ẩn ô nhập mã khi countdown đang chạy
                 codeInputArea.style.opacity = '0';
                 codeInputArea.classList.add('pointer-events-none');
                 secretCodeInput.disabled = true;
