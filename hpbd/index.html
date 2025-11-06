@@ -58,6 +58,7 @@
         }
         #charge-progress {
             width: 0%;
+            height: 100%; /* ĐÃ THÊM: KHẮC PHỤC LỖI KHÔNG TĂNG CHIỀU CAO */
             background-color: #ec4899; 
             transition: width 0.1s ease-out; 
             border-radius: 9999px;
@@ -177,7 +178,9 @@
         </div>
 
 
-        <!-- LAYER 3: FINAL MESSAGE --><div id="layer-message" class="opacity-0 h-0 overflow-hidden transition-all duration-700 ease-in-out">
+        <!-- LAYER 3: FINAL MESSAGE -->
+        <!-- Đã chỉnh sửa font-size cho mobile và xóa hai dòng cuối -->
+        <div id="layer-message" class="opacity-0 h-0 overflow-hidden transition-all duration-700 ease-in-out">
             
             <!-- NEW: Dramatic Pulsing Heart Element -->
             <div id="final-heart" class="mb-4 opacity-0 transform scale-50 transition-all duration-1000 ease-out">
@@ -199,13 +202,9 @@
             <p class="text-lg sm:text-2xl font-semibold text-pink-600 mb-6 p-3 italic">
                 Cầu mong em có một tuổi mới tràn đầy niềm vui, tiếng cười, và những điều tuyệt vời nhất.
             </p>
-            <p class="text-gray-500 text-base">
-                Và nhân tiện, đây là cơ hội để anh nói rằng:
-            </p>
-            <!-- Final Line adjusted font size for mobile -->
-            <p class="text-xl sm:text-3xl font-black text-pink-800 mt-4 animate-bounce">
-                Anh rất thích được theo đuổi em. Rất, rất nhiều. ❤️
-            </p>
+            
+            <!-- Hai dòng dưới đây đã được xóa theo yêu cầu -->
+            
         </div>
 
     </div>
