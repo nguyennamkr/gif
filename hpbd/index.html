@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quà Sinh Nhật Bí Mật (Không Tracking)</title>
+    <title> Điều Bất Ngờ Ngọt Ngào </title>
     <!-- Tải Tailwind CSS --><script src="https://cdn.tailwindcss.com"></script>
     <!-- Tải Tone.js cho hiệu ứng âm thanh nhỏ --><script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.8.49/Tone.min.js"></script>
     <style>
@@ -209,11 +209,11 @@
             </h1>
             <!-- Main Paragraph adjusted font size for mobile -->
             <p class="text-base sm:text-xl text-gray-700 mb-4 leading-relaxed p-3 bg-yellow-50 rounded-xl border-l-4 border-red-400">
-                Chúc mừng sinh nhật, cô gái tuyệt vời! Anh đã chuẩn bị điều này thật lâu rồi. Mỗi giây phút đếm ngược đều là sự háoo hức chờ đợi để gửi lời chúc này đến em.
+                Chúc mừng sinh nhật, cô gái tuyệt vời! Anh đã chuẩn bị điều này thật lâu rồi. Mỗi giây phút đếm ngược đều là sự háo hức chờ đợi để gửi lời chúc này đến em.
             </p>
             <!-- Secondary Paragraph adjusted font size for mobile -->
             <p class="text-lg sm:text-2xl font-semibold text-pink-600 mb-6 p-3 italic">
-                Cầu mong em có một tuổi mới tràn đầy niềm vui, tiếng cười, và những điều tuyệt vời nhất.
+                Chúc Em có một tuổi mới tràn đầy niềm vui, xinh đẹp, tiếng cười, và những điều tuyệt vời nhất.
             </p>
             
         </div>
@@ -223,14 +223,13 @@
     <!-- JavaScript for Countdown, Effects, and Layer Switching --><script type="module">
         // >>> EASY-TO-EDIT TARGET DATE CONFIGURATION <<<
         // VUI LÒNG ĐẶT LẠI NGÀY SINH NHẬT THỰC TẾ CỦA BẠN GÁI Ở ĐÂY.
-        // TÔI ĐANG TẠM THỜI ĐẶT NGÀY TRONG QUÁ KHỨ ĐỂ DỄ DÀNG TEST CHỨC NĂNG.
         const TARGET_DAY = 1; // Day (e.g., 29)
         const TARGET_MONTH_1_INDEXED = 11; // Month (1 = Jan, 12 = Dec)
         const TARGET_YEAR_OVERRIDE = 2025; // Fixed year. Set to null to use current year.
         // >>> END CONFIGURATION <<<
 
         // NEW: Secret Code Configuration
-        const SECRET_CODE = "YEU"; // Code to unlock layer 2
+        const SECRET_CODE = "2911"; // Code to unlock layer 2
 
         // --- GLOBAL VARIABLES ---
         const targetMonthIndex = TARGET_MONTH_1_INDEXED - 1; 
@@ -422,13 +421,13 @@
             let buttonText = `⚡ Đồng Bộ (${Math.floor(chargeLevel)}%) ⚡`;
             
             if (chargeLevel >= 0 && chargeLevel < 30) {
-                buttonText = `🔎 Khởi động hệ thống... (${Math.floor(chargeLevel)}%) 🗝️`;
+                buttonText = `🔎 Khởi động trái tim... (${Math.floor(chargeLevel)}%) 🗝️`;
             } else if (chargeLevel >= 30 && chargeLevel < 70) {
-                buttonText = `⏳ Tăng tốc độ giải mã! (${Math.floor(chargeLevel)}%) ⏳`;
+                buttonText = `⏳ Tăng tốc lên nào! (${Math.floor(chargeLevel)}%) ⏳`;
             } else if (chargeLevel >= 70 && chargeLevel < 100) {
                 buttonText = `🚨 Sắp đạt đến cực điểm bí ẩn! (${Math.floor(chargeLevel)}%) 🚨`;
             } else if (chargeLevel >= 100) {
-                buttonText = `🔓 ĐÃ GIẢI MÃ THÀNH CÔNG! 💖`;
+                buttonText = `🔓 ĐÃ GIẢI MÃ THÀNH CÔNG 💖`;
             }
 
             chargeButton.textContent = buttonText;
